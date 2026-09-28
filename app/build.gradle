@@ -18,6 +18,10 @@ android {
         main.assets.srcDirs = ["../public"]
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     signingConfigs {
         release {
             storeFile file(System.getenv("ANDROID_KEYSTORE_FILE") ?: "missing-release-key.jks")
