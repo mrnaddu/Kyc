@@ -20,7 +20,7 @@ const translations = {
     rcSearchSubheading: "Enter your 12-digit ration card number to verify your family details.",
     rcInputLabel: "Ration Card Number",
     scanRCText: "Scan Card",
-    rcInputPlaceholder: "Enter 12-digit card number",
+    rcInputPlaceholder: "12-digit card number",
     captchaHeaderLabel: "Security Code",
     refreshCaptchaText: "New Code",
     consentTextLabel: "I agree to verify my ration card details for e-KYC.",
@@ -778,23 +778,23 @@ function renderFamilyRoster(data) {
       : `<span class="text-[9px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1"><i class="fa-solid fa-clock text-[8px] text-slate-400"></i> ${translations[appState.currentLang].ekycPendingBadge}</span>`;
 
     card.innerHTML = `
-      <div class="flex items-center gap-3">
+      <div class="member-card-main flex items-center gap-3">
         <input type="radio" name="memberSelect" value="${member.id}" ${isDefault ? "checked" : ""} class="text-slate-900 focus:ring-slate-900 h-4 w-4" />
         <div class="w-8 h-8 rounded-full ${isDefault ? 'bg-emerald-700 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200'} flex items-center justify-center font-bold text-xs shrink-0 font-mono member-avatar">
           ${initials}
         </div>
-        <div>
+        <div class="member-card-details">
           <div class="flex items-center gap-1.5 flex-wrap">
             <span class="font-bold text-xs text-slate-900">${displayName}</span>
             <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 uppercase">${relationName}</span>
             ${kycBadge}
           </div>
-          <div class="flex items-center gap-2 mt-1 text-[11px] text-slate-500">
-            <span class="text-emerald-700 font-semibold font-mono text-[10px] flex items-center gap-1">
+          <div class="member-meta flex items-center gap-2 mt-1 text-[11px] text-slate-500">
+            <span class="member-aadhaar text-emerald-700 font-semibold font-mono text-[10px] flex items-center gap-1">
               <i class="fa-solid fa-fingerprint text-[9px]"></i> Aadhaar: •••• ${member.aadhaarLast4}
             </span>
-            <span>•</span>
-            <span class="text-[10px] text-slate-400 font-mono">${member.gender} | Age: ${member.age}</span>
+            <span class="member-meta-separator">•</span>
+            <span class="member-demographics text-[10px] text-slate-400 font-mono">${member.gender} | Age: ${member.age}</span>
           </div>
         </div>
       </div>

@@ -272,6 +272,211 @@ body {
   border-bottom: 1px solid rgba(226, 232, 240, 0.85);
 }
 
+/* Responsive mobile layout */
+@media (max-width: 420px) {
+  .app-header {
+    gap: 0.5rem;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .app-header-left,
+  .app-brand-block,
+  .app-brand-block > div:last-child {
+    min-width: 0;
+  }
+
+  .app-header-left {
+    flex: 1;
+  }
+
+  .app-brand-block {
+    gap: 0.45rem;
+    padding-left: 0.45rem;
+  }
+
+  #appTitleText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .language-button {
+    min-height: 2.25rem;
+    padding-inline: 0.6rem;
+  }
+
+  .app-main {
+    padding: 1rem;
+  }
+
+  .department-badge {
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.35;
+  }
+
+  .field-heading-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .field-heading-row > label,
+  .field-heading-row > span {
+    flex: 1 1 auto;
+  }
+
+  .field-tools {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  #rcInput {
+    padding-right: 2.75rem;
+    font-size: 0.875rem;
+    letter-spacing: 0.035em;
+  }
+
+  .captcha-fields {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #captchaBox,
+  #captchaInput {
+    width: 100%;
+    flex: none;
+  }
+
+  #captchaBox {
+    height: 3.5rem;
+  }
+
+  .consent-row input {
+    flex: none;
+    margin-top: 0.15rem;
+  }
+
+  .candidate-summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .member-card {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .member-card-main,
+  .member-card-details {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .member-meta {
+    flex-wrap: wrap;
+    gap: 0.25rem 0.55rem;
+  }
+
+  .member-aadhaar,
+  .member-demographics {
+    white-space: nowrap;
+  }
+
+  .member-meta-separator {
+    display: none;
+  }
+
+  .selection-pill {
+    align-self: flex-end;
+  }
+
+  .certificate-content {
+    flex-direction: column;
+  }
+
+  .certificate-details,
+  .certificate-qr {
+    width: 100%;
+  }
+
+  .certificate-qr {
+    min-height: 5.5rem;
+  }
+
+  .certificate-details > div {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .certificate-details > div > span:last-child {
+    text-align: right;
+  }
+
+  .certificate-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .app-footer {
+    padding-inline: 1rem;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 350px) {
+  #topNavHomeLabel,
+  .language-button i {
+    display: none;
+  }
+
+  .nav-home-button {
+    width: 2.25rem;
+    height: 2.25rem;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .language-button {
+    font-size: 0.65rem;
+  }
+
+  .split-actions {
+    flex-direction: column;
+  }
+
+  .split-actions > button {
+    width: 100%;
+  }
+
+  .certificate-details > div {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .certificate-details > div > span:last-child {
+    text-align: left;
+  }
+
+  .pvc-hologram {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .app-brand-subtitle {
+    display: none;
+  }
+
+  #appTitleText {
+    font-size: 0.68rem;
+    letter-spacing: 0.035em;
+  }
+}
+
 /* Form Inputs & Controls */
 .modern-input {
   width: 100%;
