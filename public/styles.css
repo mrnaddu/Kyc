@@ -257,6 +257,10 @@ body {
   padding-left: calc(1rem + var(--safe-area-left)) !important;
 }
 
+html.native-shell .app-header {
+  display: none !important;
+}
+
 .app-main {
   padding-right: calc(1.25rem + var(--safe-area-right)) !important;
   padding-left: calc(1.25rem + var(--safe-area-left)) !important;

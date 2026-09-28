@@ -44,6 +44,8 @@ The Android version bundles the web interface, captcha engine, live Ahara gatewa
 
 The app can check the public [`Kyc-Releases`](https://github.com/mrnaddu/Kyc-Releases) repository for a newer APK. Use **Check for updates** in the app footer to download and open the Android installer when a newer release is available.
 
+The Android application shell is derived from Echo Music's Kotlin/Jetpack Compose architecture. Android owns the `Scaffold`, pinned `TopAppBar`, status-bar and display-cutout insets, while the standalone KYC workflow runs inside the safe content area. This avoids device-specific WebView header positioning.
+
 To test it:
 
 1. Download and install the APK from GitHub Releases.
@@ -73,6 +75,7 @@ See [`.env.example`](.env.example) for all available options. Never commit your 
 
 ```text
 public/                   Browser interface
+app/src/main/             Native Android/Compose shell and bundled app
 services/aadhaarAuth.js   Aadhaar validation and OTP sessions
 services/cacheManager.js  Memory and JSON-file cache
 services/karnatakaAhara.js Karnataka Ahara portal gateway
@@ -95,6 +98,14 @@ server.js                 Express server and API routes
 
 This project is a demonstration and is not an official Government of Karnataka or UIDAI service. The current photo step captures an image but does not perform biometric face matching. Do not use it for production identity verification without appropriate security, privacy, authentication, and regulatory controls.
 
+## Special thanks
+
+| Project | Usage |
+| --- | --- |
+| **[Echo Music](https://github.com/EchoMusicApp/Echo-Music)** | The Android Compose shell, dynamic theme structure, pinned app-bar behavior, dimensions, and system-bar/display-cutout handling are copied and adapted under GPLv3. Music, playback, provider, and branding code is not included. |
+
+See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for source and modification details.
+
 ## License
 
-Licensed under the [MIT License](LICENSE).
+Licensed under the [GNU General Public License v3.0](LICENSE). APK recipients may obtain the complete corresponding source from this repository.
