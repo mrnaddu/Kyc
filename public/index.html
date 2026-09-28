@@ -117,6 +117,22 @@
       <div id="stepProgressBar" style="width: 25%;"></div>
     </div>
 
+    <!-- Persistent Update Available Banner -->
+    <div id="updateBanner" class="hidden mx-4 mt-3 p-3 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white rounded-xl shadow-md flex items-center justify-between gap-3 text-xs font-semibold">
+      <div class="flex items-center gap-2 flex-1 min-w-0">
+        <i class="fa-solid fa-bell text-sm shrink-0"></i>
+        <span class="truncate">New update <strong id="updateBannerVersion"></strong> is available!</span>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button id="btnBannerUpdate" type="button" class="bg-white text-slate-900 font-bold px-2.5 py-1 rounded-lg text-[11px] shadow-sm hover:bg-amber-50 active:scale-95 transition">
+          Update
+        </button>
+        <button type="button" onclick="document.getElementById('updateBanner').classList.add('hidden')" class="text-amber-100 hover:text-white p-1" title="Dismiss">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+    </div>
+
     <!-- Alert / Toast Container -->
     <div id="toastNotification" class="hidden mx-4 mt-3 p-3 rounded-xl text-xs font-medium border flex items-center gap-2.5 transition-all">
       <i id="toastIcon" class="fa-solid fa-circle-info text-sm"></i>

@@ -1,19 +1,27 @@
 package com.mrnaddu.kyc;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.webkit.WebView;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
 
 import org.json.JSONArray;
@@ -32,8 +40,11 @@ import java.util.concurrent.Executors;
 final class AppUpdater {
     private static final String LATEST_RELEASE_API = "https://api.github.com/repos/mrnaddu/Kyc-Releases/releases/latest";
     private static final String APK_FILE_NAME = "Karnataka-eKYC-update.apk";
+    private static final String NOTIFICATION_CHANNEL_ID = "app_updates_channel";
+    private static final int NOTIFICATION_ID = 2001;
 
     private final Activity activity;
+    private WebView webView;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final DownloadManager downloadManager;
     private long activeDownloadId = -1;
@@ -53,8 +64,14 @@ final class AppUpdater {
     };
 
     AppUpdater(Activity activity) {
+        this(activity, null);
+    }
+
+    AppUpdater(Activity activity, WebView webView) {
         this.activity = activity;
+        this.webView = webView;
         this.downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+        createNotificationChannel();
         IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             activity.registerReceiver(downloadReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
@@ -63,31 +80,111 @@ final class AppUpdater {
         }
     }
 
+    void setWebView(WebView webView) {
+        this.webView = webView;
+    }
+
     void checkForUpdates() {
-        Toast.makeText(activity, "Checking for updates…", Toast.LENGTH_SHORT).show();
+        checkForUpdates(true);
+    }
+
+    void checkForUpdates(boolean isManual) {
+        if (isManual) {
+            Toast.makeText(activity, "Checking for updates…", Toast.LENGTH_SHORT).show();
+        }
         executor.execute(() -> {
             try {
                 JSONObject release = fetchLatestRelease();
                 String latestVersion = release.optString("tag_name", "").replaceFirst("^[vV]", "");
                 String apkUrl = findApkUrl(release.optJSONArray("assets"));
+                String releaseBody = release.optString("body", "");
                 if (latestVersion.isEmpty() || apkUrl == null) {
-                    throw new Exception("The latest release does not contain an APK file.");
-                }
-
-                if (compareVersions(latestVersion, BuildConfig.VERSION_NAME) <= 0) {
-                    activity.runOnUiThread(() -> showMessage(
-                        "App is up to date",
-                        "You already have the latest version (" + BuildConfig.VERSION_NAME + ")."
-                    ));
+                    if (isManual) {
+                        throw new Exception("The latest release does not contain an APK file.");
+                    }
                     return;
                 }
 
-                activity.runOnUiThread(() -> showUpdateDialog(latestVersion, apkUrl));
+                if (compareVersions(latestVersion, BuildConfig.VERSION_NAME) <= 0) {
+                    if (isManual) {
+                        activity.runOnUiThread(() -> showMessage(
+                            "App is up to date",
+                            "You already have the latest version (" + BuildConfig.VERSION_NAME + ")."
+                        ));
+                    }
+                    return;
+                }
+
+                activity.runOnUiThread(() -> {
+                    showUpdateDialog(latestVersion, apkUrl, releaseBody);
+                    showSystemNotification(latestVersion);
+                    notifyWebBanner(latestVersion);
+                });
             } catch (Exception exception) {
-                String message = exception.getMessage() == null ? "Could not check GitHub Releases." : exception.getMessage();
-                activity.runOnUiThread(() -> showMessage("Update check failed", message));
+                if (isManual) {
+                    String message = exception.getMessage() == null ? "Could not check GitHub Releases." : exception.getMessage();
+                    activity.runOnUiThread(() -> showMessage("Update check failed", message));
+                }
             }
         });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                "App Updates",
+                NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.setDescription("Notifications about new versions of Karnataka e-KYC");
+            NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+    }
+
+    private void showSystemNotification(String latestVersion) {
+        try {
+            Intent intent = new Intent(activity, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("trigger_update_check", true);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                activity,
+                0,
+                intent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    ? PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                    : PendingIntent.FLAG_UPDATE_CURRENT
+            );
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("New Update Available (v" + latestVersion + ")")
+                .setContentText("A new version of Karnataka e-KYC is ready to install.")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText("Karnataka e-KYC version " + latestVersion + " is available. Tap to open and install the update."))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(activity);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                || activity.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                notificationManager.notify(NOTIFICATION_ID, builder.build());
+            }
+        } catch (Exception ignored) {
+            // Notification failed or permission denied, ignore silently.
+        }
+    }
+
+    private void notifyWebBanner(String version) {
+        if (webView != null) {
+            webView.evaluateJavascript(
+                "if (typeof showUpdateNotification === 'function') showUpdateNotification('" + version + "');",
+                null
+            );
+        }
     }
 
     private JSONObject fetchLatestRelease() throws Exception {
@@ -122,10 +219,23 @@ final class AppUpdater {
         return null;
     }
 
-    private void showUpdateDialog(String latestVersion, String apkUrl) {
+    private void showUpdateDialog(String latestVersion, String apkUrl, String releaseBody) {
+        if (activity.isFinishing() || activity.isDestroyed()) return;
+
+        StringBuilder message = new StringBuilder();
+        message.append("A new version (v").append(latestVersion).append(") of Karnataka e-KYC is available.\n\n");
+        if (releaseBody != null && !releaseBody.trim().isEmpty()) {
+            String cleanBody = releaseBody.trim();
+            if (cleanBody.length() > 250) {
+                cleanBody = cleanBody.substring(0, 250) + "…";
+            }
+            message.append(cleanBody).append("\n\n");
+        }
+        message.append("Would you like to download and install it now?");
+
         new AlertDialog.Builder(activity)
             .setTitle("Update available")
-            .setMessage("Version " + latestVersion + " is available. Download and install it now?")
+            .setMessage(message.toString())
             .setNegativeButton("Later", null)
             .setPositiveButton("Update", (dialog, which) -> prepareDownload(apkUrl, latestVersion))
             .show();

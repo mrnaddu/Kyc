@@ -52,12 +52,14 @@ import com.mrnaddu.kyc.ui.utils.appBarScrollBehavior
 
 class MainActivity : ComponentActivity() {
     private val cameraPermissionRequest = 1001
+    private val notificationPermissionRequest = 1002
 
     private lateinit var webView: WebView
     private var pendingPermissionRequest: PermissionRequest? = null
     private var nativeKycBridge: NativeKycBridge? = null
     private var appUpdater: AppUpdater? = null
     private var currentLanguage by mutableStateOf("EN")
+    private var initialUpdateChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,12 @@ class MainActivity : ComponentActivity() {
         val insetsController = WindowInsetsControllerCompat(window, window.decorView)
         insetsController.isAppearanceLightStatusBars = true
         insetsController.isAppearanceLightNavigationBars = true
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), notificationPermissionRequest)
+            }
+        }
 
         setContent {
             KarnatakaKycApp()
@@ -178,7 +186,7 @@ class MainActivity : ComponentActivity() {
                 mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             }
 
-            val updater = AppUpdater(this)
+            val updater = AppUpdater(this, view)
             appUpdater = updater
             nativeKycBridge = NativeKycBridge(this, view, updater)
             view.addJavascriptInterface(nativeKycBridge!!, "AndroidKyc")
@@ -208,6 +216,14 @@ class MainActivity : ComponentActivity() {
                         "document.documentElement.classList.add('native-shell');" +
                             "applyLanguage('$currentLanguage');",
                     )
+                    if (!initialUpdateChecked) {
+                        initialUpdateChecked = true
+                        view.postDelayed({
+                            if (!isFinishing && !isDestroyed) {
+                                appUpdater?.checkForUpdates(false)
+                            }
+                        }, 2000)
+                    }
                 }
             }
 
@@ -262,6 +278,14 @@ class MainActivity : ComponentActivity() {
             pendingRequest.deny()
         }
         pendingPermissionRequest = null
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (intent.getBooleanExtra("trigger_update_check", false)) {
+            appUpdater?.checkForUpdates(true)
+        }
     }
 
     override fun onDestroy() {

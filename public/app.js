@@ -300,6 +300,26 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  const bannerUpdateBtn = document.getElementById("btnBannerUpdate");
+  if (bannerUpdateBtn) {
+    bannerUpdateBtn.addEventListener("click", () => {
+      if (window.AndroidKyc && typeof window.AndroidKyc.checkForUpdates === "function") {
+        window.AndroidKyc.checkForUpdates();
+      } else {
+        window.open("https://github.com/mrnaddu/Kyc-Releases/releases/latest", "_blank", "noopener");
+      }
+    });
+  }
+
+  window.showUpdateNotification = function(version) {
+    const banner = document.getElementById("updateBanner");
+    const versionEl = document.getElementById("updateBannerVersion");
+    if (banner && versionEl) {
+      versionEl.textContent = "v" + version.replace(/^v/i, "");
+      banner.classList.remove("hidden");
+    }
+  };
 });
 
 function dismissLaunchScreen() {
