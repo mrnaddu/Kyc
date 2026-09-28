@@ -22,6 +22,10 @@
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.25rem;
+  --safe-area-top: 0px;
+  --safe-area-right: 0px;
+  --safe-area-bottom: 0px;
+  --safe-area-left: 0px;
 }
 
 * {
@@ -246,6 +250,38 @@ body {
   min-width: 0;
 }
 
+.app-header {
+  min-height: calc(4rem + var(--safe-area-top));
+  padding-top: calc(0.75rem + var(--safe-area-top)) !important;
+  padding-right: calc(1rem + var(--safe-area-right)) !important;
+  padding-left: calc(1rem + var(--safe-area-left)) !important;
+}
+
+.app-main {
+  padding-right: calc(1.25rem + var(--safe-area-right)) !important;
+  padding-left: calc(1.25rem + var(--safe-area-left)) !important;
+}
+
+.app-footer {
+  padding-right: calc(1.25rem + var(--safe-area-right)) !important;
+  padding-bottom: calc(0.75rem + var(--safe-area-bottom)) !important;
+  padding-left: calc(1.25rem + var(--safe-area-left)) !important;
+}
+
+#toastNotification {
+  margin-right: calc(1rem + var(--safe-area-right));
+  margin-left: calc(1rem + var(--safe-area-left));
+}
+
+#loadingOverlay,
+#errorModal,
+#scannerModal {
+  padding-top: var(--safe-area-top);
+  padding-right: var(--safe-area-right);
+  padding-bottom: var(--safe-area-bottom);
+  padding-left: var(--safe-area-left);
+}
+
 #captchaInput {
   min-width: 0;
 }
@@ -266,10 +302,33 @@ body {
 
 /* Header Styles */
 .header-glass {
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(15, 23, 42, 0.97);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+.app-header #appTitleText {
+  color: #ffffff;
+}
+
+.app-header .app-brand-subtitle {
+  color: #94a3b8;
+}
+
+.app-header .app-brand-block {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.app-header .nav-home-button {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.app-header .nav-home-button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .update-button {
@@ -291,8 +350,11 @@ body {
   .app-header {
     align-items: center;
     gap: 0.5rem;
-    min-height: 3.5rem;
-    padding: 0.65rem 0.75rem;
+    min-height: calc(4rem + var(--safe-area-top));
+    padding-top: calc(0.75rem + var(--safe-area-top)) !important;
+    padding-right: calc(0.75rem + var(--safe-area-right)) !important;
+    padding-bottom: 0.75rem !important;
+    padding-left: calc(0.75rem + var(--safe-area-left)) !important;
   }
 
   .app-header-left,
@@ -308,9 +370,11 @@ body {
 
   .app-brand-block {
     align-self: stretch;
-    gap: 0.45rem;
+    flex: 1;
+    gap: 0;
     overflow: hidden;
-    padding-left: 0.45rem;
+    padding-left: 0;
+    border-left: 0;
   }
 
   .app-brand-block > div:last-child {
@@ -320,10 +384,26 @@ body {
   }
 
   #appTitleText {
-    line-height: 1.2;
+    font-size: 0.9rem;
+    line-height: 1.25;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-transform: none;
+    letter-spacing: 0;
     white-space: nowrap;
+  }
+
+  .app-brand-icon,
+  .nav-home-button #topNavHomeLabel {
+    display: none;
+  }
+
+  .nav-home-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 !important;
+    justify-content: center;
+    border-radius: 9999px;
   }
 
   .language-button {
@@ -338,12 +418,14 @@ body {
   }
 
   html[lang="kn"] #appTitleText {
-    font-size: 0.67rem;
+    font-size: 0.82rem;
     letter-spacing: 0;
   }
 
   .app-main {
-    padding: 1rem;
+    padding-top: 1rem !important;
+    padding-right: calc(1rem + var(--safe-area-right)) !important;
+    padding-left: calc(1rem + var(--safe-area-left)) !important;
   }
 
   .department-badge {
@@ -505,12 +587,12 @@ body {
 
 @media (max-width: 380px) {
   #appTitleText {
-    font-size: 0.68rem;
-    letter-spacing: 0.035em;
+    font-size: 0.82rem;
+    letter-spacing: 0;
   }
 
   html[lang="kn"] #appTitleText {
-    font-size: 0.63rem;
+    font-size: 0.76rem;
     letter-spacing: 0;
   }
 }

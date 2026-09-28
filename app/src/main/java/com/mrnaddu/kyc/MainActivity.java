@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
     private PermissionRequest pendingPermissionRequest;
     private NativeKycBridge nativeKycBridge;
     private AppUpdater appUpdater;
+    private Insets safeArea = Insets.NONE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +45,29 @@ public class MainActivity extends Activity {
         webView = new WebView(this);
         webView.setBackgroundColor(Color.rgb(15, 23, 42));
         ViewCompat.setOnApplyWindowInsetsListener(webView, (view, windowInsets) -> {
-            Insets safeArea = windowInsets.getInsets(
+            safeArea = windowInsets.getInsets(
                 WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
             );
-            view.setPadding(safeArea.left, safeArea.top, safeArea.right, safeArea.bottom);
+            applySafeAreaToWebView();
             return WindowInsetsCompat.CONSUMED;
         });
         setContentView(webView);
         ViewCompat.requestApplyInsets(webView);
         configureWebView();
         webView.loadUrl("https://appassets.androidplatform.net/assets/index.html");
+    }
+
+    private void applySafeAreaToWebView() {
+        float density = getResources().getDisplayMetrics().density;
+        int top = Math.round(safeArea.top / density);
+        int right = Math.round(safeArea.right / density);
+        int bottom = Math.round(safeArea.bottom / density);
+        int left = Math.round(safeArea.left / density);
+        String script = "document.documentElement.style.setProperty('--safe-area-top','" + top + "px');"
+            + "document.documentElement.style.setProperty('--safe-area-right','" + right + "px');"
+            + "document.documentElement.style.setProperty('--safe-area-bottom','" + bottom + "px');"
+            + "document.documentElement.style.setProperty('--safe-area-left','" + left + "px');";
+        webView.post(() -> webView.evaluateJavascript(script, null));
     }
 
     private void configureWebView() {
@@ -90,6 +104,12 @@ public class MainActivity extends Activity {
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 WebResourceResponse response = assetLoader.shouldInterceptRequest(Uri.parse(request.getUrl().toString()));
                 return response != null ? response : super.shouldInterceptRequest(view, request);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                applySafeAreaToWebView();
             }
         });
 
