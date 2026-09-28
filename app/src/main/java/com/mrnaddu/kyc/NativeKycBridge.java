@@ -231,7 +231,8 @@ final class NativeKycBridge {
                 .put("gender", "Verified Citizen")
                 .put("age", "-")
                 .put("seeded", true)
-                .put("ekyc", "DONE"));
+                .put("ekyc", "PENDING")
+                .put("isKycComplete", false));
         }
         return members;
     }

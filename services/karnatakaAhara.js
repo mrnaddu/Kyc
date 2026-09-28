@@ -74,7 +74,8 @@ async function fetchLiveAharaCard(rcNumber) {
         gender: "Verified Citizen",
         age: "-",
         seeded: true,
-        ekyc: "DONE"
+        ekyc: "PENDING",
+        isKycComplete: false
       };
     }
     return {
@@ -88,7 +89,8 @@ async function fetchLiveAharaCard(rcNumber) {
       gender: "Verified Citizen",
       age: "-",
       seeded: true,
-      ekyc: "DONE"
+      ekyc: "PENDING",
+      isKycComplete: false
     };
   });
 

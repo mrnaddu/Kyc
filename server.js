@@ -22,7 +22,6 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-const cacheManager = require("./services/cacheManager");
 const { fetchKarnatakaRationCard } = require("./services/karnatakaAhara");
 const { 
   generateCaptcha, 
@@ -175,26 +174,8 @@ app.post("/api/verify-rc", async (req, res) => {
       }
     }
 
-    // ── 1. Check Dual-Layer Persistent Cache (High-Speed Hit) ──────────
-    if (!forceRefresh) {
-      const cached = cacheManager.getCard(cleanRc);
-      if (cached.hit) {
-        console.log(`[Cache Hit] Serving RC ${cleanRc} from cache (Age: ${cached.ageSeconds}s)`);
-        // Save to active session store for certificate generation
-        cardSessionStore.set(cleanRc, cached.data);
-        return res.json({
-          success: true,
-          data: cached.data,
-          fromCache: true,
-          cacheAgeSeconds: cached.ageSeconds,
-          lastSynced: cached.lastSynced
-        });
-      }
-    }
-
-    // ── 2. Live Scraper Query: ahara.karnataka.gov.in ───────────────────
-
-    // Fetch live card details from ahara.karnataka.gov.in
+    // ── Direct Live Query: ahara.karnataka.gov.in (No Caching) ──────────
+    console.log(`[Ahara Live] Querying live portal directly for RC: ${cleanRc}...`);
     const result = await fetchKarnatakaRationCard(cleanRc);
     
     // Attach Aadhaar verification context if available
@@ -203,10 +184,7 @@ app.post("/api/verify-rc", async (req, res) => {
       result.data.authenticatedAadhaarLast4 = authUser.aadhaarLast4;
     }
 
-    // Save to Cache Manager (Dual-layer memory + disk store)
-    cacheManager.setCard(cleanRc, result.data);
-
-    // Save to session cache for certificate generation
+    // Active session store for certificate generation in this transaction only
     cardSessionStore.set(cleanRc, result.data);
 
     res.json({
@@ -229,12 +207,10 @@ app.post("/api/verify-rc", async (req, res) => {
  * Check if a card is already present in cache
  */
 app.get("/api/rc-cache-status/:rcNumber", (req, res) => {
-  const { rcNumber } = req.params;
-  const cached = cacheManager.getCard(rcNumber);
   res.json({
-    cached: cached.hit,
-    ageSeconds: cached.ageSeconds || 0,
-    lastSynced: cached.lastSynced || null
+    cached: false,
+    ageSeconds: 0,
+    lastSynced: null
   });
 });
 
@@ -245,14 +221,7 @@ app.post("/api/confirm-kyc", (req, res) => {
   try {
     const { rcNumber, memberId, applicantName, aadhaarLast4 } = req.body;
 
-    let cardData = cardSessionStore.get(rcNumber.trim());
-    if (!cardData) {
-      const cached = cacheManager.getCard(rcNumber.trim());
-      if (cached.hit) {
-        cardData = cached.data;
-        cardSessionStore.set(rcNumber.trim(), cardData);
-      }
-    }
+    const cardData = cardSessionStore.get(rcNumber.trim());
     if (!cardData) {
       return res.status(400).json({
         success: false,
@@ -293,8 +262,11 @@ app.post("/api/confirm-kyc", (req, res) => {
       nameMatchScore: matchScore
     });
 
-    // 4. Update member KYC status in persistent cache!
-    cacheManager.updateMemberKycStatus(rcNumber.trim(), member.id, certificate);
+    // 4. Update member KYC status in session
+    member.ekyc = "VERIFIED";
+    member.isKycComplete = true;
+    member.verifiedAt = certificate.verifiedAt;
+    member.kycReferenceId = certificate.kycReferenceId;
 
     res.json({
       success: true,
