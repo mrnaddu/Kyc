@@ -272,6 +272,20 @@ body {
   border-bottom: 1px solid rgba(226, 232, 240, 0.85);
 }
 
+.update-button {
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.65rem;
+  background: #ffffff;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.update-button:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
 /* Responsive mobile layout */
 @media (max-width: 420px) {
   .app-header {

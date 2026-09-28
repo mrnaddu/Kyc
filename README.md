@@ -42,6 +42,8 @@ An installable Android test build is available from the repository's [Releases](
 
 The Android version bundles the web interface, captcha engine, live Ahara gateway, session state, and certificate generation inside the APK. It does not require `server.js`, a computer, or a local network connection.
 
+The app can check the public [`Kyc-Releases`](https://github.com/mrnaddu/Kyc-Releases) repository for a newer APK. Use **Check for updates** in the app footer to download and open the Android installer when a newer release is available.
+
 To test it:
 
 1. Download and install the APK from GitHub Releases.

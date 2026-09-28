@@ -39,14 +39,21 @@ final class NativeKycBridge {
 
     private final Activity activity;
     private final WebView webView;
+    private final AppUpdater appUpdater;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final SecureRandom secureRandom = new SecureRandom();
     private final Map<String, CaptchaSession> captchas = new ConcurrentHashMap<>();
     private final Map<String, JSONObject> cardSessions = new ConcurrentHashMap<>();
 
-    NativeKycBridge(Activity activity, WebView webView) {
+    NativeKycBridge(Activity activity, WebView webView, AppUpdater appUpdater) {
         this.activity = activity;
         this.webView = webView;
+        this.appUpdater = appUpdater;
+    }
+
+    @JavascriptInterface
+    public void checkForUpdates() {
+        appUpdater.checkForUpdates();
     }
 
     @JavascriptInterface

@@ -289,6 +289,17 @@ document.addEventListener("DOMContentLoaded", () => {
   loadCaptcha();
   setStep(0);
   dismissLaunchScreen();
+
+  const updateButton = document.getElementById("btnCheckUpdates");
+  if (updateButton) {
+    updateButton.addEventListener("click", () => {
+      if (window.AndroidKyc && typeof window.AndroidKyc.checkForUpdates === "function") {
+        window.AndroidKyc.checkForUpdates();
+      } else {
+        window.open("https://github.com/mrnaddu/Kyc-Releases/releases/latest", "_blank", "noopener");
+      }
+    });
+  }
 });
 
 function dismissLaunchScreen() {

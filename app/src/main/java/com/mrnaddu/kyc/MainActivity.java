@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
     private WebView webView;
     private PermissionRequest pendingPermissionRequest;
     private NativeKycBridge nativeKycBridge;
+    private AppUpdater appUpdater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,8 @@ public class MainActivity extends Activity {
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
-        nativeKycBridge = new NativeKycBridge(this, webView);
+        appUpdater = new AppUpdater(this);
+        nativeKycBridge = new NativeKycBridge(this, webView, appUpdater);
         webView.addJavascriptInterface(nativeKycBridge, "AndroidKyc");
 
         webView.setWebViewClient(new WebViewClient() {
@@ -134,6 +136,9 @@ public class MainActivity extends Activity {
         }
         if (nativeKycBridge != null) {
             nativeKycBridge.shutdown();
+        }
+        if (appUpdater != null) {
+            appUpdater.shutdown();
         }
         webView.destroy();
         super.onDestroy();
