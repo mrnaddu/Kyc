@@ -144,15 +144,15 @@ app.get("/api/captcha", (req, res) => {
 app.post("/api/verify-rc", async (req, res) => {
   try {
     const { rcNumber, captchaInput, captchaToken, authToken, forceRefresh } = req.body;
+    const cleanRc = rcNumber ? rcNumber.trim().toUpperCase() : "";
 
-    if (!rcNumber || rcNumber.trim().length !== 12) {
+    if (!cleanRc || !/^[A-Z0-9]{5,25}$/.test(cleanRc)) {
       return res.status(400).json({
         success: false,
-        message: "Karnataka Ration Card Number must be exactly 12 digits."
+        message: "Invalid Karnataka Ration Card Number format."
       });
     }
 
-    const cleanRc = rcNumber.trim();
     const hasActiveSession = cardSessionStore.has(cleanRc);
 
     // If this is NOT an in-session live refresh, enforce security captcha
@@ -221,7 +221,8 @@ app.post("/api/confirm-kyc", (req, res) => {
   try {
     const { rcNumber, memberId, applicantName, aadhaarLast4 } = req.body;
 
-    const cardData = cardSessionStore.get(rcNumber.trim());
+    const cleanRc = rcNumber ? rcNumber.trim().toUpperCase() : "";
+    const cardData = cardSessionStore.get(cleanRc);
     if (!cardData) {
       return res.status(400).json({
         success: false,

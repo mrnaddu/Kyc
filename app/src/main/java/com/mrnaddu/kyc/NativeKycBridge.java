@@ -108,9 +108,9 @@ final class NativeKycBridge {
     }
 
     private JSONObject verifyRationCard(JSONObject body) throws Exception {
-        String rcNumber = body.optString("rcNumber", "").trim();
-        if (!rcNumber.matches("\\d{12}")) {
-            return error("Karnataka Ration Card Number must be exactly 12 digits.");
+        String rcNumber = body.optString("rcNumber", "").trim().toUpperCase(Locale.ROOT);
+        if (!rcNumber.matches("[A-Za-z0-9]{5,25}")) {
+            return error("Invalid Karnataka Ration Card Number format.");
         }
 
         String captchaToken = body.optString("captchaToken", "");
@@ -238,7 +238,7 @@ final class NativeKycBridge {
     }
 
     private JSONObject confirmKyc(JSONObject body) throws Exception {
-        String rcNumber = body.optString("rcNumber", "").trim();
+        String rcNumber = body.optString("rcNumber", "").trim().toUpperCase(Locale.ROOT);
         String memberId = body.optString("memberId", "");
         JSONObject cardData = cardSessions.get(rcNumber);
         if (cardData == null) {

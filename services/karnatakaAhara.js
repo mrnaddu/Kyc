@@ -124,14 +124,15 @@ async function fetchLiveAharaCard(rcNumber) {
  * Main Gateway handler: queries LIVE portal first
  */
 async function fetchKarnatakaRationCard(rcNumber) {
-  if (!rcNumber || !/^\d{12}$/.test(rcNumber.trim())) {
-    throw new Error("Invalid Karnataka Ration Card number. It must be exactly 12 digits.");
+  const cleanRc = rcNumber ? rcNumber.trim().toUpperCase() : "";
+  if (!cleanRc || !/^[A-Z0-9]{5,25}$/.test(cleanRc)) {
+    throw new Error("Invalid Karnataka Ration Card number. It must be alphanumeric (5-25 characters).");
   }
 
-  console.log(`[Ahara Gateway] Querying LIVE portal for RC: ${rcNumber.trim()}...`);
+  console.log(`[Ahara Gateway] Querying LIVE portal for RC: ${cleanRc}...`);
   
   // Directly query the live Karnataka government portal
-  const liveData = await fetchLiveAharaCard(rcNumber.trim());
+  const liveData = await fetchLiveAharaCard(cleanRc);
   console.log(`[Ahara Gateway] SUCCESS! Fetched ${liveData.members.length} live members from ahara.karnataka.gov.in`);
 
   return {

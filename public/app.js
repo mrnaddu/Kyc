@@ -17,10 +17,10 @@ const translations = {
     ],
     deptBadgeText: "Food & Civil Supplies Department • Government of Karnataka",
     rcSearchHeading: "Ration Card e-KYC",
-    rcSearchSubheading: "Enter your 12-digit ration card number to verify your family details.",
+    rcSearchSubheading: "Enter your ration card number to verify your family details.",
     rcInputLabel: "Ration Card Number",
     scanRCText: "Scan Card",
-    rcInputPlaceholder: "12-digit card number",
+    rcInputPlaceholder: "Enter card number",
     captchaHeaderLabel: "Security Code",
     refreshCaptchaText: "New Code",
     consentTextLabel: "I agree to verify my ration card details for e-KYC.",
@@ -67,10 +67,10 @@ const translations = {
 
     // Friendly Error Messages
     errorModalTitle: "Could Not Find Ration Card",
-    errorModalSubtitle: "Please check your 12-digit ration card number and try again. If the server is busy, please try again in a moment.",
+    errorModalSubtitle: "Please check your ration card number and try again. If the server is busy, please try again in a moment.",
     errorRetryBtnText: "Try Again",
     errorDismissBtnText: "Cancel",
-    rcErrorInvalid: "Please enter all 12 digits of your Ration Card number.",
+    rcErrorInvalid: "Please enter a valid Ration Card number.",
     captchaErrorInvalid: "Security code was incorrect. Please type the new code shown.",
     rosterSelectPrompt: "Please tap on your name in the list to continue.",
     ekycVerifiedBadge: "KYC Done ✓",
@@ -87,10 +87,10 @@ const translations = {
     ],
     deptBadgeText: "ಆಹಾರ ಮತ್ತು ನಾಗರಿಕ ಸರಬರಾಜು ಇಲಾಖೆ • ಕರ್ನಾಟಕ ಸರ್ಕಾರ",
     rcSearchHeading: "ಪಡಿತರ ಚೀಟಿ ಇ-ಕೆವೈಸಿ",
-    rcSearchSubheading: "ನಿಮ್ಮ 12-ಅಂಕಿಯ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ ವಿವರಗಳನ್ನು ಪಡೆಯಿರಿ.",
+    rcSearchSubheading: "ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ ವಿವರಗಳನ್ನು ಪಡೆಯಿರಿ.",
     rcInputLabel: "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ",
     scanRCText: "ಕಾರ್ಡ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
-    rcInputPlaceholder: "12-ಅಂಕಿಯ ಸಂಖ್ಯೆ",
+    rcInputPlaceholder: "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ",
     captchaHeaderLabel: "ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್",
     refreshCaptchaText: "ಹೊಸ ಕೋಡ್",
     consentTextLabel: "ಇ-ಕೆವೈಸಿಗಾಗಿ ನನ್ನ ಪಡಿತರ ಚೀಟಿ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ನಾನು ಸಮ್ಮತಿಸುತ್ತೇನೆ.",
@@ -137,10 +137,10 @@ const translations = {
 
     // Friendly Error Messages (Kannada)
     errorModalTitle: "ಪಡಿತರ ಚೀಟಿ ವಿವರ ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ",
-    errorModalSubtitle: "ದಯವಿಟ್ಟು ನಿಮ್ಮ 12-ಅಂಕಿಯ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ. ಸರ್ವರ್ ಕಾರ್ಯನಿರತವಾಗಿದ್ದರೆ ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ.",
+    errorModalSubtitle: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ. ಸರ್ವರ್ ಕಾರ್ಯನಿರತವಾಗಿದ್ದರೆ ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ.",
     errorRetryBtnText: "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
     errorDismissBtnText: "ರದ್ದುಮಾಡಿ",
-    rcErrorInvalid: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿಯ 12 ಅಂಕಿಗಳನ್ನು ನಮೂದಿಸಿ.",
+    rcErrorInvalid: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.",
     captchaErrorInvalid: "ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್ ಸರಿಯಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಹೊಸ ಕೋಡ್ ನಮೂದಿಸಿ.",
     rosterSelectPrompt: "ದಯವಿಟ್ಟು ಮುಂದುವರಿಯಲು ಪಟ್ಟಿಯಿಂದ ನಿಮ್ಮ ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
     ekycVerifiedBadge: "ಇ-ಕೆವೈಸಿ ಮುಗಿದಿದೆ ✓",
@@ -363,21 +363,24 @@ function hideToast() {
 
 // Interactive Real-Time Input Validation & Counters
 function initInputInteractions() {
-  // Real-time digit counter & auto-format for Ration Card
+  // Real-time counter & auto-format for Ration Card (alphanumeric)
   rcInput.addEventListener("input", async (e) => {
-    // Only permit digits
-    const digits = e.target.value.replace(/\D/g, "");
-    e.target.value = digits;
+    // Permit alphanumeric characters and convert to uppercase
+    const clean = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    e.target.value = clean;
 
     clearRcError();
 
     // Update real-time counter
-    if (digits.length === 12) {
+    if (clean.length >= 5) {
       rcDigitCounter.className = "text-[10px] font-mono text-emerald-600 font-bold";
-      rcDigitCounter.textContent = "12 / 12 ✓";
+      rcDigitCounter.textContent = `${clean.length} chars ✓`;
+    } else if (clean.length > 0) {
+      rcDigitCounter.className = "text-[10px] font-mono text-slate-400";
+      rcDigitCounter.textContent = `${clean.length} chars`;
     } else {
       rcDigitCounter.className = "text-[10px] font-mono text-slate-400";
-      rcDigitCounter.textContent = `${digits.length} / 12`;
+      rcDigitCounter.textContent = "";
     }
   });
 
@@ -593,7 +596,7 @@ function openDocumentScanner(mode) {
     closeDocumentScanner();
     rcInput.value = "260300261661";
     rcDigitCounter.className = "text-[10px] font-mono text-emerald-600 font-bold";
-    rcDigitCounter.textContent = "12 / 12 ✓";
+    rcDigitCounter.textContent = "12 chars ✓";
     clearRcError();
     showToast(appState.currentLang === "KN" ? "ಪಡಿತರ ಚೀಟಿ ಯಶಸ್ವಿಯಾಗಿ ಸ್ಕ್ಯಾನ್ ಆಗಿದೆ: 260300261661" : "Ration Card scanned: 260300261661", "success");
     captchaInput.focus();
@@ -699,8 +702,8 @@ async function handleFetchRationCard() {
     return;
   }
 
-  // 1. Validate 12-digit Ration Card ID
-  if (!rcNumber || rcNumber.length !== 12 || !/^\d+$/.test(rcNumber)) {
+  // 1. Validate Alphanumeric Ration Card ID (5 to 25 chars)
+  if (!rcNumber || rcNumber.length < 5 || rcNumber.length > 25 || !/^[A-Z0-9]+$/i.test(rcNumber)) {
     showRcError(translations[appState.currentLang].rcErrorInvalid);
     return;
   }
@@ -1089,7 +1092,7 @@ function handleNavHome() {
   appState.selectedMember = null;
   rcInput.value = "";
   captchaInput.value = "";
-  rcDigitCounter.textContent = "0 / 12";
+  rcDigitCounter.textContent = "";
   rcDigitCounter.className = "text-[10px] font-mono text-slate-400";
   clearRcError();
   clearCaptchaError();

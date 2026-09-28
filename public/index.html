@@ -154,7 +154,7 @@
           </div>
           <h2 id="rcSearchHeading" class="text-xl font-extrabold text-slate-900 tracking-tight">Ration Card e-KYC</h2>
           <p id="rcSearchSubheading" class="text-xs text-slate-500 mt-1 leading-relaxed">
-            Enter your 12-digit ration card number to verify your family details.
+            Enter your ration card number to verify your family details.
           </p>
         </div>
 
@@ -166,7 +166,7 @@
                 Ration Card Number <span class="text-rose-500">*</span>
               </label>
               <div class="field-tools flex items-center gap-2">
-                <span id="rcDigitCounter" class="text-[10px] font-mono text-slate-400">0 / 12</span>
+                <span id="rcDigitCounter" class="text-[10px] font-mono text-slate-400"></span>
                 <span class="text-slate-300">|</span>
                 <!-- Card OCR Scanner Trigger -->
                 <button type="button" id="btnScanRC" class="text-[11px] font-semibold text-slate-700 hover:text-slate-900 flex items-center gap-1 transition">
@@ -179,10 +179,11 @@
               <input 
                 type="text" 
                 id="rcInput" 
-                maxlength="12" 
-                inputmode="numeric"
-                placeholder="12-digit card number"
-                class="modern-input text-base font-mono font-bold tracking-wider placeholder:text-slate-400 placeholder:font-normal"
+                maxlength="25" 
+                autocapitalize="characters"
+                autocomplete="off"
+                placeholder="Enter card number (e.g. 260300261661)"
+                class="modern-input text-base font-mono font-bold tracking-wider placeholder:text-slate-400 placeholder:font-normal uppercase"
               />
               <span class="absolute right-3.5 top-3.5 text-slate-400 text-sm pointer-events-none">
                 <i class="fa-solid fa-address-card"></i>
@@ -192,7 +193,7 @@
             <!-- Inline Friendly Error Message -->
             <p id="rcInputError" class="hidden text-[11px] text-rose-600 flex items-center gap-1.5 font-medium pt-0.5">
               <i class="fa-solid fa-circle-exclamation text-[10px] shrink-0"></i>
-              <span id="rcInputErrorText">Please enter all 12 digits of your Ration Card.</span>
+              <span id="rcInputErrorText">Please enter a valid Ration Card number.</span>
             </p>
           </div>
 
@@ -512,7 +513,7 @@
         <div>
           <h3 id="errorModalTitle" class="text-base font-extrabold text-slate-900">Could Not Find Ration Card</h3>
           <p id="errorModalSubtitle" class="text-xs text-slate-600 mt-1.5 leading-relaxed">
-            Please check your 12-digit ration card number and try again. If the server is busy, please try again in a moment.
+            Please check your ration card number and try again. If the server is busy, please try again in a moment.
           </p>
         </div>
 
@@ -562,13 +563,9 @@
       </div>
     </div>
 
-    <!-- Clean App Footer -->
-    <footer class="app-footer px-5 py-3 border-t border-slate-100 bg-slate-50/50 text-center text-[10px] text-slate-400">
+    <!-- Clean App Footer (Seamless, No Borders) -->
+    <footer class="app-footer px-5 py-4 text-center text-[10px] text-slate-400">
       <p>Department of Food, Civil Supplies & Consumer Affairs • Government of Karnataka</p>
-      <button id="btnCheckUpdates" type="button" class="update-button mt-2 inline-flex items-center justify-center gap-1.5 font-semibold text-slate-600 hover:text-slate-900">
-        <i class="fa-solid fa-cloud-arrow-down"></i>
-        <span>Check for updates</span>
-      </button>
     </footer>
 
   </div>
