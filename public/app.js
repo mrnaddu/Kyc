@@ -51,9 +51,63 @@ const translations = {
     certSourceLabel: "Status:",
     printCertText: "Download / Print",
     newSessionText: "Done",
-    scannerModalTitle: "Scan Ration Card",
-    scannerModalDesc: "Hold your ration card steady in the frame",
-    scannerStatusText: "Scanning card...",
+    scannerModalTitle: "Scan Ration Card Barcode / QR",
+    scannerModalDesc: "Align the barcode or QR code on your ration card",
+    scannerStatusText: "Align barcode or QR code within the frame...",
+    scanUploadPhotoText: "Upload Card Photo / Screenshot",
+
+    // Home Facilities Guide
+    homeGuideTitle: "Ration Benefits & Shop Info",
+    homeGuideAction: "View Facilities",
+    homeGuideDesc: "Check monthly 10kg rice quota, Anna Bhagya ₹170 DBT, Gruha Lakshmi ₹2,000, and locate your nearest Fair Price Shop.",
+    guideModalHeading: "Ration Benefits & Shop Guide",
+    guideQuotaTitle: "Monthly Ration Entitlements",
+    guideFpsTitle: "Where to Get Your Ration",
+    guideSchemesTitle: "Linked Government Schemes",
+
+    // Tabs
+    tabMembersLabel: "Family e-KYC",
+    tabRationFpsLabel: "Ration & Shop",
+    tabSchemesLabel: "Benefits",
+
+    // Quota & FPS
+    quotaHeaderTitle: "Monthly Ration Entitlements",
+    quotaSubheader: "Based on verified family strength",
+    quotaRiceLabel: "Free Rice (PMGKAY)",
+    quotaDbtLabel: "Anna Bhagya Cash DBT",
+    quotaGrainsLabel: "Subsidized Wheat / Coarse",
+    quotaSugarLabel: "Subsidized Sugar",
+    fpsDetailsHeader: "Where to Get Your Ration",
+    fpsDetailsSubheader: "Your Designated Fair Price Shop (FPS)",
+    fpsShopLabel: "Shop Center:",
+    fpsCodeLabel: "FPS Code / License:",
+    fpsDistrictLabel: "Area Circle:",
+    fpsTimingsLabel: "Timings:",
+    fpsTimingsVal: "7:00 AM – 12:00 PM & 4:00 PM – 8:00 PM",
+    fpsDatesLabel: "Schedule:",
+    fpsDatesVal: "1st to 20th of every month",
+    fpsAuthLabel: "Pickup Rule:",
+    fpsAuthVal: "Any adult family member with linked Aadhaar can authenticate on the shop's e-PoS device.",
+    btnFindFpsMapText: "Find Nearest Fair Price Shop on Map",
+    onorcTitle: "One Nation One Ration Card (Portability)",
+    onorcDesc: "Away from your hometown? Under ONORC, you can collect your monthly foodgrains from ANY Fair Price Shop across Karnataka and India using Aadhaar biometric authentication.",
+    fpsHelplineLabel: "Civil Supplies Helpline:",
+
+    // Schemes
+    schemesHeaderTitle: "Government Welfare Facilities Linked to this Card",
+    schemesHeaderDesc: "State and central welfare benefits activated by your Karnataka Ration Card",
+    schemeAnnaTitle: "Anna Bhagya Scheme",
+    schemeAnnaDesc: "10 kg free food grains per person per month (5 kg free rice from PMGKAY + ₹170 direct monthly cash transfer per member into Head of Family's bank account for remaining 5 kg).",
+    schemeLakshmiTitle: "Gruha Lakshmi Scheme",
+    schemeLakshmiDesc: "₹2,000 monthly financial aid directly transferred to the female Head of Household listed on this Ration Card.",
+    schemeHealthTitle: "Arogya Karnataka Health Card",
+    schemeHealthDesc: "Free tertiary & secondary hospital treatment up to ₹5,00,000 per family per year in all empanelled government and private multi-specialty hospitals using this Ration Card.",
+    schemeLpgTitle: "Subsidized LPG Gas (Ujjwala / Anila Bhagya)",
+    schemeLpgDesc: "Free domestic LPG cooking gas cylinder connection + subsidized refills for BPL / PHH / AAY card holders.",
+    schemeSspTitle: "Student Scholarships & Hostels",
+    schemeSspDesc: "Fee concessions, SSP pre-matric and post-matric scholarship grants, and free government hostel admissions for students listed on this card.",
+    schemeHousingTitle: "Government Housing Assistance",
+    schemeHousingDesc: "Priority eligibility for rural and urban pucca house construction subsidies under Dr. B.R. Ambedkar and Devaraj Urs housing schemes.",
     
     // Citizen-Friendly Loading Strings
     loadingTitle: "Finding Your Ration Card",
@@ -121,9 +175,63 @@ const translations = {
     certSourceLabel: "ಪರಿಶೀಲನೆ ಸ್ಥಿತಿ:",
     printCertText: "ಪ್ರಮಾಣಪತ್ರ ಮುದ್ರಿಸಿ",
     newSessionText: "ಪೂರ್ಣಗೊಂಡಿದೆ",
-    scannerModalTitle: "ಪಡಿತರ ಚೀಟಿ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
-    scannerModalDesc: "ನಿಮ್ಮ ಕಾರ್ಡ್ ಅನ್ನು ಚೌಕಟ್ಟಿನ ಒಳಗೆ ಇರಿಸಿ",
-    scannerStatusText: "ಕಾರ್ಡ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗುತ್ತಿದೆ...",
+    scannerModalTitle: "ಪಡಿತರ ಚೀಟಿ ಬಾರ್‌ಕೋಡ್ / QR ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
+    scannerModalDesc: "ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿಯಲ್ಲಿರುವ ಬಾರ್‌ಕೋಡ್ ಅಥವಾ QR ಕೋಡ್ ಅನ್ನು ಚೌಕಟ್ಟಿನಲ್ಲಿ ಹಿಡಿಯಿರಿ",
+    scannerStatusText: "ಕೋಡ್ ಅನ್ನು ಚೌಕಟ್ಟಿನಲ್ಲಿ ಹಿಡಿಯಿರಿ...",
+    scanUploadPhotoText: "ಕಾರ್ಡ್ ಫೋಟೋ / ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+
+    // Home Facilities Guide
+    homeGuideTitle: "ಪಡಿತರ ಸೌಲಭ್ಯಗಳು ಮತ್ತು ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ಮಾಹಿತಿ",
+    homeGuideAction: "ಸೌಲಭ್ಯಗಳನ್ನು ನೋಡಿ",
+    homeGuideDesc: "ಮಾಸಿಕ 10 ಕೆಜಿ ಅಕ್ಕಿ ಕೋಟಾ, ಅನ್ನಭಾಗ್ಯ ₹170 ನಗದು ವರ್ಗಾವಣೆ, ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಮತ್ತು ನಿಮ್ಮ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ಮಾಹಿತಿ ಪರಿಶೀಲಿಸಿ.",
+    guideModalHeading: "ಪಡಿತರ ಸೌಲಭ್ಯಗಳು & ಅಂಗಡಿ ಮಾರ್ಗದರ್ಶಿ",
+    guideQuotaTitle: "ಮಾಸಿಕ ಪಡಿತರ ಕೋಟಾ",
+    guideFpsTitle: "ಪಡಿತರ ಪಡೆಯುವ ಸ್ಥಳ",
+    guideSchemesTitle: "ಕಾರ್ಡ್‌ಗೆ ಲಿಂಕ್ ಆಗಿರುವ ಯೋಜನೆಗಳು",
+
+    // Tabs
+    tabMembersLabel: "ಕುಟುಂಬದ ಇ-ಕೆವೈಸಿ",
+    tabRationFpsLabel: "ಪಡಿತರ & ಅಂಗಡಿ",
+    tabSchemesLabel: "ಸೌಲಭ್ಯಗಳು",
+
+    // Quota & FPS
+    quotaHeaderTitle: "ಮಾಸಿಕ ಪಡಿತರ ಕೋಟಾ ವಿವರ",
+    quotaSubheader: "ಕುಟುಂಬದ ಸದಸ್ಯರ ಸಂಖ್ಯೆಯ ಆಧಾರದ ಮೇಲೆ",
+    quotaRiceLabel: "ಉಚಿತ ಅಕ್ಕಿ (PMGKAY)",
+    quotaDbtLabel: "ಅನ್ನಭಾಗ್ಯ ನಗದು ವರ್ಗಾವಣೆ (DBT)",
+    quotaGrainsLabel: "ರಿಯಾಯಿತಿ ಗೋಧಿ / ಸಿರಿಧಾನ್ಯ",
+    quotaSugarLabel: "ರಿಯಾಯಿತಿ ಸಕ್ಕರೆ",
+    fpsDetailsHeader: "ಪಡಿತರ ಎಲ್ಲಿ ಪಡೆಯಬೇಕು?",
+    fpsDetailsSubheader: "ನಿಮ್ಮ ಅಧಿಕೃತ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ (FPS)",
+    fpsShopLabel: "ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ:",
+    fpsCodeLabel: "ಅಂಗಡಿ ಕೋಡ್ / ಪರವಾನಗಿ:",
+    fpsDistrictLabel: "ವ್ಯಾಪ್ತಿ ವೃತ್ತ:",
+    fpsTimingsLabel: "ಸಮಯ:",
+    fpsTimingsVal: "ಬೆಳಿಗ್ಗೆ 7:00 – 12:00 & ಸಂಜೆ 4:00 – 8:00",
+    fpsDatesLabel: "ದಿನಾಂಕಗಳು:",
+    fpsDatesVal: "ಪ್ರತಿ ತಿಂಗಳ 1 ರಿಂದ 20 ನೇ ತಾರೀಖು",
+    fpsAuthLabel: "ಪಡೆಯುವ ನಿಯಮ:",
+    fpsAuthVal: "ಕಾರ್ಡ್‌ನಲ್ಲಿ ಹೆಸರಿರುವ ಯಾವುದೇ ವಯಸ್ಕ ಸದಸ್ಯರು ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿಯ e-PoS ಯಂತ್ರದಲ್ಲಿ ಬೆರಳಚ್ಚು ನೀಡಿ ಪಡಿತರ ಪಡೆಯಬಹುದು.",
+    btnFindFpsMapText: "ಹತ್ತಿರದ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ಹುಡುಕಿ (ಮ್ಯಾಪ್)",
+    onorcTitle: "ಒಂದು ದೇಶ ಒಂದು ಪಡಿತರ ಚೀಟಿ (ಪೋರ್ಟೆಬಿಲಿಟಿ)",
+    onorcDesc: "ನಿಮ್ಮ ಊರಿನಿಂದ ದೂರವಿದ್ದೀರಾ? ONORC ಅಡಿಯಲ್ಲಿ, ಆಧಾರ್ ಬಯೋಮೆಟ್ರಿಕ್ ದೃಢೀಕರಣದೊಂದಿಗೆ ನೀವು ಕರ್ನಾಟಕ ಹಾಗೂ ಭಾರತದ ಯಾವುದೇ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿಯಿಂದ ನಿಮ್ಮ ಮಾಸಿಕ ಪಡಿತರವನ್ನು ಪಡೆಯಬಹುದು.",
+    fpsHelplineLabel: "ಆಹಾರ ಇಲಾಖೆ ಸಹಾಯವಾಣಿ:",
+
+    // Schemes
+    schemesHeaderTitle: "ಈ ಪಡಿತರ ಚೀಟಿಗೆ ಲಿಂಕ್ ಆಗಿರುವ ಸರ್ಕಾರಿ ಸೌಲಭ್ಯಗಳು",
+    schemesHeaderDesc: "ಕರ್ನಾಟಕ ಪಡಿತರ ಚೀಟಿದಾರರಿಗೆ ಸಿಗುವ ಎಲ್ಲಾ ರಾಜ್ಯ ಮತ್ತು ಕೇಂದ್ರ ಸರ್ಕಾರದ ಯೋಜನೆಗಳು",
+    schemeAnnaTitle: "ಅನ್ನಭಾಗ್ಯ ಯೋಜನೆ",
+    schemeAnnaDesc: "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ 10 ಕೆಜಿ ಉಚಿತ ಆಹಾರ ಧಾನ್ಯ (5 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ + ಉಳಿದ 5 ಕೆಜಿಗೆ ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ₹170 ರಂತೆ ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ನೇರ ನಗದು ವರ್ಗಾವಣೆ).",
+    schemeLakshmiTitle: "ಗೃಹಲಕ್ಷ್ಮಿ ಯೋಜನೆ",
+    schemeLakshmiDesc: "ಪಡಿತರ ಚೀಟಿಯಲ್ಲಿ ನಮೂದಿಸಲಾದ ಕುಟುಂಬದ ಯಜಮಾನಿ (ಮಹಿಳೆ) ಖಾತೆಗೆ ಪ್ರತಿ ತಿಂಗಳು ₹2,000 ನೇರ ಆರ್ಥಿಕ ನೆರವು.",
+    schemeHealthTitle: "ಆರೋಗ್ಯ ಕರ್ನಾಟಕ - ಆಯುಷ್ಮಾನ್ ಭಾರತ್",
+    schemeHealthDesc: "ಈ ಪಡಿತರ ಚೀಟಿ ಮೂಲಕ ಸರ್ಕಾರಿ ಮತ್ತು ನೋಂದಾಯಿತ ಖಾಸಗಿ ಆಸ್ಪತ್ರೆಗಳಲ್ಲಿ ಕುಟುಂಬಕ್ಕೆ ವಾರ್ಷಿಕ ₹5,00,000 ವರೆಗೆ ಉಚಿತ ನಗದುರಹಿತ ಚಿಕಿತ್ಸೆ.",
+    schemeLpgTitle: "ರಿಯಾಯಿತಿ ದರದ ಎಲ್‌ಪಿಜಿ ಗ್ಯಾಸ್ (ಅನಿಲ ಭಾಗ್ಯ / ಉಜ್ವಲ)",
+    schemeLpgDesc: "ಬಿಪಿಎಲ್/ಅಂತ್ಯೋದಯ ಪಡಿತರ ಚೀಟಿದಾರರಿಗೆ ಉಚಿತ ಗ್ಯಾಸ್ ಸಂಪರ್ಕ ಮತ್ತು ಸಬ್ಸಿಡಿ ಸಿಲಿಂಡರ್ ಮರುಪೂರಣ.",
+    schemeSspTitle: "ವಿದ್ಯಾರ್ಥಿವೇತನ & ಉಚಿತ ಹಾಸ್ಟೆಲ್ ಸೌಲಭ್ಯ",
+    schemeSspDesc: "ಕಾರ್ಡ್‌ನಲ್ಲಿರುವ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಪೋಸ್ಟ್-ಮೆಟ್ರಿಕ್/ಮೆಟ್ರಿಕ್-ಪೂರ್ವ ವಿದ್ಯಾರ್ಥಿವೇತನ (SSP ಪೋರ್ಟಲ್), ಶೈಕ್ಷಣಿಕ ಶುಲ್ಕ ವಿನಾಯಿತಿ ಮತ್ತು ಸರ್ಕಾರಿ ಹಾಸ್ಟೆಲ್ ಪ್ರವೇಶ.",
+    schemeHousingTitle: "ಸರ್ಕಾರಿ ವಸತಿ ಯೋಜನೆಗಳ ಸೌಲಭ್ಯ",
+    schemeHousingDesc: "ಡಾ. ಬಿ.ಆರ್. ಅಂಬೇಡ್ಕರ್ ಹಾಗೂ ದೇವರಾಜ ಅರಸು ವಸತಿ ಯೋಜನೆಗಳ ಅಡಿಯಲ್ಲಿ ಪಕ್ಕಾ ಮನೆ ನಿರ್ಮಾಣಕ್ಕೆ ಆದ್ಯತೆ ಮತ್ತು ಸಹಾಯಧನ.",
     
     // Citizen-Friendly Loading Strings (Kannada)
     loadingTitle: "ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ",
@@ -530,6 +638,107 @@ function applyLanguage(lang) {
   document.getElementById("consentTextLabel").innerHTML = t.consentTextLabel;
   document.getElementById("fetchBtnText").textContent = t.fetchBtnText;
 
+  // Home Facilities Guide
+  const homeGuideTitle = document.getElementById("homeGuideTitle");
+  if (homeGuideTitle) homeGuideTitle.innerHTML = `<i class="fa-solid fa-wheat-awn text-amber-600"></i> <span>${t.homeGuideTitle}</span>`;
+  const homeGuideAction = document.getElementById("homeGuideAction");
+  if (homeGuideAction) homeGuideAction.textContent = t.homeGuideAction;
+  const homeGuideDesc = document.getElementById("homeGuideDesc");
+  if (homeGuideDesc) homeGuideDesc.textContent = t.homeGuideDesc;
+
+  // Facilities Guide Modal
+  const guideModalHeading = document.getElementById("guideModalHeading");
+  if (guideModalHeading) guideModalHeading.textContent = t.guideModalHeading;
+  const guideQuotaTitle = document.getElementById("guideQuotaTitle");
+  if (guideQuotaTitle) guideQuotaTitle.textContent = t.guideQuotaTitle;
+  const guideFpsTitle = document.getElementById("guideFpsTitle");
+  if (guideFpsTitle) guideFpsTitle.textContent = t.guideFpsTitle;
+  const guideSchemesTitle = document.getElementById("guideSchemesTitle");
+  if (guideSchemesTitle) guideSchemesTitle.textContent = t.guideSchemesTitle;
+
+  // Tabs
+  const tabMembersLabel = document.getElementById("tabMembersLabel");
+  if (tabMembersLabel) tabMembersLabel.textContent = t.tabMembersLabel;
+  const tabRationFpsLabel = document.getElementById("tabRationFpsLabel");
+  if (tabRationFpsLabel) tabRationFpsLabel.textContent = t.tabRationFpsLabel;
+  const tabSchemesLabel = document.getElementById("tabSchemesLabel");
+  if (tabSchemesLabel) tabSchemesLabel.textContent = t.tabSchemesLabel;
+
+  // Quota & FPS
+  const quotaHeaderTitle = document.getElementById("quotaHeaderTitle");
+  if (quotaHeaderTitle) quotaHeaderTitle.textContent = t.quotaHeaderTitle;
+  const quotaSubheader = document.getElementById("quotaSubheader");
+  if (quotaSubheader) quotaSubheader.textContent = t.quotaSubheader;
+  const quotaRiceLabel = document.getElementById("quotaRiceLabel");
+  if (quotaRiceLabel) quotaRiceLabel.textContent = t.quotaRiceLabel;
+  const quotaDbtLabel = document.getElementById("quotaDbtLabel");
+  if (quotaDbtLabel) quotaDbtLabel.textContent = t.quotaDbtLabel;
+  const quotaGrainsLabel = document.getElementById("quotaGrainsLabel");
+  if (quotaGrainsLabel) quotaGrainsLabel.textContent = t.quotaGrainsLabel;
+  const quotaSugarLabel = document.getElementById("quotaSugarLabel");
+  if (quotaSugarLabel) quotaSugarLabel.textContent = t.quotaSugarLabel;
+
+  const fpsDetailsHeader = document.getElementById("fpsDetailsHeader");
+  if (fpsDetailsHeader) fpsDetailsHeader.textContent = t.fpsDetailsHeader;
+  const fpsDetailsSubheader = document.getElementById("fpsDetailsSubheader");
+  if (fpsDetailsSubheader) fpsDetailsSubheader.textContent = t.fpsDetailsSubheader;
+  const fpsShopLabel = document.getElementById("fpsShopLabel");
+  if (fpsShopLabel) fpsShopLabel.textContent = t.fpsShopLabel;
+  const fpsCodeLabel = document.getElementById("fpsCodeLabel");
+  if (fpsCodeLabel) fpsCodeLabel.textContent = t.fpsCodeLabel;
+  const fpsDistrictLabel = document.getElementById("fpsDistrictLabel");
+  if (fpsDistrictLabel) fpsDistrictLabel.textContent = t.fpsDistrictLabel;
+  const fpsTimingsLabel = document.getElementById("fpsTimingsLabel");
+  if (fpsTimingsLabel) fpsTimingsLabel.textContent = t.fpsTimingsLabel;
+  const fpsTimingsVal = document.getElementById("fpsTimingsVal");
+  if (fpsTimingsVal) fpsTimingsVal.textContent = t.fpsTimingsVal;
+  const fpsDatesLabel = document.getElementById("fpsDatesLabel");
+  if (fpsDatesLabel) fpsDatesLabel.textContent = t.fpsDatesLabel;
+  const fpsDatesVal = document.getElementById("fpsDatesVal");
+  if (fpsDatesVal) fpsDatesVal.textContent = t.fpsDatesVal;
+  const fpsAuthLabel = document.getElementById("fpsAuthLabel");
+  if (fpsAuthLabel) fpsAuthLabel.textContent = t.fpsAuthLabel;
+  const fpsAuthVal = document.getElementById("fpsAuthVal");
+  if (fpsAuthVal) fpsAuthVal.textContent = t.fpsAuthVal;
+  const btnFindFpsMapText = document.getElementById("btnFindFpsMapText");
+  if (btnFindFpsMapText) btnFindFpsMapText.textContent = t.btnFindFpsMapText;
+  const onorcTitle = document.getElementById("onorcTitle");
+  if (onorcTitle) onorcTitle.innerHTML = `<i class="fa-solid fa-arrows-split-up-and-left text-blue-600"></i> <span>${t.onorcTitle}</span>`;
+  const onorcDesc = document.getElementById("onorcDesc");
+  if (onorcDesc) onorcDesc.innerHTML = t.onorcDesc;
+  const fpsHelplineLabel = document.getElementById("fpsHelplineLabel");
+  if (fpsHelplineLabel) fpsHelplineLabel.textContent = t.fpsHelplineLabel;
+
+  // Schemes
+  const schemesHeaderTitle = document.getElementById("schemesHeaderTitle");
+  if (schemesHeaderTitle) schemesHeaderTitle.textContent = t.schemesHeaderTitle;
+  const schemesHeaderDesc = document.getElementById("schemesHeaderDesc");
+  if (schemesHeaderDesc) schemesHeaderDesc.textContent = t.schemesHeaderDesc;
+  const schemeAnnaTitle = document.getElementById("schemeAnnaTitle");
+  if (schemeAnnaTitle) schemeAnnaTitle.textContent = t.schemeAnnaTitle;
+  const schemeAnnaDesc = document.getElementById("schemeAnnaDesc");
+  if (schemeAnnaDesc) schemeAnnaDesc.textContent = t.schemeAnnaDesc;
+  const schemeLakshmiTitle = document.getElementById("schemeLakshmiTitle");
+  if (schemeLakshmiTitle) schemeLakshmiTitle.textContent = t.schemeLakshmiTitle;
+  const schemeLakshmiDesc = document.getElementById("schemeLakshmiDesc");
+  if (schemeLakshmiDesc) schemeLakshmiDesc.textContent = t.schemeLakshmiDesc;
+  const schemeHealthTitle = document.getElementById("schemeHealthTitle");
+  if (schemeHealthTitle) schemeHealthTitle.textContent = t.schemeHealthTitle;
+  const schemeHealthDesc = document.getElementById("schemeHealthDesc");
+  if (schemeHealthDesc) schemeHealthDesc.textContent = t.schemeHealthDesc;
+  const schemeLpgTitle = document.getElementById("schemeLpgTitle");
+  if (schemeLpgTitle) schemeLpgTitle.textContent = t.schemeLpgTitle;
+  const schemeLpgDesc = document.getElementById("schemeLpgDesc");
+  if (schemeLpgDesc) schemeLpgDesc.textContent = t.schemeLpgDesc;
+  const schemeSspTitle = document.getElementById("schemeSspTitle");
+  if (schemeSspTitle) schemeSspTitle.textContent = t.schemeSspTitle;
+  const schemeSspDesc = document.getElementById("schemeSspDesc");
+  if (schemeSspDesc) schemeSspDesc.textContent = t.schemeSspDesc;
+  const schemeHousingTitle = document.getElementById("schemeHousingTitle");
+  if (schemeHousingTitle) schemeHousingTitle.textContent = t.schemeHousingTitle;
+  const schemeHousingDesc = document.getElementById("schemeHousingDesc");
+  if (schemeHousingDesc) schemeHousingDesc.textContent = t.schemeHousingDesc;
+
   // Roster View
   document.getElementById("pvcRcLabel").textContent = t.pvcRcLabel;
   document.getElementById("pvcHofLabel").textContent = t.pvcHofLabel;
@@ -564,8 +773,12 @@ function applyLanguage(lang) {
 
   // Scanner Modal
   scannerModalTitle.textContent = t.scannerModalTitle;
-  document.getElementById("scannerModalDesc").textContent = t.scannerModalDesc;
-  document.getElementById("scannerStatusText").textContent = t.scannerStatusText;
+  const scannerModalDesc = document.getElementById("scannerModalDesc");
+  if (scannerModalDesc) scannerModalDesc.textContent = t.scannerModalDesc;
+  const scannerStatusText = document.getElementById("scannerStatusText");
+  if (scannerStatusText) scannerStatusText.textContent = t.scannerStatusText;
+  const scanUploadPhotoText = document.getElementById("scanUploadPhotoText");
+  if (scanUploadPhotoText) scanUploadPhotoText.textContent = t.scanUploadPhotoText;
 
   // Re-render roster if already loaded
   if (appState.cardData) {
@@ -576,38 +789,228 @@ function applyLanguage(lang) {
   stepLabelText.textContent = t.steps[appState.step] || t.steps[0];
 }
 
-// Document Camera OCR Scanner
-function openDocumentScanner(mode) {
-  const t = translations[appState.currentLang];
-  scannerModalTitle.textContent = appState.currentLang === "KN" ? "ಪಡಿತರ ಚೀಟಿ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ" : "Scan Karnataka Ration Card";
-  scannerModal.classList.remove("hidden");
+// Real Barcode & QR Code Scanner State & Engine
+let html5QrScannerInstance = null;
 
-  navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-    .then(stream => {
-      appState.scannerStream = stream;
-      scannerVideo.srcObject = stream;
-    })
-    .catch(err => {
-      console.warn("Document camera simulation:", err);
-    });
-
-  // Simulated rapid OCR
-  setTimeout(() => {
-    closeDocumentScanner();
-    rcInput.value = "260300261661";
-    rcDigitCounter.className = "text-[10px] font-mono text-emerald-600 font-bold";
-    rcDigitCounter.textContent = "12 chars ✓";
-    clearRcError();
-    showToast(appState.currentLang === "KN" ? "ಪಡಿತರ ಚೀಟಿ ಯಶಸ್ವಿಯಾಗಿ ಸ್ಕ್ಯಾನ್ ಆಗಿದೆ: 260300261661" : "Ration Card scanned: 260300261661", "success");
-    captchaInput.focus();
-  }, 2000);
+function playScanBeep() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.12);
+  } catch (e) {}
 }
 
-function closeDocumentScanner() {
+function extractRationCardNumber(rawText) {
+  if (!rawText) return null;
+  const str = String(rawText).trim();
+
+  // 1. URL parsing (query params like rc, rcNumber, cardNo, or last path segment)
+  try {
+    if (str.startsWith("http://") || str.startsWith("https://")) {
+      const parsedUrl = new URL(str);
+      const params = ["rc", "rcno", "rc_no", "rcnumber", "rc_number", "cardno", "card_no", "rationcard"];
+      for (const p of params) {
+        const val = parsedUrl.searchParams.get(p);
+        if (val && /^[A-Za-z0-9]{5,25}$/.test(val.trim())) {
+          return val.trim().toUpperCase();
+        }
+      }
+      const segments = parsedUrl.pathname.split("/").filter(Boolean);
+      for (let i = segments.length - 1; i >= 0; i--) {
+        if (/^[A-Za-z0-9]{5,25}$/.test(segments[i])) {
+          return segments[i].toUpperCase();
+        }
+      }
+    }
+  } catch (e) {}
+
+  // 2. XML / JSON / Key-Value attributes (e.g. rc="260300261661" or rc_no: "...")
+  const attrMatch = str.match(/(?:rc|rc_?no|rc_?number|card_?no|ration_?card)["':=\s]+([A-Za-z0-9]{5,25})/i);
+  if (attrMatch && attrMatch[1]) {
+    return attrMatch[1].toUpperCase();
+  }
+
+  // 3. Labeled Prefix: "RC: 260300261661" or "RATION CARD: ..."
+  const prefixMatch = str.match(/(?:RC|RATION\s*CARD(?:\s*NO)?)\s*[:#-]?\s*([A-Za-z0-9]{5,25})/i);
+  if (prefixMatch && prefixMatch[1]) {
+    return prefixMatch[1].toUpperCase();
+  }
+
+  // 4. Exact 12-digit number sequence in string
+  const twelveDigits = str.match(/\b\d{12}\b/);
+  if (twelveDigits) {
+    return twelveDigits[0];
+  }
+
+  // 5. Clean string of spaces/punctuation; if 5-25 alphanumeric chars, return it
+  const clean = str.replace(/[^A-Za-z0-9]/g, "");
+  if (clean.length >= 5 && clean.length <= 25) {
+    return clean.toUpperCase();
+  }
+
+  return null;
+}
+
+function handleSuccessfulScan(decodedText) {
+  const extractedRc = extractRationCardNumber(decodedText);
+  if (!extractedRc) {
+    showToast(
+      appState.currentLang === "KN" ? "ಅಮಾನ್ಯ ಕೋಡ್ ಪತ್ತೆಯಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ." : "No valid Ration Card found in scanned code.",
+      "error"
+    );
+    return;
+  }
+
+  playScanBeep();
+  if (navigator.vibrate) navigator.vibrate([70, 40, 70]);
+
+  closeDocumentScanner();
+
+  rcInput.value = extractedRc;
+  rcDigitCounter.className = "text-[10px] font-mono text-emerald-600 font-bold";
+  rcDigitCounter.textContent = `${extractedRc.length} chars ✓`;
+  clearRcError();
+
+  showToast(
+    appState.currentLang === "KN" ? `ಪಡಿತರ ಚೀಟಿ ಯಶಸ್ವಿಯಾಗಿ ಸ್ಕ್ಯಾನ್ ಆಗಿದೆ: ${extractedRc}` : `Ration Card scanned: ${extractedRc}`,
+    "success"
+  );
+  captchaInput.focus();
+}
+
+async function openDocumentScanner(mode) {
+  const t = translations[appState.currentLang];
+  scannerModalTitle.textContent = t.scannerModalTitle || "Scan Ration Card Barcode / QR";
+  const descEl = document.getElementById("scannerModalDesc");
+  if (descEl) descEl.textContent = t.scannerModalDesc || "Align the barcode or QR code on your ration card";
+  const statusEl = document.getElementById("scannerStatusText");
+  if (statusEl) statusEl.textContent = appState.currentLang === "KN" ? "ಕ್ಯಾಮೆರಾ ಆರಂಭಿಸಲಾಗುತ್ತಿದೆ..." : "Starting camera...";
+  scannerModal.classList.remove("hidden");
+
+  try {
+    if (typeof Html5Qrcode !== "undefined") {
+      if (!html5QrScannerInstance) {
+        html5QrScannerInstance = new Html5Qrcode("scannerReader", {
+          verbose: false,
+          formatsToSupport: [
+            Html5QrcodeSupportedFormats.QR_CODE,
+            Html5QrcodeSupportedFormats.CODE_128,
+            Html5QrcodeSupportedFormats.CODE_39,
+            Html5QrcodeSupportedFormats.EAN_13,
+            Html5QrcodeSupportedFormats.UPC_A,
+            Html5QrcodeSupportedFormats.DATA_MATRIX
+          ]
+        });
+      }
+
+      const config = {
+        fps: 15,
+        qrbox: { width: 250, height: 160 },
+        aspectRatio: 1.4
+      };
+
+      await html5QrScannerInstance.start(
+        { facingMode: "environment" },
+        config,
+        (decodedText) => {
+          handleSuccessfulScan(decodedText);
+        },
+        (errorMessage) => {
+          // Normal frame scan tick
+        }
+      );
+      if (statusEl) statusEl.textContent = appState.currentLang === "KN" ? "ಬಾರ್‌ಕೋಡ್ ಅಥವಾ QR ಕೋಡ್ ಅನ್ನು ಚೌಕಟ್ಟಿನಲ್ಲಿ ಹಿಡಿಯಿರಿ..." : "Align barcode or QR code within the frame...";
+    } else {
+      if (statusEl) statusEl.textContent = "Scanner engine loading...";
+    }
+  } catch (err) {
+    console.warn("Camera start error:", err);
+    if (statusEl) statusEl.textContent = appState.currentLang === "KN" ? "ಕ್ಯಾಮೆರಾ ದೋಷ: ದಯವಿಟ್ಟು ಕ್ಯಾಮೆರಾ ಅನುಮತಿ ನೀಡಿ" : "Camera access required. Please check permissions.";
+  }
+}
+
+async function closeDocumentScanner() {
   scannerModal.classList.add("hidden");
-  if (appState.scannerStream) {
-    appState.scannerStream.getTracks().forEach(t => t.stop());
-    appState.scannerStream = null;
+  if (html5QrScannerInstance) {
+    try {
+      if (html5QrScannerInstance.isScanning) {
+        await html5QrScannerInstance.stop();
+      }
+    } catch (e) {
+      console.warn("Error stopping scanner:", e);
+    }
+  }
+}
+
+async function handleScannerImageUpload(e) {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const statusEl = document.getElementById("scannerStatusText");
+  if (statusEl) statusEl.textContent = appState.currentLang === "KN" ? "ಫೋಟೋ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ..." : "Analyzing photo for barcode / QR...";
+
+  try {
+    if (!html5QrScannerInstance && typeof Html5Qrcode !== "undefined") {
+      html5QrScannerInstance = new Html5Qrcode("scannerReader", { verbose: false });
+    }
+    if (html5QrScannerInstance) {
+      if (html5QrScannerInstance.isScanning) {
+        await html5QrScannerInstance.stop();
+      }
+      const decodedText = await html5QrScannerInstance.scanFile(file, true);
+      handleSuccessfulScan(decodedText);
+    }
+  } catch (err) {
+    console.warn("Image decode error:", err);
+    showToast(
+      appState.currentLang === "KN" ? "ಫೋಟೋದಲ್ಲಿ ಯಾವುದೇ ಬಾರ್‌ಕೋಡ್ ಅಥವಾ QR ಕೋಡ್ ಕಂಡುಬಂದಿಲ್ಲ." : "No clear barcode or QR code found in this photo.",
+      "error"
+    );
+    if (statusEl) statusEl.textContent = appState.currentLang === "KN" ? "ಕೋಡ್ ಕಂಡುಬಂದಿಲ್ಲ. ಮತ್ತೊಂದು ಫೋಟೋ ಪ್ರಯತ್ನಿಸಿ." : "No code detected. Try a clearer photo.";
+  } finally {
+    e.target.value = "";
+  }
+}
+
+// Roster Tabs Switching Controller
+function switchRosterTab(tabName) {
+  const btnMembers = document.getElementById("tabBtnMembers");
+  const btnRationFps = document.getElementById("tabBtnRationFps");
+  const btnSchemes = document.getElementById("tabBtnSchemes");
+
+  const panelMembers = document.getElementById("panelMembers");
+  const panelRationFps = document.getElementById("panelRationFps");
+  const panelSchemes = document.getElementById("panelSchemes");
+
+  if (!btnMembers || !panelMembers) return;
+
+  // Reset all buttons to inactive
+  [btnMembers, btnRationFps, btnSchemes].forEach(b => {
+    if (b) b.className = "flex-1 py-2 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition";
+  });
+  panelMembers.classList.add("hidden");
+  if (panelRationFps) panelRationFps.classList.add("hidden");
+  if (panelSchemes) panelSchemes.classList.add("hidden");
+
+  if (tabName === "rationFps") {
+    if (btnRationFps) btnRationFps.className = "flex-1 py-2 px-1.5 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1.5 transition";
+    if (panelRationFps) panelRationFps.classList.remove("hidden");
+  } else if (tabName === "schemes") {
+    if (btnSchemes) btnSchemes.className = "flex-1 py-2 px-1.5 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1.5 transition";
+    if (panelSchemes) panelSchemes.classList.remove("hidden");
+  } else {
+    btnMembers.className = "flex-1 py-2 px-1.5 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1.5 transition";
+    panelMembers.classList.remove("hidden");
   }
 }
 
@@ -627,6 +1030,26 @@ function bindEventHandlers() {
   // Scanner Triggers
   btnScanRC.addEventListener("click", () => openDocumentScanner("rc"));
   btnCloseScanner.addEventListener("click", closeDocumentScanner);
+
+  const scannerFileInput = document.getElementById("scannerFileInput");
+  if (scannerFileInput) scannerFileInput.addEventListener("change", handleScannerImageUpload);
+
+  // Home Facilities Guide Modal Actions
+  const btnOpenFacilitiesGuide = document.getElementById("btnOpenFacilitiesGuide");
+  const btnCloseFacilitiesGuide = document.getElementById("btnCloseFacilitiesGuide");
+  const btnDismissFacilitiesGuide = document.getElementById("btnDismissFacilitiesGuide");
+  const facilitiesGuideModal = document.getElementById("facilitiesGuideModal");
+  if (btnOpenFacilitiesGuide) btnOpenFacilitiesGuide.addEventListener("click", () => facilitiesGuideModal?.classList.remove("hidden"));
+  if (btnCloseFacilitiesGuide) btnCloseFacilitiesGuide.addEventListener("click", () => facilitiesGuideModal?.classList.add("hidden"));
+  if (btnDismissFacilitiesGuide) btnDismissFacilitiesGuide.addEventListener("click", () => facilitiesGuideModal?.classList.add("hidden"));
+
+  // Roster Tab Switchers
+  const tabBtnMembers = document.getElementById("tabBtnMembers");
+  const tabBtnRationFps = document.getElementById("tabBtnRationFps");
+  const tabBtnSchemes = document.getElementById("tabBtnSchemes");
+  if (tabBtnMembers) tabBtnMembers.addEventListener("click", () => switchRosterTab("members"));
+  if (tabBtnRationFps) tabBtnRationFps.addEventListener("click", () => switchRosterTab("rationFps"));
+  if (tabBtnSchemes) tabBtnSchemes.addEventListener("click", () => switchRosterTab("schemes"));
 
   // RC Search & Captcha Refresh
   btnRefreshCaptcha.addEventListener("click", loadCaptcha);
@@ -778,9 +1201,30 @@ function renderFamilyRoster(data) {
   document.getElementById("pvcHofName").textContent = hofName;
   const schemeEl = document.getElementById("pvcSchemeValue");
   if (schemeEl) schemeEl.textContent = data.cardType || data.cardTypeLabel || "PHH / BPL Category";
-  document.getElementById("memberCountText").textContent = isKn ? `${data.members.length} ಸದಸ್ಯರು` : `${data.members.length} Members`;
+  const memberCount = data.members.length;
+  document.getElementById("memberCountText").textContent = isKn ? `${memberCount} ಸದಸ್ಯರು` : `${memberCount} Members`;
 
-  const container = document.getElementById("rosterListContainer");
+  // Dynamic Quota & Entitlement Calculations
+  const quotaMembersBadge = document.getElementById("quotaMembersCount");
+  if (quotaMembersBadge) quotaMembersBadge.textContent = memberCount;
+  
+  const riceKg = memberCount * 5;
+  const dbtCash = memberCount * 170;
+  const quotaRiceVal = document.getElementById("quotaRiceVal");
+  if (quotaRiceVal) quotaRiceVal.textContent = `${riceKg} kg`;
+  const quotaDbtVal = document.getElementById("quotaDbtVal");
+  if (quotaDbtVal) quotaDbtVal.textContent = `₹${dbtCash}`;
+
+  // Populate Fair Price Shop Information
+  const fpsShopName = document.getElementById("fpsShopName");
+  if (fpsShopName) fpsShopName.textContent = data.location?.fpsDealerName || "Government Fair Price Shop #148";
+  const fpsShopCode = document.getElementById("fpsShopCode");
+  if (fpsShopCode) fpsShopCode.textContent = data.location?.fpsCode || "KA-PDS-ONLINE";
+  const fpsDistrictName = document.getElementById("fpsDistrictName");
+  if (fpsDistrictName) fpsDistrictName.textContent = `${data.location?.district || "Karnataka PDS Circle"}, ${data.location?.taluk || "Karnataka"}`;
+
+  // Default to members tab
+  switchRosterTab("members");
   container.innerHTML = "";
   appState.selectedMember = null;
 
