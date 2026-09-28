@@ -161,6 +161,46 @@ const appState = {
   loadingInterval: null
 };
 
+// Uses the native Android engine when bundled in the standalone APK,
+// while preserving normal HTTP API calls for browser use.
+const nativePendingRequests = new Map();
+window.NativeKycClient = {
+  resolve(requestId, result) {
+    const pending = nativePendingRequests.get(requestId);
+    if (!pending) return;
+    window.clearTimeout(pending.timeoutId);
+    nativePendingRequests.delete(requestId);
+    pending.resolve({
+      ok: result.success === true,
+      status: result.success === true ? 200 : 400,
+      json: async () => result
+    });
+  }
+};
+
+function appFetch(url, options = {}) {
+  if (!window.AndroidKyc || typeof window.AndroidKyc.request !== "function") {
+    return fetch(url, options);
+  }
+
+  return new Promise((resolve, reject) => {
+    const requestId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const timeoutId = window.setTimeout(() => {
+      nativePendingRequests.delete(requestId);
+      reject(new Error("The Android verification service timed out."));
+    }, 45000);
+
+    nativePendingRequests.set(requestId, { resolve, reject, timeoutId });
+    try {
+      window.AndroidKyc.request(requestId, url, options.body || "{}");
+    } catch (error) {
+      window.clearTimeout(timeoutId);
+      nativePendingRequests.delete(requestId);
+      reject(error);
+    }
+  });
+}
+
 // DOM References
 const viewRCLookup = document.getElementById("viewRCLookup");
 const viewFamilyRoster = document.getElementById("viewFamilyRoster");
@@ -598,7 +638,7 @@ async function loadCaptcha() {
   if (icon) icon.classList.add("animate-spin");
   try {
     captchaBox.innerHTML = `<span class="text-xs text-slate-400">Loading...</span>`;
-    const res = await fetch("/api/captcha");
+    const res = await appFetch("/api/captcha");
     const data = await res.json();
     if (data.success) {
       appState.captchaToken = data.token;
@@ -644,7 +684,7 @@ async function handleFetchRationCard() {
   showLoadingScreen();
 
   try {
-    const res = await fetch("/api/verify-rc", {
+    const res = await appFetch("/api/verify-rc", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -892,7 +932,7 @@ async function handleSubmitFinalKYC() {
   btnSubmitKYC.innerHTML = `<span class="inline-block animate-spin mr-1.5"><i class="fa-solid fa-spinner"></i></span> ${appState.currentLang === "KN" ? "ಪೂರ್ಣಗೊಳಿಸಲಾಗುತ್ತಿದೆ..." : "Completing e-KYC..."}`;
 
   try {
-    const res = await fetch("/api/confirm-kyc", {
+    const res = await appFetch("/api/confirm-kyc", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

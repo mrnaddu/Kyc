@@ -49,12 +49,9 @@ jobs:
         with:
           name: Karnataka e-KYC ${{ github.ref_name }}
           body: |
-            Android test build for the Karnataka Ration Card e-KYC application.
+            Standalone Android build for the Karnataka Ration Card e-KYC application.
 
-            Testing requirements:
-            - Connect the phone to the same Wi-Fi as the server computer.
-            - Run `node server.js` on the computer.
-            - The APK connects to `http://172.16.1.30:3000`.
+            This version bundles the application interface and verification engine inside the APK. It does not require a computer or Node.js backend. Internet access is still required for live Karnataka Ahara portal lookups and external UI resources.
 
             This is a development build for testing and is not an official government application.
           files: Karnataka-eKYC-*.apk

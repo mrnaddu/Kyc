@@ -2,22 +2,27 @@ package com.mrnaddu.kyc;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.webkit.WebViewAssetLoader;
 
 public class MainActivity extends Activity {
     private static final int CAMERA_PERMISSION_REQUEST = 1001;
 
     private WebView webView;
     private PermissionRequest pendingPermissionRequest;
+    private NativeKycBridge nativeKycBridge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +33,14 @@ public class MainActivity extends Activity {
         webView = new WebView(this);
         setContentView(webView);
         configureWebView();
-        webView.loadUrl(BuildConfig.APP_URL);
+        webView.loadUrl("https://appassets.androidplatform.net/assets/index.html");
     }
 
     private void configureWebView() {
+        WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
+            .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
+            .build();
+
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -39,17 +48,24 @@ public class MainActivity extends Activity {
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
+        nativeKycBridge = new NativeKycBridge(this, webView);
+        webView.addJavascriptInterface(nativeKycBridge, "AndroidKyc");
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return false;
+                Uri uri = request.getUrl();
+                if ("appassets.androidplatform.net".equals(uri.getHost())) {
+                    return false;
+                }
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                return true;
             }
 
             @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                if (request.isForMainFrame()) {
-                    showConnectionError();
-                }
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                WebResourceResponse response = assetLoader.shouldInterceptRequest(Uri.parse(request.getUrl().toString()));
+                return response != null ? response : super.shouldInterceptRequest(view, request);
             }
         });
 
@@ -98,18 +114,6 @@ public class MainActivity extends Activity {
         pendingPermissionRequest = null;
     }
 
-    private void showConnectionError() {
-        String html = "<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'>"
-            + "<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0f172a;color:#e2e8f0;"
-            + "font-family:system-ui;padding:24px;box-sizing:border-box}.card{max-width:360px;text-align:center}h1{font-size:22px;color:#fff}"
-            + "p{line-height:1.55;color:#94a3b8}.url{font-family:monospace;color:#fbbf24;word-break:break-all}button{border:0;border-radius:12px;"
-            + "padding:13px 24px;background:#fbbf24;color:#0f172a;font-weight:800;font-size:15px}</style></head><body><div class='card'>"
-            + "<h1>Cannot connect to the e-KYC server</h1><p>Connect this phone to the same Wi-Fi as the computer and keep "
-            + "<strong>node server.js</strong> running.</p><p class='url'>" + BuildConfig.APP_URL + "</p>"
-            + "<button onclick=\"location.href='" + BuildConfig.APP_URL + "'\">Try Again</button></div></body></html>";
-        webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
-    }
-
     @Override
     public void onBackPressed() {
         if (webView.canGoBack()) {
@@ -124,6 +128,9 @@ public class MainActivity extends Activity {
         if (pendingPermissionRequest != null) {
             pendingPermissionRequest.deny();
             pendingPermissionRequest = null;
+        }
+        if (nativeKycBridge != null) {
+            nativeKycBridge.shutdown();
         }
         webView.destroy();
         super.onDestroy();

@@ -36,18 +36,17 @@ Copy-Item .env.example .env
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Android test APK
+## Standalone Android APK
 
 An installable Android test build is available from the repository's [Releases](https://github.com/mrnaddu/Kyc/releases) page.
 
-The current APK connects to `http://172.16.1.30:3000`. To test it:
+The Android version bundles the web interface, captcha engine, live Ahara gateway, session state, and certificate generation inside the APK. It does not require `server.js`, a computer, or a local network connection.
 
-1. Connect the Android phone and server computer to the same Wi-Fi network.
-2. Start the server with `node server.js`.
-3. Install and open the APK on the phone.
-4. Allow camera access when prompted for photo verification.
+To test it:
 
-The local IP address can change when reconnecting to Wi-Fi. If that happens, update `APP_URL` in `app/build.gradle` and create a new build.
+1. Download and install the APK from GitHub Releases.
+2. Connect the phone to the internet for live Karnataka Ahara lookups.
+3. Allow camera access when prompted for photo verification.
 
 ## Configuration
 
