@@ -25,6 +25,11 @@ android {
         compose true
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
     signingConfigs {
         release {
             storeFile file(System.getenv("ANDROID_KEYSTORE_FILE") ?: "missing-release-key.jks")
