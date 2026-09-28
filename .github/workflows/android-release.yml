@@ -1,0 +1,60 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Build installable APK
+        run: gradle :app:assembleDebug --no-daemon
+
+      - name: Name release artifact
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME:-development}"
+          cp app/build/outputs/apk/debug/app-debug.apk "Karnataka-eKYC-${VERSION}.apk"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Karnataka-eKYC-APK
+          path: Karnataka-eKYC-*.apk
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Karnataka e-KYC ${{ github.ref_name }}
+          body: |
+            Android test build for the Karnataka Ration Card e-KYC application.
+
+            Testing requirements:
+            - Connect the phone to the same Wi-Fi as the server computer.
+            - Run `node server.js` on the computer.
+            - The APK connects to `http://172.16.1.30:3000`.
+
+            This is a development build for testing and is not an official government application.
+          files: Karnataka-eKYC-*.apk

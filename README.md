@@ -36,6 +36,19 @@ Copy-Item .env.example .env
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Android test APK
+
+An installable Android test build is available from the repository's [Releases](https://github.com/mrnaddu/Kyc/releases) page.
+
+The current APK connects to `http://172.16.1.30:3000`. To test it:
+
+1. Connect the Android phone and server computer to the same Wi-Fi network.
+2. Start the server with `node server.js`.
+3. Install and open the APK on the phone.
+4. Allow camera access when prompted for photo verification.
+
+The local IP address can change when reconnecting to Wi-Fi. If that happens, update `APP_URL` in `app/build.gradle` and create a new build.
+
 ## Configuration
 
 The application works without an SMS provider and prints development OTP information to the server console. To enable SMS delivery, configure one of the supported providers in `.env`:

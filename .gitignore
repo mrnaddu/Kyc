@@ -3,3 +3,8 @@ node_modules/
 data/*.json
 .amp/
 npm-debug.log*
+.gradle/
+.idea/
+build/
+app/build/
+local.properties

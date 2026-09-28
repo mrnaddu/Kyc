@@ -1,0 +1,28 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "com.mrnaddu.kyc"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.mrnaddu.kyc"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0.0"
+
+        buildConfigField "String", "APP_URL", '"http://172.16.1.30:3000"'
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
