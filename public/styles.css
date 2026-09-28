@@ -289,7 +289,9 @@ body {
 /* Responsive mobile layout */
 @media (max-width: 420px) {
   .app-header {
+    align-items: center;
     gap: 0.5rem;
+    min-height: 3.5rem;
     padding: 0.65rem 0.75rem;
   }
 
@@ -301,22 +303,43 @@ body {
 
   .app-header-left {
     flex: 1;
+    overflow: hidden;
   }
 
   .app-brand-block {
+    align-self: stretch;
     gap: 0.45rem;
+    overflow: hidden;
     padding-left: 0.45rem;
   }
 
+  .app-brand-block > div:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   #appTitleText {
+    line-height: 1.2;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .language-button {
+    align-items: center;
     min-height: 2.25rem;
     padding-inline: 0.6rem;
+    white-space: nowrap;
+  }
+
+  .app-brand-subtitle {
+    display: none;
+  }
+
+  html[lang="kn"] #appTitleText {
+    font-size: 0.67rem;
+    letter-spacing: 0;
   }
 
   .app-main {
@@ -481,13 +504,14 @@ body {
 }
 
 @media (max-width: 380px) {
-  .app-brand-subtitle {
-    display: none;
-  }
-
   #appTitleText {
     font-size: 0.68rem;
     letter-spacing: 0.035em;
+  }
+
+  html[lang="kn"] #appTitleText {
+    font-size: 0.63rem;
+    letter-spacing: 0;
   }
 }
 

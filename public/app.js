@@ -90,7 +90,7 @@ const translations = {
     rcSearchSubheading: "ನಿಮ್ಮ 12-ಅಂಕಿಯ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ ವಿವರಗಳನ್ನು ಪಡೆಯಿರಿ.",
     rcInputLabel: "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ",
     scanRCText: "ಕಾರ್ಡ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
-    rcInputPlaceholder: "12-ಅಂಕಿಯ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ",
+    rcInputPlaceholder: "12-ಅಂಕಿಯ ಸಂಖ್ಯೆ",
     captchaHeaderLabel: "ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್",
     refreshCaptchaText: "ಹೊಸ ಕೋಡ್",
     consentTextLabel: "ಇ-ಕೆವೈಸಿಗಾಗಿ ನನ್ನ ಪಡಿತರ ಚೀಟಿ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ನಾನು ಸಮ್ಮತಿಸುತ್ತೇನೆ.",
