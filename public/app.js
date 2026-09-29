@@ -404,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (window.AndroidKyc && typeof window.AndroidKyc.checkForUpdates === "function") {
         window.AndroidKyc.checkForUpdates();
       } else {
-        window.open("https://github.com/mrnaddu/Kyc-Releases/releases/latest", "_blank", "noopener");
+        window.open("https://github.com/mrnaddu/Kyc/releases/latest", "_blank", "noopener");
       }
     });
   }
@@ -415,7 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (window.AndroidKyc && typeof window.AndroidKyc.checkForUpdates === "function") {
         window.AndroidKyc.checkForUpdates();
       } else {
-        window.open("https://github.com/mrnaddu/Kyc-Releases/releases/latest", "_blank", "noopener");
+        window.open("https://github.com/mrnaddu/Kyc/releases/latest", "_blank", "noopener");
       }
     });
   }

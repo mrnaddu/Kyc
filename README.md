@@ -42,7 +42,7 @@ An installable Android test build is available from the repository's [Releases](
 
 The Android version bundles the web interface, captcha engine, live Ahara gateway, session state, and certificate generation inside the APK. It does not require `server.js`, a computer, or a local network connection.
 
-The app can check the public [`Kyc-Releases`](https://github.com/mrnaddu/Kyc-Releases) repository for a newer APK. Use **Check for updates** in the app footer to download and open the Android installer when a newer release is available.
+The app can check the repository for a newer APK. When a newer release is available, the in-app updater notifies the user and downloads the update directly from [GitHub Releases](https://github.com/mrnaddu/Kyc/releases).
 
 The Android application shell is derived from Echo Music's Kotlin/Jetpack Compose architecture. Android owns the `Scaffold`, pinned `TopAppBar`, status-bar and display-cutout insets, while the standalone KYC workflow runs inside the safe content area. This avoids device-specific WebView header positioning.
 

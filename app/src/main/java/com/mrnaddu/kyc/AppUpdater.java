@@ -38,7 +38,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 final class AppUpdater {
-    private static final String LATEST_RELEASE_API = "https://api.github.com/repos/mrnaddu/Kyc-Releases/releases/latest";
+    private static final String LATEST_RELEASE_API = "https://api.github.com/repos/mrnaddu/Kyc/releases/latest";
     private static final String APK_FILE_NAME = "Karnataka-eKYC-update.apk";
     private static final String NOTIFICATION_CHANNEL_ID = "app_updates_channel";
     private static final int NOTIFICATION_ID = 2001;
