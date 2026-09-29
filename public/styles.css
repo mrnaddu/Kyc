@@ -283,10 +283,10 @@ html.native-shell .app-header {
 #errorModal,
 #scannerModal,
 #facilitiesGuideModal {
-  padding-top: var(--safe-area-top);
-  padding-right: var(--safe-area-right);
-  padding-bottom: var(--safe-area-bottom);
-  padding-left: var(--safe-area-left);
+  padding-top: max(1rem, var(--safe-area-top)) !important;
+  padding-right: max(1rem, var(--safe-area-right)) !important;
+  padding-bottom: max(1rem, var(--safe-area-bottom)) !important;
+  padding-left: max(1rem, var(--safe-area-left)) !important;
 }
 
 #captchaInput {
@@ -898,10 +898,57 @@ html.native-shell .app-header {
   background: #94a3b8;
 }
 
-/* Loading Overlay & Modal Animations */
-.loading-card,
-.modal-card {
+/* Loading Overlay & Modal Cards */
+.loading-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 
+    0 25px 50px -12px rgba(15, 23, 42, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.1) !important;
   animation: scaleInModal 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-card {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  max-width: 24rem !important;
+  height: 82vh !important;
+  max-height: 580px !important;
+  min-height: 340px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 1.25rem !important;
+  overflow: hidden !important;
+  box-shadow: 
+    0 25px 50px -12px rgba(15, 23, 42, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  animation: scaleInModal 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-header {
+  flex-shrink: 0 !important;
+  padding: 0.875rem 1rem !important;
+  background: #f8fafc !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.modal-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  padding: 1rem !important;
+}
+
+.modal-footer {
+  flex-shrink: 0 !important;
+  padding: 0.75rem 1rem !important;
+  background: #f8fafc !important;
+  border-top: 1px solid #f1f5f9 !important;
 }
 
 @keyframes scaleInModal {
