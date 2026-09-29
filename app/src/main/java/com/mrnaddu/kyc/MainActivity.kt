@@ -90,7 +90,40 @@ class MainActivity : ComponentActivity() {
             BackHandler {
                 if (::webView.isInitialized) {
                     webView.evaluateJavascript(
-                        "(function(){if(typeof appState!=='undefined'&&appState.step>0){handleNavBack();return true;}return false;})()",
+                        """
+                        (function() {
+                            var facModal = document.getElementById('facilitiesGuideModal');
+                            if (facModal && !facModal.classList.contains('hidden')) {
+                                facModal.classList.add('hidden');
+                                document.body.style.overflow = '';
+                                return true;
+                            }
+                            var scModal = document.getElementById('scannerModal');
+                            if (scModal && !scModal.classList.contains('hidden')) {
+                                if (typeof closeDocumentScanner === 'function') closeDocumentScanner();
+                                else scModal.classList.add('hidden');
+                                return true;
+                            }
+                            var errModal = document.getElementById('errorModal');
+                            if (errModal && !errModal.classList.contains('hidden')) {
+                                if (typeof hideErrorModal === 'function') hideErrorModal();
+                                else errModal.classList.add('hidden');
+                                return true;
+                            }
+                            if (typeof appState !== 'undefined' && appState.step === 1) {
+                                var panelMem = document.getElementById('panelMembers');
+                                if (panelMem && panelMem.classList.contains('hidden')) {
+                                    if (typeof switchRosterTab === 'function') switchRosterTab('members');
+                                    return true;
+                                }
+                            }
+                            if (typeof appState !== 'undefined' && appState.step > 0) {
+                                handleNavBack();
+                                return true;
+                            }
+                            return false;
+                        })()
+                        """.trimIndent(),
                     ) { handled ->
                         if (handled != "true") finish()
                     }
@@ -133,7 +166,16 @@ class MainActivity : ComponentActivity() {
                 ): Boolean {
                     val uri = request.url
                     if (uri.host == "appassets.androidplatform.net") return false
-                    startActivity(Intent(Intent.ACTION_VIEW, uri))
+                    try {
+                        val intent = if (uri.scheme == "tel") {
+                            Intent(Intent.ACTION_DIAL, uri)
+                        } else {
+                            Intent(Intent.ACTION_VIEW, uri)
+                        }
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                     return true
                 }
 

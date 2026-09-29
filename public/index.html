@@ -249,18 +249,24 @@
           </button>
 
           <!-- Citizen Welfare & Ration Entitlements Quick Guide -->
-          <div class="mt-4 p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-slate-800 space-y-2">
-            <div class="flex items-center justify-between">
+          <div 
+            id="cardFacilitiesGuide" 
+            role="button" 
+            tabindex="0"
+            class="mt-4 p-3.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/15 border border-amber-500/20 text-slate-800 space-y-2 cursor-pointer transition active:scale-[0.99] select-none"
+            aria-label="View Ration Benefits and Facilities Guide"
+          >
+            <div class="flex items-center justify-between pointer-events-none">
               <span class="text-xs font-bold text-amber-950 flex items-center gap-1.5" id="homeGuideTitle">
                 <i class="fa-solid fa-wheat-awn text-amber-600"></i>
                 <span>Ration Benefits & Shop Info</span>
               </span>
-              <button type="button" id="btnOpenFacilitiesGuide" class="text-[11px] font-bold text-amber-700 hover:text-amber-900 flex items-center gap-1">
+              <span id="btnOpenFacilitiesGuide" class="text-[11px] font-bold text-amber-700 flex items-center gap-1">
                 <span id="homeGuideAction">View Facilities</span>
                 <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
+              </span>
             </div>
-            <p class="text-[11px] text-amber-900/80 leading-relaxed" id="homeGuideDesc">
+            <p class="text-[11px] text-amber-900/80 leading-relaxed pointer-events-none" id="homeGuideDesc">
               Check monthly 10kg rice quota, Anna Bhagya ₹170 DBT, Gruha Lakshmi ₹2,000, and locate your nearest Fair Price Shop.
             </p>
           </div>
@@ -311,17 +317,17 @@
         </div>
 
         <!-- Navigation Tabs: Family e-KYC | Ration & FPS | Schemes & Benefits -->
-        <div class="flex p-1 bg-slate-100 rounded-xl gap-1 text-xs font-semibold">
-          <button type="button" id="tabBtnMembers" class="flex-1 py-2 px-1.5 rounded-lg bg-white text-slate-900 shadow-xs flex items-center justify-center gap-1.5 transition">
-            <i class="fa-solid fa-users text-[11px] text-slate-700"></i>
+        <div class="flex p-1 bg-slate-100 rounded-xl gap-1 text-[11px] sm:text-xs font-semibold">
+          <button type="button" id="tabBtnMembers" class="flex-1 py-2 px-1 rounded-lg bg-white text-slate-900 shadow-xs flex items-center justify-center gap-1 sm:gap-1.5 transition text-center leading-tight">
+            <i class="fa-solid fa-users text-[10px] sm:text-[11px] text-slate-700 shrink-0"></i>
             <span id="tabMembersLabel">Family e-KYC</span>
           </button>
-          <button type="button" id="tabBtnRationFps" class="flex-1 py-2 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition">
-            <i class="fa-solid fa-bowl-rice text-[11px] text-amber-600"></i>
+          <button type="button" id="tabBtnRationFps" class="flex-1 py-2 px-1 rounded-lg text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1 sm:gap-1.5 transition text-center leading-tight">
+            <i class="fa-solid fa-bowl-rice text-[10px] sm:text-[11px] text-amber-600 shrink-0"></i>
             <span id="tabRationFpsLabel">Ration & Shop</span>
           </button>
-          <button type="button" id="tabBtnSchemes" class="flex-1 py-2 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition">
-            <i class="fa-solid fa-gift text-[11px] text-indigo-600"></i>
+          <button type="button" id="tabBtnSchemes" class="flex-1 py-2 px-1 rounded-lg text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1 sm:gap-1.5 transition text-center leading-tight">
+            <i class="fa-solid fa-gift text-[10px] sm:text-[11px] text-indigo-600 shrink-0"></i>
             <span id="tabSchemesLabel">Benefits</span>
           </button>
         </div>
@@ -471,6 +477,18 @@
               <a href="tel:18004259339" class="font-bold text-amber-700 hover:underline">1800-425-9339</a>
             </div>
           </div>
+
+          <!-- Return to Member Selection -->
+          <div class="pt-2">
+            <button 
+              id="btnFpsReturnToMembers"
+              type="button" 
+              class="w-full py-3 px-4 btn-primary font-semibold text-xs rounded-xl shadow-xs transition active:scale-[0.99] flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-users text-xs"></i>
+              <span id="btnFpsBackToMembersText">Return to Family Members to Complete e-KYC</span>
+            </button>
+          </div>
         </div>
 
         <!-- PANEL 3: Welfare Schemes & Facilities Linked to this Card -->
@@ -562,6 +580,18 @@
             <p class="text-[11px] text-slate-600 leading-relaxed" id="schemeHousingDesc">
               Priority eligibility for rural and urban pucca house construction subsidies under Dr. B.R. Ambedkar and Devaraj Urs housing schemes.
             </p>
+          </div>
+
+          <!-- Return to Member Selection -->
+          <div class="pt-2">
+            <button 
+              id="btnSchemesReturnToMembers"
+              type="button" 
+              class="w-full py-3 px-4 btn-primary font-semibold text-xs rounded-xl shadow-xs transition active:scale-[0.99] flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-users text-xs"></i>
+              <span id="btnSchemesBackToMembersText">Return to Family Members to Complete e-KYC</span>
+            </button>
           </div>
         </div>
       </section>
@@ -832,12 +862,12 @@
     </div>
 
     <!-- General Facilities & Benefits Guide Modal -->
-    <div id="facilitiesGuideModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex flex-col items-center justify-center p-4">
-      <div class="w-full max-w-sm max-h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
+    <div id="facilitiesGuideModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex flex-col items-center justify-center p-3 sm:p-4 overscroll-none">
+      <div class="modal-card w-full max-w-sm max-h-[85vh] sm:max-h-[88vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
         <!-- Modal Header -->
-        <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between shrink-0">
+        <div class="p-3.5 sm:p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between shrink-0">
           <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center text-sm font-bold">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center text-sm font-bold shrink-0">
               <i class="fa-solid fa-wheat-awn"></i>
             </div>
             <div>
@@ -845,13 +875,13 @@
               <p class="text-[10px] text-slate-500">Government of Karnataka • Food & Civil Supplies</p>
             </div>
           </div>
-          <button id="btnCloseFacilitiesGuide" type="button" class="text-slate-400 hover:text-slate-700 p-1">
+          <button id="btnCloseFacilitiesGuide" type="button" class="text-slate-400 hover:text-slate-700 p-2.5 -mr-1 rounded-xl active:bg-slate-200 transition shrink-0" aria-label="Close modal">
             <i class="fa-solid fa-xmark text-lg"></i>
           </button>
         </div>
 
         <!-- Scrollable Content -->
-        <div class="p-4 overflow-y-auto space-y-4 text-xs">
+        <div class="p-4 overflow-y-auto space-y-4 text-xs flex-1 min-h-0 overscroll-contain touch-pan-y" style="-webkit-overflow-scrolling: touch;">
           <!-- Section 1: Monthly Entitlements -->
           <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200/60 space-y-2">
             <h4 class="font-bold text-amber-950 flex items-center gap-1.5">
@@ -877,7 +907,7 @@
               <li>• <strong>Collection Rule</strong>: Any adult member listed on the card can collect by placing their finger on the e-PoS device.</li>
               <li>• <strong>One Nation One Ration Card (ONORC)</strong>: You can lift your monthly foodgrains from <strong>ANY Fair Price Shop</strong> across Karnataka using Aadhaar biometric authentication.</li>
             </ul>
-            <a href="https://www.google.com/maps/search/Fair+Price+Shop+Ration+Center+Karnataka" target="_blank" rel="noopener" class="mt-2 w-full py-2 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-center block text-[11px] transition shadow-xs">
+            <a href="https://www.google.com/maps/search/Fair+Price+Shop+Ration+Center+Karnataka" target="_blank" rel="noopener" class="mt-2 w-full py-2.5 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-center block text-[11px] transition shadow-xs">
               <i class="fa-solid fa-map-location-dot mr-1"></i> Locate Nearest Fair Price Shop (Maps)
             </a>
           </div>
@@ -900,16 +930,16 @@
           <div class="p-3 rounded-xl bg-slate-100 border border-slate-200 text-[11px] text-slate-600 flex items-center justify-between">
             <span>Food & Civil Supplies Helpline:</span>
             <div class="flex gap-2">
-              <a href="tel:1967" class="font-bold text-amber-700 underline">1967</a>
+              <a href="tel:1967" class="font-bold text-amber-700 underline py-1 px-1.5 rounded active:bg-amber-100">1967</a>
               <span>•</span>
-              <a href="tel:18004259339" class="font-bold text-amber-700 underline">1800-425-9339</a>
+              <a href="tel:18004259339" class="font-bold text-amber-700 underline py-1 px-1.5 rounded active:bg-amber-100">1800-425-9339</a>
             </div>
           </div>
         </div>
 
         <!-- Modal Footer -->
         <div class="p-3 bg-slate-50 border-t border-slate-100 shrink-0">
-          <button id="btnDismissFacilitiesGuide" type="button" class="w-full py-2.5 btn-primary font-semibold text-xs rounded-xl transition">
+          <button id="btnDismissFacilitiesGuide" type="button" class="w-full py-2.5 btn-primary font-semibold text-xs rounded-xl transition active:scale-[0.99]">
             Close Guide
           </button>
         </div>

@@ -64,6 +64,8 @@ const translations = {
     guideQuotaTitle: "Monthly Ration Entitlements",
     guideFpsTitle: "Where to Get Your Ration",
     guideSchemesTitle: "Linked Government Schemes",
+    closeGuideBtn: "Close Guide",
+    btnReturnToMembersText: "Return to Family Members to Complete e-KYC",
 
     // Tabs
     tabMembersLabel: "Family e-KYC",
@@ -188,6 +190,8 @@ const translations = {
     guideQuotaTitle: "ಮಾಸಿಕ ಪಡಿತರ ಕೋಟಾ",
     guideFpsTitle: "ಪಡಿತರ ಪಡೆಯುವ ಸ್ಥಳ",
     guideSchemesTitle: "ಕಾರ್ಡ್‌ಗೆ ಲಿಂಕ್ ಆಗಿರುವ ಯೋಜನೆಗಳು",
+    closeGuideBtn: "ಮಾರ್ಗದರ್ಶಿ ಮುಚ್ಚಿ",
+    btnReturnToMembersText: "ಇ-ಕೆವೈಸಿ ಪೂರ್ಣಗೊಳಿಸಲು ಕುಟುಂಬದ ಸದಸ್ಯರ ಪಟ್ಟಿಗೆ ಹಿಂತಿರುಗಿ",
 
     // Tabs
     tabMembersLabel: "ಕುಟುಂಬದ ಇ-ಕೆವೈಸಿ",
@@ -656,14 +660,20 @@ function applyLanguage(lang) {
   if (guideFpsTitle) guideFpsTitle.textContent = t.guideFpsTitle;
   const guideSchemesTitle = document.getElementById("guideSchemesTitle");
   if (guideSchemesTitle) guideSchemesTitle.textContent = t.guideSchemesTitle;
+  const btnDismissFacilitiesGuide = document.getElementById("btnDismissFacilitiesGuide");
+  if (btnDismissFacilitiesGuide) btnDismissFacilitiesGuide.textContent = t.closeGuideBtn;
 
-  // Tabs
+  // Tabs & Return Buttons
   const tabMembersLabel = document.getElementById("tabMembersLabel");
   if (tabMembersLabel) tabMembersLabel.textContent = t.tabMembersLabel;
   const tabRationFpsLabel = document.getElementById("tabRationFpsLabel");
   if (tabRationFpsLabel) tabRationFpsLabel.textContent = t.tabRationFpsLabel;
   const tabSchemesLabel = document.getElementById("tabSchemesLabel");
   if (tabSchemesLabel) tabSchemesLabel.textContent = t.tabSchemesLabel;
+  const btnFpsBackToMembersText = document.getElementById("btnFpsBackToMembersText");
+  if (btnFpsBackToMembersText) btnFpsBackToMembersText.textContent = t.btnReturnToMembersText;
+  const btnSchemesBackToMembersText = document.getElementById("btnSchemesBackToMembersText");
+  if (btnSchemesBackToMembersText) btnSchemesBackToMembersText.textContent = t.btnReturnToMembersText;
 
   // Quota & FPS
   const quotaHeaderTitle = document.getElementById("quotaHeaderTitle");
@@ -997,20 +1007,20 @@ function switchRosterTab(tabName) {
 
   // Reset all buttons to inactive
   [btnMembers, btnRationFps, btnSchemes].forEach(b => {
-    if (b) b.className = "flex-1 py-2 px-1.5 rounded-lg text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition";
+    if (b) b.className = "flex-1 py-2 px-1 rounded-lg text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1 sm:gap-1.5 transition text-center leading-tight";
   });
   panelMembers.classList.add("hidden");
   if (panelRationFps) panelRationFps.classList.add("hidden");
   if (panelSchemes) panelSchemes.classList.add("hidden");
 
   if (tabName === "rationFps") {
-    if (btnRationFps) btnRationFps.className = "flex-1 py-2 px-1.5 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1.5 transition";
+    if (btnRationFps) btnRationFps.className = "flex-1 py-2 px-1 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1 sm:gap-1.5 transition text-center leading-tight";
     if (panelRationFps) panelRationFps.classList.remove("hidden");
   } else if (tabName === "schemes") {
-    if (btnSchemes) btnSchemes.className = "flex-1 py-2 px-1.5 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1.5 transition";
+    if (btnSchemes) btnSchemes.className = "flex-1 py-2 px-1 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1 sm:gap-1.5 transition text-center leading-tight";
     if (panelSchemes) panelSchemes.classList.remove("hidden");
   } else {
-    btnMembers.className = "flex-1 py-2 px-1.5 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1.5 transition";
+    btnMembers.className = "flex-1 py-2 px-1 rounded-lg tab-btn-active text-slate-900 shadow-xs flex items-center justify-center gap-1 sm:gap-1.5 transition text-center leading-tight";
     panelMembers.classList.remove("hidden");
   }
 }
@@ -1035,22 +1045,71 @@ function bindEventHandlers() {
   const scannerFileInput = document.getElementById("scannerFileInput");
   if (scannerFileInput) scannerFileInput.addEventListener("change", handleScannerImageUpload);
 
-  // Home Facilities Guide Modal Actions
+  // Home Facilities Guide Modal Actions & Touch Accessibility
+  const cardFacilitiesGuide = document.getElementById("cardFacilitiesGuide");
   const btnOpenFacilitiesGuide = document.getElementById("btnOpenFacilitiesGuide");
   const btnCloseFacilitiesGuide = document.getElementById("btnCloseFacilitiesGuide");
   const btnDismissFacilitiesGuide = document.getElementById("btnDismissFacilitiesGuide");
   const facilitiesGuideModal = document.getElementById("facilitiesGuideModal");
-  if (btnOpenFacilitiesGuide) btnOpenFacilitiesGuide.addEventListener("click", () => facilitiesGuideModal?.classList.remove("hidden"));
-  if (btnCloseFacilitiesGuide) btnCloseFacilitiesGuide.addEventListener("click", () => facilitiesGuideModal?.classList.add("hidden"));
-  if (btnDismissFacilitiesGuide) btnDismissFacilitiesGuide.addEventListener("click", () => facilitiesGuideModal?.classList.add("hidden"));
 
-  // Roster Tab Switchers
+  const openFacilitiesGuideModal = () => {
+    if (facilitiesGuideModal) {
+      facilitiesGuideModal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+  };
+
+  const closeFacilitiesGuideModal = () => {
+    if (facilitiesGuideModal) {
+      facilitiesGuideModal.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+  };
+
+  if (cardFacilitiesGuide) {
+    cardFacilitiesGuide.addEventListener("click", openFacilitiesGuideModal);
+    cardFacilitiesGuide.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openFacilitiesGuideModal();
+      }
+    });
+  }
+  if (btnOpenFacilitiesGuide) {
+    btnOpenFacilitiesGuide.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openFacilitiesGuideModal();
+    });
+  }
+  if (btnCloseFacilitiesGuide) btnCloseFacilitiesGuide.addEventListener("click", closeFacilitiesGuideModal);
+  if (btnDismissFacilitiesGuide) btnDismissFacilitiesGuide.addEventListener("click", closeFacilitiesGuideModal);
+  if (facilitiesGuideModal) {
+    facilitiesGuideModal.addEventListener("click", (e) => {
+      if (e.target === facilitiesGuideModal) closeFacilitiesGuideModal();
+    });
+  }
+
+  // Global Escape key listener
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeFacilitiesGuideModal();
+      closeDocumentScanner();
+      hideErrorModal();
+    }
+  });
+
+  // Roster Tab Switchers & Return Buttons
   const tabBtnMembers = document.getElementById("tabBtnMembers");
   const tabBtnRationFps = document.getElementById("tabBtnRationFps");
   const tabBtnSchemes = document.getElementById("tabBtnSchemes");
+  const btnFpsReturnToMembers = document.getElementById("btnFpsReturnToMembers");
+  const btnSchemesReturnToMembers = document.getElementById("btnSchemesReturnToMembers");
+
   if (tabBtnMembers) tabBtnMembers.addEventListener("click", () => switchRosterTab("members"));
   if (tabBtnRationFps) tabBtnRationFps.addEventListener("click", () => switchRosterTab("rationFps"));
   if (tabBtnSchemes) tabBtnSchemes.addEventListener("click", () => switchRosterTab("schemes"));
+  if (btnFpsReturnToMembers) btnFpsReturnToMembers.addEventListener("click", () => switchRosterTab("members"));
+  if (btnSchemesReturnToMembers) btnSchemesReturnToMembers.addEventListener("click", () => switchRosterTab("members"));
 
   // RC Search & Captcha Refresh
   btnRefreshCaptcha.addEventListener("click", loadCaptcha);
@@ -1545,7 +1604,29 @@ function updateNavBackVisibility() {
 function handleNavBack() {
   hideToast();
   hideErrorModal();
+
+  // If facilities guide modal is open, close it
+  const facilitiesGuideModal = document.getElementById("facilitiesGuideModal");
+  if (facilitiesGuideModal && !facilitiesGuideModal.classList.contains("hidden")) {
+    facilitiesGuideModal.classList.add("hidden");
+    document.body.style.overflow = "";
+    return;
+  }
+
+  // If scanner modal is open, close it
+  const scannerModal = document.getElementById("scannerModal");
+  if (scannerModal && !scannerModal.classList.contains("hidden")) {
+    closeDocumentScanner();
+    return;
+  }
+
   if (appState.step === 1) {
+    // If currently on Schemes or Ration/Shop tab, return to members selection tab first
+    const panelMembers = document.getElementById("panelMembers");
+    if (panelMembers && panelMembers.classList.contains("hidden")) {
+      switchRosterTab("members");
+      return;
+    }
     // Back from Family Roster to RC Search
     setStep(0);
     loadCaptcha();
