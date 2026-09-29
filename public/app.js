@@ -698,7 +698,7 @@ function applyLanguage(lang) {
   langButtonLabel.textContent = t.langButton;
   document.getElementById("appTitleText").textContent = t.appTitle;
   if (topNavBackLabel) topNavBackLabel.textContent = t.topNavBack;
-  topNavHomeLabel.textContent = t.topNavHome;
+  if (topNavHomeLabel) topNavHomeLabel.textContent = t.topNavHome;
 
   // RC Search View
   const deptBadge = document.getElementById("deptBadgeText");
@@ -706,7 +706,8 @@ function applyLanguage(lang) {
   document.getElementById("rcSearchHeading").textContent = t.rcSearchHeading;
   document.getElementById("rcSearchSubheading").textContent = t.rcSearchSubheading;
   document.getElementById("rcInputLabel").innerHTML = `${t.rcInputLabel} <span class="text-rose-500">*</span>`;
-  document.getElementById("scanRCText").textContent = t.scanRCText;
+  const scanRCText = document.getElementById("scanRCText");
+  if (scanRCText) scanRCText.textContent = t.scanRCText;
   rcInput.placeholder = t.rcInputPlaceholder;
   const captchaHeaderLabel = document.getElementById("captchaHeaderLabel");
   if (captchaHeaderLabel) captchaHeaderLabel.innerHTML = `<i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i> <span>${t.captchaHeaderLabel}</span>`;
@@ -1115,8 +1116,8 @@ function bindEventHandlers() {
   });
 
   // Scanner Triggers
-  btnScanRC.addEventListener("click", () => openDocumentScanner("rc"));
-  btnCloseScanner.addEventListener("click", closeDocumentScanner);
+  if (btnScanRC) btnScanRC.addEventListener("click", () => openDocumentScanner("rc"));
+  if (btnCloseScanner) btnCloseScanner.addEventListener("click", closeDocumentScanner);
 
   const scannerFileInput = document.getElementById("scannerFileInput");
   if (scannerFileInput) scannerFileInput.addEventListener("change", handleScannerImageUpload);
@@ -1693,11 +1694,19 @@ function setStep(newStep) {
 
 // Navigation Controllers
 function updateNavBackVisibility() {
-  if (!btnNavBack) return;
-  if (appState.step === 0) {
-    btnNavBack.classList.add("hidden");
-  } else {
-    btnNavBack.classList.remove("hidden");
+  if (btnNavBack) {
+    if (appState.step === 0) {
+      btnNavBack.classList.add("hidden");
+    } else {
+      btnNavBack.classList.remove("hidden");
+    }
+  }
+  if (btnNavHome) {
+    if (appState.step === 0) {
+      btnNavHome.classList.add("hidden");
+    } else {
+      btnNavHome.classList.remove("hidden");
+    }
   }
 }
 
