@@ -343,6 +343,7 @@ const captchaInputErrorText = document.getElementById("captchaInputErrorText");
 const captchaCardContainer = document.getElementById("captchaCardContainer");
 
 const btnFetchRationCard = document.getElementById("btnFetchRationCard");
+const rosterListContainer = document.getElementById("rosterListContainer");
 
 
 // Loading Overlay Elements
@@ -1175,10 +1176,17 @@ async function handleFetchRationCard() {
 
     // Success! Smoothly finish loading and transition to Member Selection
     setTimeout(() => {
-      hideLoadingScreen();
-      appState.cardData = result.data;
-      renderFamilyRoster(result.data);
-      setStep(1);
+      try {
+        hideLoadingScreen();
+        appState.cardData = result.data;
+        renderFamilyRoster(result.data);
+        setStep(1);
+      } catch (renderErr) {
+        console.error("Error setting up family roster:", renderErr);
+        hideLoadingScreen();
+        setStep(1);
+        showToast(appState.currentLang === "KN" ? "ವಿವರಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ" : "Error displaying roster: " + renderErr.message, "error");
+      }
     }, 400);
 
   } catch (err) {
@@ -1195,14 +1203,32 @@ async function handleFetchRationCard() {
 
 // Render Roster & Member Selection
 function renderFamilyRoster(data) {
-  document.getElementById("pvcRcNumber").textContent = data.rcNumber;
+  if (!data) return;
+
+  const container = document.getElementById("rosterListContainer") || rosterListContainer;
+  if (!container) {
+    console.error("rosterListContainer element not found");
+    return;
+  }
+
   const isKn = appState.currentLang === "KN";
-  const hofName = isKn ? (data.headOfFamily?.nameKn || data.headOfFamily?.nameEn || "Hazira") : (data.headOfFamily?.nameEn || "Hazira");
-  document.getElementById("pvcHofName").textContent = hofName;
+
+  const pvcRc = document.getElementById("pvcRcNumber");
+  if (pvcRc) pvcRc.textContent = data.rcNumber || "";
+
+  const hofName = isKn 
+    ? (data.headOfFamily?.nameKn || data.headOfFamily?.nameEn || data.members?.[0]?.nameEn || "Hazira") 
+    : (data.headOfFamily?.nameEn || data.members?.[0]?.nameEn || "Hazira");
+  const pvcHof = document.getElementById("pvcHofName");
+  if (pvcHof) pvcHof.textContent = hofName;
+
   const schemeEl = document.getElementById("pvcSchemeValue");
   if (schemeEl) schemeEl.textContent = data.cardType || data.cardTypeLabel || "PHH / BPL Category";
-  const memberCount = data.members.length;
-  document.getElementById("memberCountText").textContent = isKn ? `${memberCount} ಸದಸ್ಯರು` : `${memberCount} Members`;
+
+  const members = Array.isArray(data.members) ? data.members : [];
+  const memberCount = members.length;
+  const countEl = document.getElementById("memberCountText");
+  if (countEl) countEl.textContent = isKn ? `${memberCount} ಸದಸ್ಯರು` : `${memberCount} Members`;
 
   // Dynamic Quota & Entitlement Calculations
   const quotaMembersBadge = document.getElementById("quotaMembersCount");
@@ -1228,9 +1254,14 @@ function renderFamilyRoster(data) {
   container.innerHTML = "";
   appState.selectedMember = null;
 
+  if (members.length === 0) {
+    container.innerHTML = `<div class="p-4 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-slate-200">No active members found on this ration card.</div>`;
+    return;
+  }
+
   const isKannada = appState.currentLang === "KN";
 
-  data.members.forEach((member, index) => {
+  members.forEach((member, index) => {
     // Default select first member or head of family
     const isDefault = (index === 0);
     if (isDefault && !appState.selectedMember) {

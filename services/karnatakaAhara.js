@@ -129,6 +129,81 @@ async function fetchKarnatakaRationCard(rcNumber) {
     throw new Error("Invalid Karnataka Ration Card number. It must be alphanumeric (5-25 characters).");
   }
 
+  // Instant response for test & demo cards
+  if (cleanRc.startsWith("TEST") || cleanRc.startsWith("DEMO")) {
+    return {
+      success: true,
+      isLive: false,
+      data: {
+        source: "Karnataka ePDS Portal (Demo / Test Mode)",
+        rcNumber: cleanRc,
+        cardType: "PHH/BPL",
+        cardTypeLabel: "Karnataka BPL Ration Card",
+        cardTypeColor: "emerald",
+        status: "ACTIVE",
+        issueDate: "01/01/2020",
+        location: {
+          state: "KARNATAKA",
+          district: "BENGALURU URBAN",
+          taluk: "Bangalore South",
+          wardVillage: "Jayanagar",
+          fpsCode: "KA-FPS-1048",
+          fpsDealerName: "Sri Manjunatha Consumer Co-op FPS #1048"
+        },
+        headOfFamily: {
+          nameEn: "Ramesh Kumar",
+          nameKn: "ರಮೇಶ್ ಕುಮಾರ್",
+          spouseOrFatherEn: "Suresh",
+          spouseOrFatherKn: "ಸುರೇಶ್"
+        },
+        members: [
+          {
+            id: "M01",
+            valToken: "DEMO_VAL_1",
+            nameEn: "Ramesh Kumar",
+            nameKn: "ರಮೇಶ್ ಕುಮಾರ್",
+            status: "ACTIVE",
+            aadhaarLast4: "4321",
+            relation: "HEAD OF FAMILY",
+            gender: "Male",
+            age: "48",
+            seeded: true,
+            ekyc: "PENDING",
+            isKycComplete: false
+          },
+          {
+            id: "M02",
+            valToken: "DEMO_VAL_2",
+            nameEn: "Geetha",
+            nameKn: "ಗೀತಾ",
+            status: "ACTIVE",
+            aadhaarLast4: "8765",
+            relation: "SPOUSE",
+            gender: "Female",
+            age: "42",
+            seeded: true,
+            ekyc: "PENDING",
+            isKycComplete: false
+          },
+          {
+            id: "M03",
+            valToken: "DEMO_VAL_3",
+            nameEn: "Chethan",
+            nameKn: "ಚೇತನ್",
+            status: "ACTIVE",
+            aadhaarLast4: "1122",
+            relation: "SON",
+            gender: "Male",
+            age: "19",
+            seeded: true,
+            ekyc: "PENDING",
+            isKycComplete: false
+          }
+        ]
+      }
+    };
+  }
+
   console.log(`[Ahara Gateway] Querying LIVE portal for RC: ${cleanRc}...`);
   
   // Directly query the live Karnataka government portal

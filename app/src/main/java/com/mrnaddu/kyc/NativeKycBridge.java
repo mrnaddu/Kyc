@@ -121,15 +121,89 @@ final class NativeKycBridge {
         }
         captchas.remove(captchaToken);
 
-        JSONObject cardData = fetchLiveAharaCard(rcNumber);
+        JSONObject cardData;
+        if (rcNumber.startsWith("TEST") || rcNumber.startsWith("DEMO")) {
+            cardData = createDemoCard(rcNumber);
+        } else {
+            cardData = fetchLiveAharaCard(rcNumber);
+        }
         cardSessions.put(rcNumber, cardData);
 
         return new JSONObject()
             .put("success", true)
             .put("data", cardData)
             .put("fromCache", false)
-            .put("isLiveGateway", true)
+            .put("isLiveGateway", !rcNumber.startsWith("TEST") && !rcNumber.startsWith("DEMO"))
             .put("lastSynced", isoTimestamp());
+    }
+
+    private JSONObject createDemoCard(String rcNumber) throws Exception {
+        JSONArray members = new JSONArray();
+        members.put(new JSONObject()
+            .put("id", "M01")
+            .put("valToken", "DEMO_VAL_1")
+            .put("nameEn", "Ramesh Kumar")
+            .put("nameKn", "ರಮೇಶ್ ಕುಮಾರ್")
+            .put("status", "ACTIVE")
+            .put("aadhaarLast4", "4321")
+            .put("relation", "HEAD OF FAMILY")
+            .put("gender", "Male")
+            .put("age", "48")
+            .put("seeded", true)
+            .put("ekyc", "PENDING")
+            .put("isKycComplete", false));
+        members.put(new JSONObject()
+            .put("id", "M02")
+            .put("valToken", "DEMO_VAL_2")
+            .put("nameEn", "Geetha")
+            .put("nameKn", "ಗೀತಾ")
+            .put("status", "ACTIVE")
+            .put("aadhaarLast4", "8765")
+            .put("relation", "SPOUSE")
+            .put("gender", "Female")
+            .put("age", "42")
+            .put("seeded", true)
+            .put("ekyc", "PENDING")
+            .put("isKycComplete", false));
+        members.put(new JSONObject()
+            .put("id", "M03")
+            .put("valToken", "DEMO_VAL_3")
+            .put("nameEn", "Chethan")
+            .put("nameKn", "ಚೇತನ್")
+            .put("status", "ACTIVE")
+            .put("aadhaarLast4", "1122")
+            .put("relation", "SON")
+            .put("gender", "Male")
+            .put("age", "19")
+            .put("seeded", true)
+            .put("ekyc", "PENDING")
+            .put("isKycComplete", false));
+
+        JSONObject location = new JSONObject()
+            .put("state", "KARNATAKA")
+            .put("district", "BENGALURU URBAN")
+            .put("taluk", "Bangalore South")
+            .put("wardVillage", "Jayanagar")
+            .put("fpsCode", "KA-FPS-1048")
+            .put("fpsDealerName", "Sri Manjunatha Consumer Co-op FPS #1048");
+
+        JSONObject headOfFamily = new JSONObject()
+            .put("nameEn", "Ramesh Kumar")
+            .put("nameKn", "ರಮೇಶ್ ಕುಮಾರ್")
+            .put("spouseOrFatherEn", "Suresh")
+            .put("spouseOrFatherKn", "ಸುರೇಶ್");
+
+        return new JSONObject()
+            .put("source", "Karnataka ePDS Portal (Demo / Test Mode)")
+            .put("rcNumber", rcNumber)
+            .put("cardType", "PHH/BPL")
+            .put("cardTypeLabel", "Karnataka BPL Ration Card")
+            .put("cardTypeColor", "emerald")
+            .put("status", "ACTIVE")
+            .put("issueDate", "01/01/2020")
+            .put("location", location)
+            .put("headOfFamily", headOfFamily)
+            .put("members", members);
     }
 
     private JSONObject fetchLiveAharaCard(String rcNumber) throws Exception {
