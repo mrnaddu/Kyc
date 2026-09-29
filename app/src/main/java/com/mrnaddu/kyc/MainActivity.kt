@@ -24,31 +24,17 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.webkit.WebViewAssetLoader
 import com.mrnaddu.kyc.ui.theme.KycTheme
-import com.mrnaddu.kyc.ui.utils.appBarScrollBehavior
 
 class MainActivity : ComponentActivity() {
     private val cameraPermissionRequest = 1001
@@ -82,64 +68,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @androidx.compose.runtime.Composable
     private fun KarnatakaKycApp() {
         KycTheme {
-            val topAppBarScrollBehavior = appBarScrollBehavior()
             Scaffold(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
+                modifier = Modifier.fillMaxSize(),
                 containerColor = MaterialTheme.colorScheme.background,
-                contentWindowInsets = WindowInsets.systemBars.only(
-                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom,
-                ),
-                topBar = {
-                    TopAppBar(
-                        modifier = Modifier.windowInsetsPadding(
-                            WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal),
-                        ),
-                        title = {
-                            Text(
-                                text = if (currentLanguage == "KN") {
-                                    "ಪಡಿತರ ಚೀಟಿ ಇ-ಕೆವೈಸಿ"
-                                } else {
-                                    "Ration Card e-KYC"
-                                },
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                            )
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = { runWebScript("handleNavHome()") }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Home,
-                                    contentDescription = "Home",
-                                )
-                            }
-                        },
-                        actions = {
-                            TextButton(onClick = { toggleLanguage() }) {
-                                Text(
-                                    text = if (currentLanguage == "EN") "ಕನ್ನಡ" else "English",
-                                    maxLines = 1,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Bold,
-                                )
-                            }
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                            titleContentColor = MaterialTheme.colorScheme.onSurface,
-                            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-                            actionIconContentColor = MaterialTheme.colorScheme.onSurface,
-                        ),
-                        scrollBehavior = topAppBarScrollBehavior,
-                    )
-                },
+                contentWindowInsets = WindowInsets.systemBars,
             ) { contentPadding ->
                 AndroidView(
                     modifier = Modifier
@@ -212,10 +147,7 @@ class MainActivity : ComponentActivity() {
 
                 override fun onPageFinished(webView: WebView, url: String) {
                     super.onPageFinished(webView, url)
-                    runWebScript(
-                        "document.documentElement.classList.add('native-shell');" +
-                            "applyLanguage('$currentLanguage');",
-                    )
+                    runWebScript("applyLanguage('$currentLanguage');")
                     if (!initialUpdateChecked) {
                         initialUpdateChecked = true
                         view.postDelayed({

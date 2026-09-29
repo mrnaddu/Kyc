@@ -252,8 +252,11 @@ body {
   padding-left: calc(1rem + var(--safe-area-left)) !important;
 }
 
+/* Native shell header integration */
 html.native-shell .app-header {
-  display: none !important;
+  position: sticky;
+  top: 0;
+  z-index: 30;
 }
 
 .app-main {
