@@ -7,7 +7,8 @@
 // Bilingual Localization Dictionary
 const translations = {
   EN: {
-    appTitle: "Ration Card e-KYC",
+    appTitle: "Nanna Ration",
+    appBrandSubtitle: "Govt of Karnataka • Food Dept",
     langButton: "ಕನ್ನಡ",
     steps: [
       "Step 1 of 4: Enter Ration Card Number",
@@ -16,71 +17,57 @@ const translations = {
       "Step 4 of 4: e-KYC Certificate"
     ],
     deptBadgeText: "Food & Civil Supplies Department • Government of Karnataka",
-    rcSearchHeading: "Ration Card e-KYC",
+    rcSearchHeading: "Nanna Ration e-KYC",
     rcSearchSubheading: "Enter your ration card number to verify your family details.",
     rcInputLabel: "Ration Card Number",
-    scanRCText: "Scan Card",
-    rcInputPlaceholder: "Enter card number",
+    rcInputPlaceholder: "Enter card number (e.g. 260300261661)",
+    rcErrorInvalid: "Please enter a valid Ration Card number.",
     captchaHeaderLabel: "Security Code",
     refreshCaptchaText: "New Code",
     tapToRefreshText: "tap ↻",
     captchaHelpText: "Type 5 characters shown on left",
+    captchaErrorInvalid: "Security code incorrect. A fresh code has been loaded for you.",
     consentTextLabel: "I agree to verify my ration card details for e-KYC.",
     fetchBtnText: "Find My Ration Card",
+    updateBannerText: "New update is available!",
+    btnBannerUpdateText: "Update",
+
+    // Home Facilities Guide
+    homeGuideTitle: "Ration Benefits & Shop Info",
+    homeGuideAction: "View Facilities",
+    homeGuideDesc: "Check monthly 10kg rice quota, Anna Bhagya ₹170 DBT, Gruha Lakshmi ₹2,000, and locate your nearest Fair Price Shop.",
+    
+    // Smart PVC Card
+    pvcGovtText: "Government of Karnataka",
+    pvcStatusText: "ACTIVE",
     pvcRcLabel: "Ration Card Number",
     pvcHofLabel: "Head of Family",
     pvcSchemeLabel: "Card Type",
+
+    // Tabs
+    tabMembersLabel: "Family e-KYC",
+    tabRationFpsLabel: "Ration & Shop",
+    tabSchemesLabel: "Benefits",
     rosterHeaderLabel: "Select Your Name",
     topNavBack: "Back",
     topNavHome: "Home",
     backBtnText: "Back",
     bioBackText: "Back",
     proceedBioText: "Continue to Photo Verification",
-    bioHeading: "Face Photo Verification",
-    bioSubheading: "Look into the camera and keep your face inside the circle to verify your identity.",
-    verifyingApplicantLabel: "Applicant Name",
-    cameraPrompt: "Position your face in the circle",
-    captureBtnText: "Take Photo",
-    retakeBtnText: "Retake Photo",
-    issuePassBtnText: "Complete e-KYC",
-    certMainHeading: "e-KYC Completed Successfully!",
-    certRefLabel: "Certificate ID",
-    certCitizenLabel: "Citizen Name:",
-    certHofLabel: "Card Owner:",
-    certRelationLabel: "Relationship:",
-    certAadhaarLabel: "Aadhaar Number:",
-    certRcLabel: "Ration Card:",
-    certSourceLabel: "Status:",
-    printCertText: "Download / Print",
-    newSessionText: "Done",
-    scannerModalTitle: "Scan Ration Card Barcode / QR",
-    scannerModalDesc: "Align the barcode or QR code on your ration card",
-    scannerStatusText: "Align barcode or QR code within the frame...",
-    scanUploadPhotoText: "Upload Card Photo / Screenshot",
+    selectionPill: "Selected",
+    noActiveMembers: "No active members found on this ration card.",
 
-    // Home Facilities Guide
-    homeGuideTitle: "Ration Benefits & Shop Info",
-    homeGuideAction: "View Facilities",
-    homeGuideDesc: "Check monthly 10kg rice quota, Anna Bhagya ₹170 DBT, Gruha Lakshmi ₹2,000, and locate your nearest Fair Price Shop.",
-    guideModalHeading: "Ration Benefits & Shop Guide",
-    guideQuotaTitle: "Monthly Ration Entitlements",
-    guideFpsTitle: "Where to Get Your Ration",
-    guideSchemesTitle: "Linked Government Schemes",
-    closeGuideBtn: "Close Guide",
-    btnReturnToMembersText: "Return to Family Members to Complete e-KYC",
-
-    // Tabs
-    tabMembersLabel: "Family e-KYC",
-    tabRationFpsLabel: "Ration & Shop",
-    tabSchemesLabel: "Benefits",
-
-    // Quota & FPS
+    // Quota & FPS Tab
     quotaHeaderTitle: "Monthly Ration Entitlements",
     quotaSubheader: "Based on verified family strength",
     quotaRiceLabel: "Free Rice (PMGKAY)",
+    quotaRiceSub: "5 kg / person • ₹0 (Free)",
     quotaDbtLabel: "Anna Bhagya Cash DBT",
+    quotaDbtSub: "₹170 / member / month",
     quotaGrainsLabel: "Subsidized Wheat / Coarse",
+    quotaGrainsSub: "District quota allotment",
     quotaSugarLabel: "Subsidized Sugar",
+    quotaSugarSub: "₹13.50/kg for AAY",
     fpsDetailsHeader: "Where to Get Your Ration",
     fpsDetailsSubheader: "Your Designated Fair Price Shop (FPS)",
     fpsShopLabel: "Shop Center:",
@@ -94,12 +81,19 @@ const translations = {
     fpsAuthVal: "Any adult family member with linked Aadhaar can authenticate on the shop's e-PoS device.",
     btnFindFpsMapText: "Find Nearest Fair Price Shop on Map",
     onorcTitle: "One Nation One Ration Card (Portability)",
-    onorcDesc: "Away from your hometown? Under ONORC, you can collect your monthly foodgrains from ANY Fair Price Shop across Karnataka and India using Aadhaar biometric authentication.",
+    onorcDesc: "Away from your hometown? Under ONORC, you can collect your monthly foodgrains from <strong>ANY Fair Price Shop</strong> across Karnataka and India using Aadhaar biometric authentication.",
     fpsHelplineLabel: "Civil Supplies Helpline:",
+    btnReturnToMembersText: "Return to Family Members to Complete e-KYC",
 
-    // Schemes
+    // Schemes Tab
     schemesHeaderTitle: "Government Welfare Facilities Linked to this Card",
     schemesHeaderDesc: "State and central welfare benefits activated by your Karnataka Ration Card",
+    badgeEligible: "ELIGIBLE ✓",
+    badgeMonthlyCash: "₹2,000 / Month",
+    badgeHealthCover: "₹5 Lakh Free Cover",
+    badgeSubsidized: "SUBSIDIZED",
+    badgeEducationAid: "EDUCATION AID",
+    badgeHousingAid: "RGRHCL",
     schemeAnnaTitle: "Anna Bhagya Scheme",
     schemeAnnaDesc: "10 kg free food grains per person per month (5 kg free rice from PMGKAY + ₹170 direct monthly cash transfer per member into Head of Family's bank account for remaining 5 kg).",
     schemeLakshmiTitle: "Gruha Lakshmi Scheme",
@@ -112,8 +106,47 @@ const translations = {
     schemeSspDesc: "Fee concessions, SSP pre-matric and post-matric scholarship grants, and free government hostel admissions for students listed on this card.",
     schemeHousingTitle: "Government Housing Assistance",
     schemeHousingDesc: "Priority eligibility for rural and urban pucca house construction subsidies under Dr. B.R. Ambedkar and Devaraj Urs housing schemes.",
-    
-    // Citizen-Friendly Loading Strings
+
+    // Biometric Step 2
+    bioHeading: "Face Photo Verification",
+    bioSubheading: "Look into the camera and keep your face inside the circle to verify your identity.",
+    verifyingApplicantLabel: "Verifying Applicant",
+    cameraPrompt: "Position your face in the circle",
+    captureBtnText: "Take Photo",
+    retakeBtnText: "Retake Photo",
+    issuePassBtnText: "Complete e-KYC",
+
+    // Certificate Step 3
+    certMainHeading: "e-KYC Completed Successfully!",
+    certRefLabel: "Certificate ID",
+    certVerifiedBadgeText: "VERIFIED ✓",
+    certCitizenLabel: "Citizen Name:",
+    certHofLabel: "Card Owner:",
+    certRelationLabel: "Relationship:",
+    certAadhaarLabel: "Aadhaar Number:",
+    certRcLabel: "Ration Card:",
+    certSourceLabel: "Status:",
+    certSourceValue: "Approved ✓",
+    certVerifiedDateLabel: "Verified: ",
+    certApprovedMeta: "Government of Karnataka Approved ✓",
+    printCertText: "Download / Print",
+    newSessionText: "Done",
+
+    // Facilities Guide Modal
+    guideModalHeading: "Ration Benefits & Shop Guide",
+    guideDeptSubtitle: "Government of Karnataka • Food & Civil Supplies",
+    guideQuotaTitle: "Monthly Ration Entitlements",
+    guideQuotaList: "<p>• <strong>5 kg Free Rice</strong> per member per month under Central NFSA / PMGKAY.</p><p>• <strong>Anna Bhagya Scheme</strong>: Additional 5 kg rice OR direct monthly cash transfer of <strong>₹170 per member</strong> into Head of Family's bank account.</p><p>• <strong>Antyodaya (AAY) Cards</strong>: 35 kg food grains per card (30 kg rice + 5 kg wheat) at ₹0, plus 1 kg sugar at ₹13.50/kg.</p>",
+    guideFpsTitle: "Where to Get Your Ration",
+    guideFpsList: "<p>• <strong>Distribution Period</strong>: 1st through 20th of every month.</p><p>• <strong>Shop Hours</strong>: Morning 7:00 AM – 12:00 PM & Evening 4:00 PM – 8:00 PM.</p><p>• <strong>Collection Rule</strong>: Any adult member listed on the card can collect by placing their finger on the e-PoS device.</p><p>• <strong>One Nation One Ration Card (ONORC)</strong>: You can lift your monthly foodgrains from <strong>ANY Fair Price Shop</strong> across Karnataka using Aadhaar biometric authentication.</p>",
+    guideLocateMapBtnText: "Locate Nearest Fair Price Shop (Maps)",
+    guideSchemesTitle: "Linked Government Schemes",
+    guideSchemesList: "<p>• <strong>Gruha Lakshmi</strong>: ₹2,000/month for woman head of family.</p><p>• <strong>Ayushman Bharat - Arogya Karnataka</strong>: Up to ₹5,00,000/year free cashless treatment in government & private hospitals using this Ration Card.</p><p>• <strong>PM Ujjwala / Anila Bhagya</strong>: Free LPG gas connection & refill subsidies.</p><p>• <strong>SSP Student Scholarships</strong>: Educational fee concessions & free hostel admissions.</p>",
+    guideHelplineLabel: "Food & Civil Supplies Helpline:",
+    closeGuideBtn: "Close Guide",
+    appFooterText: "Department of Food, Civil Supplies & Consumer Affairs • Government of Karnataka",
+
+    // Loading & Error Strings
     loadingTitle: "Finding Your Ration Card",
     loadingSubtitle: "Please wait a moment...",
     loadingDisclaimer: "Please keep this screen open. This takes just a few seconds.",
@@ -122,20 +155,17 @@ const translations = {
       "Finding family details...",
       "Preparing your card..."
     ],
-
-    // Friendly Error Messages
     errorModalTitle: "Could Not Find Ration Card",
     errorModalSubtitle: "Please check your ration card number and try again. If the server is busy, please try again in a moment.",
     errorRetryBtnText: "Try Again",
     errorDismissBtnText: "Cancel",
-    rcErrorInvalid: "Please enter a valid Ration Card number.",
-    captchaErrorInvalid: "Security code was incorrect. Please type the new code shown.",
     rosterSelectPrompt: "Please tap on your name in the list to continue.",
     ekycVerifiedBadge: "KYC Done ✓",
     ekycPendingBadge: "KYC Pending"
   },
   KN: {
-    appTitle: "ಪಡಿತರ ಚೀಟಿ ಇ-ಕೆವೈಸಿ",
+    appTitle: "ನನ್ನ ರೇಷನ್",
+    appBrandSubtitle: "ಕರ್ನಾಟಕ ಸರ್ಕಾರ • ಆಹಾರ ಇಲಾಖೆ",
     langButton: "English",
     steps: [
       "ಹಂತ 1/4: ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ",
@@ -144,78 +174,64 @@ const translations = {
       "ಹಂತ 4/4: ಇ-ಕೆವೈಸಿ ಪ್ರಮಾಣಪತ್ರ"
     ],
     deptBadgeText: "ಆಹಾರ ಮತ್ತು ನಾಗರಿಕ ಸರಬರಾಜು ಇಲಾಖೆ • ಕರ್ನಾಟಕ ಸರ್ಕಾರ",
-    rcSearchHeading: "ಪಡಿತರ ಚೀಟಿ ಇ-ಕೆವೈಸಿ",
+    rcSearchHeading: "ನನ್ನ ರೇಷನ್ ಇ-ಕೆವೈಸಿ",
     rcSearchSubheading: "ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ ವಿವರಗಳನ್ನು ಪಡೆಯಿರಿ.",
     rcInputLabel: "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ",
-    scanRCText: "ಕಾರ್ಡ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
-    rcInputPlaceholder: "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ",
+    rcInputPlaceholder: "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ (ಉದಾ: 260300261661)",
+    rcErrorInvalid: "ದಯವಿಟ್ಟು ಸರಿಯಾದ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.",
     captchaHeaderLabel: "ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್",
     refreshCaptchaText: "ಹೊಸ ಕೋಡ್",
     tapToRefreshText: "ಬದಲಿಸಿ ↻",
     captchaHelpText: "ಎಡಭಾಗದಲ್ಲಿರುವ 5 ಅಕ್ಷರಗಳನ್ನು ನಮೂದಿಸಿ",
+    captchaErrorInvalid: "ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್ ಸರಿಯಾಗಿಲ್ಲ. ಹೊಸ ಕೋಡ್ ಲೋಡ್ ಮಾಡಲಾಗಿದೆ.",
     consentTextLabel: "ಇ-ಕೆವೈಸಿಗಾಗಿ ನನ್ನ ಪಡಿತರ ಚೀಟಿ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ನಾನು ಸಮ್ಮತಿಸುತ್ತೇನೆ.",
-    fetchBtnText: "ಪಡಿತರ ಚೀಟಿ ಹುಡುಕಿ",
+    fetchBtnText: "ನನ್ನ ಪಡಿತರ ಚೀಟಿ ಹುಡುಕಿ",
+    updateBannerText: "ಹೊಸ ಆವೃತ್ತಿಯ ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ!",
+    btnBannerUpdateText: "ಅಪ್‌ಡೇಟ್",
+
+    // Home Facilities Guide
+    homeGuideTitle: "ಪಡಿತರ ಸೌಲಭ್ಯಗಳು ಮತ್ತು ಅಂಗಡಿ ಮಾಹಿತಿ",
+    homeGuideAction: "ಸೌಲಭ್ಯಗಳನ್ನು ನೋಡಿ",
+    homeGuideDesc: "ಮಾಸಿಕ 10 ಕೆಜಿ ಅಕ್ಕಿ ಕೋಟಾ, ಅನ್ನಭಾಗ್ಯ ₹170 ನಗದು ವರ್ಗಾವಣೆ, ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಮತ್ತು ನಿಮ್ಮ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ಮಾಹಿತಿ ಪರಿಶೀಲಿಸಿ.",
+
+    // Smart PVC Card
+    pvcGovtText: "ಕರ್ನಾಟಕ ಸರ್ಕಾರ",
+    pvcStatusText: "ಸಕ್ರಿಯ",
     pvcRcLabel: "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ",
     pvcHofLabel: "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರು",
     pvcSchemeLabel: "ಕಾರ್ಡ್ ವಿಧ",
+
+    // Tabs
+    tabMembersLabel: "ಕುಟುಂಬದ ಇ-ಕೆವೈಸಿ",
+    tabRationFpsLabel: "ಪಡಿತರ & ಅಂಗಡಿ",
+    tabSchemesLabel: "ಸೌಲಭ್ಯಗಳು",
     rosterHeaderLabel: "ನಿಮ್ಮ ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ",
     topNavBack: "ಹಿಂದಕ್ಕೆ",
     topNavHome: "ಮುಖಪುಟ",
     backBtnText: "ಹಿಂದಕ್ಕೆ",
     bioBackText: "ಹಿಂದಕ್ಕೆ",
     proceedBioText: "ಫೋಟೋ ಪರಿಶೀಲನೆಗೆ ಮುಂದುವರಿಯಿರಿ",
-    bioHeading: "ಮುಖದ ಫೋಟೋ ಪರಿಶೀಲನೆ",
-    bioSubheading: "ಕ್ಯಾಮರಾವನ್ನು ನೋಡಿ ಮತ್ತು ನಿಮ್ಮ ಮುಖವನ್ನು ವೃತ್ತದೊಳಗೆ ಇರಿಸಿ.",
-    verifyingApplicantLabel: "ಅರ್ಜಿದಾರರ ಹೆಸರು",
-    cameraPrompt: "ಮುಖವನ್ನು ವೃತ್ತದೊಳಗೆ ಇರಿಸಿ",
-    captureBtnText: "ಫೋಟೋ ತೆಗೆಯಿರಿ",
-    retakeBtnText: "ಮತ್ತೆ ತೆಗೆಯಿರಿ",
-    issuePassBtnText: "ಇ-ಕೆವೈಸಿ ಪೂರ್ಣಗೊಳಿಸಿ",
-    certMainHeading: "ಇ-ಕೆವೈಸಿ ಯಶಸ್ವಿಯಾಗಿ ಪೂರ್ಣಗೊಂಡಿದೆ!",
-    certRefLabel: "ಪ್ರಮಾಣಪತ್ರ ಸಂಖ್ಯೆ",
-    certCitizenLabel: "ನಾಗರಿಕರ ಹೆಸರು:",
-    certHofLabel: "ಕಾರ್ಡ್ ಮಾಲೀಕರು:",
-    certRelationLabel: "ಸಂಬಂಧ:",
-    certAadhaarLabel: "ಆಧಾರ್ ಸಂಖ್ಯೆ:",
-    certRcLabel: "ಪಡಿತರ ಚೀಟಿ:",
-    certSourceLabel: "ಪರಿಶೀಲನೆ ಸ್ಥಿತಿ:",
-    printCertText: "ಪ್ರಮಾಣಪತ್ರ ಮುದ್ರಿಸಿ",
-    newSessionText: "ಪೂರ್ಣಗೊಂಡಿದೆ",
-    scannerModalTitle: "ಪಡಿತರ ಚೀಟಿ ಬಾರ್‌ಕೋಡ್ / QR ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
-    scannerModalDesc: "ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿಯಲ್ಲಿರುವ ಬಾರ್‌ಕೋಡ್ ಅಥವಾ QR ಕೋಡ್ ಅನ್ನು ಚೌಕಟ್ಟಿನಲ್ಲಿ ಹಿಡಿಯಿರಿ",
-    scannerStatusText: "ಕೋಡ್ ಅನ್ನು ಚೌಕಟ್ಟಿನಲ್ಲಿ ಹಿಡಿಯಿರಿ...",
-    scanUploadPhotoText: "ಕಾರ್ಡ್ ಫೋಟೋ / ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+    selectionPill: "ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ",
+    noActiveMembers: "ಈ ಪಡಿತರ ಚೀಟಿಯಲ್ಲಿ ಯಾವುದೇ ಸಕ್ರಿಯ ಸದಸ್ಯರು ಕಂಡುಬಂದಿಲ್ಲ.",
 
-    // Home Facilities Guide
-    homeGuideTitle: "ಪಡಿತರ ಸೌಲಭ್ಯಗಳು ಮತ್ತು ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ಮಾಹಿತಿ",
-    homeGuideAction: "ಸೌಲಭ್ಯಗಳನ್ನು ನೋಡಿ",
-    homeGuideDesc: "ಮಾಸಿಕ 10 ಕೆಜಿ ಅಕ್ಕಿ ಕೋಟಾ, ಅನ್ನಭಾಗ್ಯ ₹170 ನಗದು ವರ್ಗಾವಣೆ, ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಮತ್ತು ನಿಮ್ಮ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ಮಾಹಿತಿ ಪರಿಶೀಲಿಸಿ.",
-    guideModalHeading: "ಪಡಿತರ ಸೌಲಭ್ಯಗಳು & ಅಂಗಡಿ ಮಾರ್ಗದರ್ಶಿ",
-    guideQuotaTitle: "ಮಾಸಿಕ ಪಡಿತರ ಕೋಟಾ",
-    guideFpsTitle: "ಪಡಿತರ ಪಡೆಯುವ ಸ್ಥಳ",
-    guideSchemesTitle: "ಕಾರ್ಡ್‌ಗೆ ಲಿಂಕ್ ಆಗಿರುವ ಯೋಜನೆಗಳು",
-    closeGuideBtn: "ಮಾರ್ಗದರ್ಶಿ ಮುಚ್ಚಿ",
-    btnReturnToMembersText: "ಇ-ಕೆವೈಸಿ ಪೂರ್ಣಗೊಳಿಸಲು ಕುಟುಂಬದ ಸದಸ್ಯರ ಪಟ್ಟಿಗೆ ಹಿಂತಿರುಗಿ",
-
-    // Tabs
-    tabMembersLabel: "ಕುಟುಂಬದ ಇ-ಕೆವೈಸಿ",
-    tabRationFpsLabel: "ಪಡಿತರ & ಅಂಗಡಿ",
-    tabSchemesLabel: "ಸೌಲಭ್ಯಗಳು",
-
-    // Quota & FPS
+    // Quota & FPS Tab
     quotaHeaderTitle: "ಮಾಸಿಕ ಪಡಿತರ ಕೋಟಾ ವಿವರ",
     quotaSubheader: "ಕುಟುಂಬದ ಸದಸ್ಯರ ಸಂಖ್ಯೆಯ ಆಧಾರದ ಮೇಲೆ",
     quotaRiceLabel: "ಉಚಿತ ಅಕ್ಕಿ (PMGKAY)",
+    quotaRiceSub: "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ 5 ಕೆಜಿ • ಉಚಿತ (₹0)",
     quotaDbtLabel: "ಅನ್ನಭಾಗ್ಯ ನಗದು ವರ್ಗಾವಣೆ (DBT)",
+    quotaDbtSub: "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ ₹170",
     quotaGrainsLabel: "ರಿಯಾಯಿತಿ ಗೋಧಿ / ಸಿರಿಧಾನ್ಯ",
+    quotaGrainsSub: "ಜಿಲ್ಲಾ ಹಂಚಿಕೆಯ ಆಧಾರದ ಮೇಲೆ",
     quotaSugarLabel: "ರಿಯಾಯಿತಿ ಸಕ್ಕರೆ",
+    quotaSugarSub: "ಎಎವೈ ಕಾರ್ಡ್‌ಗೆ ₹13.50/ಕೆಜಿ",
     fpsDetailsHeader: "ಪಡಿತರ ಎಲ್ಲಿ ಪಡೆಯಬೇಕು?",
     fpsDetailsSubheader: "ನಿಮ್ಮ ಅಧಿಕೃತ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ (FPS)",
     fpsShopLabel: "ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ:",
     fpsCodeLabel: "ಅಂಗಡಿ ಕೋಡ್ / ಪರವಾನಗಿ:",
     fpsDistrictLabel: "ವ್ಯಾಪ್ತಿ ವೃತ್ತ:",
     fpsTimingsLabel: "ಸಮಯ:",
-    fpsTimingsVal: "ಬೆಳಿಗ್ಗೆ 7:00 – 12:00 & ಸಂಜೆ 4:00 – 8:00",
+    fpsTimingsVal: "ಬೆಳಿಗ್ಗೆ 7:00 – 12:00 ಮತ್ತು ಸಂಜೆ 4:00 – 8:00",
     fpsDatesLabel: "ದಿನಾಂಕಗಳು:",
     fpsDatesVal: "ಪ್ರತಿ ತಿಂಗಳ 1 ರಿಂದ 20 ನೇ ತಾರೀಖು",
     fpsAuthLabel: "ಪಡೆಯುವ ನಿಯಮ:",
@@ -224,10 +240,17 @@ const translations = {
     onorcTitle: "ಒಂದು ದೇಶ ಒಂದು ಪಡಿತರ ಚೀಟಿ (ಪೋರ್ಟೆಬಿಲಿಟಿ)",
     onorcDesc: "ನಿಮ್ಮ ಊರಿನಿಂದ ದೂರವಿದ್ದೀರಾ? ONORC ಅಡಿಯಲ್ಲಿ, ಆಧಾರ್ ಬಯೋಮೆಟ್ರಿಕ್ ದೃಢೀಕರಣದೊಂದಿಗೆ ನೀವು ಕರ್ನಾಟಕ ಹಾಗೂ ಭಾರತದ ಯಾವುದೇ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿಯಿಂದ ನಿಮ್ಮ ಮಾಸಿಕ ಪಡಿತರವನ್ನು ಪಡೆಯಬಹುದು.",
     fpsHelplineLabel: "ಆಹಾರ ಇಲಾಖೆ ಸಹಾಯವಾಣಿ:",
+    btnReturnToMembersText: "ಇ-ಕೆವೈಸಿ ಪೂರ್ಣಗೊಳಿಸಲು ಕುಟುಂಬದ ಸದಸ್ಯರ ಪಟ್ಟಿಗೆ ಹಿಂತಿರುಗಿ",
 
-    // Schemes
+    // Schemes Tab
     schemesHeaderTitle: "ಈ ಪಡಿತರ ಚೀಟಿಗೆ ಲಿಂಕ್ ಆಗಿರುವ ಸರ್ಕಾರಿ ಸೌಲಭ್ಯಗಳು",
     schemesHeaderDesc: "ಕರ್ನಾಟಕ ಪಡಿತರ ಚೀಟಿದಾರರಿಗೆ ಸಿಗುವ ಎಲ್ಲಾ ರಾಜ್ಯ ಮತ್ತು ಕೇಂದ್ರ ಸರ್ಕಾರದ ಯೋಜನೆಗಳು",
+    badgeEligible: "ಅರ್ಹರು ✓",
+    badgeMonthlyCash: "₹2,000 / ತಿಂಗಳು",
+    badgeHealthCover: "₹5 ಲಕ್ಷ ಉಚಿತ ಚಿಕಿತ್ಸೆ",
+    badgeSubsidized: "ಸಬ್ಸಿಡಿ ದರ",
+    badgeEducationAid: "ಶೈಕ್ಷಣಿಕ ನೆರವು",
+    badgeHousingAid: "ವಸತಿ ಯೋಜನೆ",
     schemeAnnaTitle: "ಅನ್ನಭಾಗ್ಯ ಯೋಜನೆ",
     schemeAnnaDesc: "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ 10 ಕೆಜಿ ಉಚಿತ ಆಹಾರ ಧಾನ್ಯ (5 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ + ಉಳಿದ 5 ಕೆಜಿಗೆ ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ₹170 ರಂತೆ ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ನೇರ ನಗದು ವರ್ಗಾವಣೆ).",
     schemeLakshmiTitle: "ಗೃಹಲಕ್ಷ್ಮಿ ಯೋಜನೆ",
@@ -240,29 +263,120 @@ const translations = {
     schemeSspDesc: "ಕಾರ್ಡ್‌ನಲ್ಲಿರುವ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಪೋಸ್ಟ್-ಮೆಟ್ರಿಕ್/ಮೆಟ್ರಿಕ್-ಪೂರ್ವ ವಿದ್ಯಾರ್ಥಿವೇತನ (SSP ಪೋರ್ಟಲ್), ಶೈಕ್ಷಣಿಕ ಶುಲ್ಕ ವಿನಾಯಿತಿ ಮತ್ತು ಸರ್ಕಾರಿ ಹಾಸ್ಟೆಲ್ ಪ್ರವೇಶ.",
     schemeHousingTitle: "ಸರ್ಕಾರಿ ವಸತಿ ಯೋಜನೆಗಳ ಸೌಲಭ್ಯ",
     schemeHousingDesc: "ಡಾ. ಬಿ.ಆರ್. ಅಂಬೇಡ್ಕರ್ ಹಾಗೂ ದೇವರಾಜ ಅರಸು ವಸತಿ ಯೋಜನೆಗಳ ಅಡಿಯಲ್ಲಿ ಪಕ್ಕಾ ಮನೆ ನಿರ್ಮಾಣಕ್ಕೆ ಆದ್ಯತೆ ಮತ್ತು ಸಹಾಯಧನ.",
-    
-    // Citizen-Friendly Loading Strings (Kannada)
+
+    // Biometric Step 2
+    bioHeading: "ಮುಖದ ಫೋಟೋ ಪರಿಶೀಲನೆ",
+    bioSubheading: "ಕ್ಯಾಮರಾವನ್ನು ನೋಡಿ ಮತ್ತು ನಿಮ್ಮ ಮುಖವನ್ನು ವೃತ್ತದೊಳಗೆ ಇರಿಸಿ.",
+    verifyingApplicantLabel: "ಅರ್ಜಿದಾರರ ಹೆಸರು",
+    cameraPrompt: "ಮುಖವನ್ನು ವೃತ್ತದೊಳಗೆ ಇರಿಸಿ",
+    captureBtnText: "ಫೋಟೋ ತೆಗೆಯಿರಿ",
+    retakeBtnText: "ಮತ್ತೆ ತೆಗೆಯಿರಿ",
+    issuePassBtnText: "ಇ-ಕೆವೈಸಿ ಪೂರ್ಣಗೊಳಿಸಿ",
+
+    // Certificate Step 3
+    certMainHeading: "ಇ-ಕೆವೈಸಿ ಯಶಸ್ವಿಯಾಗಿ ಪೂರ್ಣಗೊಂಡಿದೆ!",
+    certRefLabel: "ಪ್ರಮಾಣಪತ್ರ ಸಂಖ್ಯೆ",
+    certVerifiedBadgeText: "ದೃಢೀಕರಿಸಲಾಗಿದೆ ✓",
+    certCitizenLabel: "ನಾಗರಿಕರ ಹೆಸರು:",
+    certHofLabel: "ಕಾರ್ಡ್ ಮಾಲೀಕರು:",
+    certRelationLabel: "ಸಂಬಂಧ:",
+    certAadhaarLabel: "ಆಧಾರ್ ಸಂಖ್ಯೆ:",
+    certRcLabel: "ಪಡಿತರ ಚೀಟಿ:",
+    certSourceLabel: "ಪರಿಶೀಲನೆ ಸ್ಥಿತಿ:",
+    certSourceValue: "ಅನುಮೋದಿಸಲಾಗಿದೆ ✓",
+    certVerifiedDateLabel: "ಪರಿಶೀಲಿಸಿದ ದಿನಾಂಕ: ",
+    certApprovedMeta: "ಕರ್ನಾಟಕ ಸರ್ಕಾರದಿಂದ ಅನುಮೋದಿಸಲಾಗಿದೆ ✓",
+    printCertText: "ಡೌನ್‌ಲೋಡ್ / ಮುದ್ರಿಸಿ",
+    newSessionText: "ಮುಗಿದಿದೆ",
+
+    // Facilities Guide Modal
+    guideModalHeading: "ಪಡಿತರ ಸೌಲಭ್ಯಗಳು & ಅಂಗಡಿ ಮಾರ್ಗದರ್ಶಿ",
+    guideDeptSubtitle: "ಕರ್ನಾಟಕ ಸರ್ಕಾರ • ಆಹಾರ ಮತ್ತು ನಾಗರಿಕ ಸರಬರಾಜು ಇಲಾಖೆ",
+    guideQuotaTitle: "ಮಾಸಿಕ ಪಡಿತರ ಕೋಟಾ",
+    guideQuotaList: "<p>• ಕೇಂದ್ರ ಸರ್ಕಾರದ NFSA / PMGKAY ಅಡಿಯಲ್ಲಿ ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ <strong>5 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ</strong>.</p><p>• <strong>ಅನ್ನಭಾಗ್ಯ ಯೋಜನೆ</strong>: ಹೆಚ್ಚುವರಿ 5 ಕೆಜಿ ಆಹಾರ ಧಾನ್ಯ ಅಥವಾ ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ <strong>₹170 ನಗದು</strong> ಕುಟುಂಬದ ಯಜಮಾನಿಯ ಖಾತೆಗೆ ನೇರ ವರ್ಗಾವಣೆ.</p><p>• <strong>ಅಂತ್ಯೋದಯ (AAY) ಕಾರ್ಡ್‌ಗಳು</strong>: ಪ್ರತಿ ಕಾರ್ಡ್‌ಗೆ 35 ಕೆಜಿ ಉಚಿತ ಆಹಾರ ಧಾನ್ಯ (30 ಕೆಜಿ ಅಕ್ಕಿ + 5 ಕೆಜಿ ಗೋಧಿ) ಹಾಗೂ 1 ಕೆಜಿ ಸಕ್ಕರೆ ₹13.50 ದರದಲ್ಲಿ.</p>",
+    guideFpsTitle: "ಪಡಿತರ ಎಲ್ಲಿ ಪಡೆಯಬೇಕು?",
+    guideFpsList: "<p>• <strong>ವಿತರಣಾ ಅವಧಿ</strong>: ಪ್ರತಿ ತಿಂಗಳ 1 ರಿಂದ 20 ನೇ ತಾರೀಖಿನವರೆಗೆ.</p><p>• <strong>ಅಂಗಡಿ ಸಮಯ</strong>: ಬೆಳಿಗ್ಗೆ 7:00 – 12:00 ಮತ್ತು ಸಂಜೆ 4:00 – 8:00.</p><p>• <strong>ಪಡೆಯುವ ನಿಯಮ</strong>: ಕಾರ್ಡ್‌ನಲ್ಲಿರುವ ಯಾವುದೇ ವಯಸ್ಕ ಸದಸ್ಯರು ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿಯ e-PoS ಯಂತ್ರದಲ್ಲಿ ಬಯೋಮೆಟ್ರಿಕ್ ನೀಡಿ ಪಡಿತರ ಪಡೆಯಬಹುದು.</p><p>• <strong>ಒಂದು ದೇಶ ಒಂದು ಪಡಿತರ ಚೀಟಿ (ONORC)</strong>: ನೀವು ಕರ್ನಾಟಕದ ಯಾವುದೇ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿಯಿಂದ ನಿಮ್ಮ ಮಾಸಿಕ ಪಡಿತರವನ್ನು ಪಡೆಯಬಹುದು.</p>",
+    guideLocateMapBtnText: "ಹತ್ತಿರದ ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ಹುಡುಕಿ (ಮ್ಯಾಪ್)",
+    guideSchemesTitle: "ಕಾರ್ಡ್‌ಗೆ ಲಿಂಕ್ ಆಗಿರುವ ಯೋಜನೆಗಳು",
+    guideSchemesList: "<p>• <strong>ಗೃಹಲಕ್ಷ್ಮಿ ಯೋಜನೆ</strong>: ಕುಟುಂಬದ ಯಜಮಾನಿಗೆ ತಿಂಗಳಿಗೆ ₹2,000 ನೇರ ಆರ್ಥಿಕ ನೆರವು.</p><p>• <strong>ಆಯುಷ್ಮಾನ್ ಭಾರತ್ - ಆರೋಗ್ಯ ಕರ್ನಾಟಕ</strong>: ಆಸ್ಪತ್ರೆಗಳಲ್ಲಿ ಕುಟುಂಬಕ್ಕೆ ವಾರ್ಷಿಕ ₹5,00,000 ವರೆಗೆ ಉಚಿತ ನಗದುರಹಿತ ಚಿಕಿತ್ಸೆ.</p><p>• <strong>ಅನಿಲ ಭಾಗ್ಯ / ಉಜ್ವಲ ಯೋಜನೆ</strong>: ಉಚಿತ ಗ್ಯಾಸ್ ಸಂಪರ್ಕ ಮತ್ತು ಸಬ್ಸಿಡಿ ಸಿಲಿಂಡರ್ ಸೌಲಭ್ಯ.</p><p>• <strong>SSP ವಿದ್ಯಾರ್ಥಿವೇತನ</strong>: ಶೈಕ್ಷಣಿಕ ಶುಲ್ಕ ವಿನಾಯಿತಿ ಮತ್ತು ಸರ್ಕಾರಿ ಹಾಸ್ಟೆಲ್ ಪ್ರವೇಶ.</p>",
+    guideHelplineLabel: "ಆಹಾರ ಮತ್ತು ನಾಗರಿಕ ಸರಬರಾಜು ಇಲಾಖೆ ಸಹಾಯವಾಣಿ:",
+    closeGuideBtn: "ಮಾರ್ಗದರ್ಶಿ ಮುಚ್ಚಿ",
+    appFooterText: "ಆಹಾರ, ನಾಗರಿಕ ಸರಬರಾಜು ಮತ್ತು ಗ್ರಾಹಕರ ವ್ಯವಹಾರಗಳ ಇಲಾಖೆ • ಕರ್ನಾಟಕ ಸರ್ಕಾರ",
+
+    // Loading & Error Strings
     loadingTitle: "ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ",
     loadingSubtitle: "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಕಾಯಿರಿ...",
+    loadingProgressStage: "ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...",
     loadingDisclaimer: "ದಯವಿಟ್ಟು ಈ ಪುಟವನ್ನು ಮುಚ್ಚಬೇಡಿ. ಕೆಲವೇ ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಮುಗಿಯುತ್ತದೆ.",
     loadSteps: [
       "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...",
       "ಕುಟುಂಬದ ವಿವರಗಳನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ...",
       "ವಿವರಗಳನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ..."
     ],
-
-    // Friendly Error Messages (Kannada)
     errorModalTitle: "ಪಡಿತರ ಚೀಟಿ ವಿವರ ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ",
     errorModalSubtitle: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ. ಸರ್ವರ್ ಕಾರ್ಯನಿರತವಾಗಿದ್ದರೆ ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ.",
     errorRetryBtnText: "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
     errorDismissBtnText: "ರದ್ದುಮಾಡಿ",
-    rcErrorInvalid: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.",
-    captchaErrorInvalid: "ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್ ಸರಿಯಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಹೊಸ ಕೋಡ್ ನಮೂದಿಸಿ.",
     rosterSelectPrompt: "ದಯವಿಟ್ಟು ಮುಂದುವರಿಯಲು ಪಟ್ಟಿಯಿಂದ ನಿಮ್ಮ ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
     ekycVerifiedBadge: "ಇ-ಕೆವೈಸಿ ಮುಗಿದಿದೆ ✓",
     ekycPendingBadge: "ಇ-ಕೆವೈಸಿ ಬಾಕಿ ಇದೆ"
   }
 };
+
+// Translation Helpers for Demographics, Relations & Schemes
+function getTranslatedRelation(rel, isKn) {
+  if (!rel) return isKn ? "ಸದಸ್ಯರು" : "MEMBER";
+  const r = String(rel).trim().toUpperCase();
+  if (!isKn) {
+    if (r === "HEAD" || r === "HEAD OF FAMILY" || r === "HOF") return "HEAD OF FAMILY";
+    return r;
+  }
+  const relMap = {
+    "HEAD": "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರು",
+    "HEAD OF FAMILY": "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರು",
+    "HOF": "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರು",
+    "WIFE": "ಪತ್ನಿ",
+    "HUSBAND": "ಪತಿ",
+    "SON": "ಮಗ",
+    "DAUGHTER": "ಮಗಳು",
+    "MOTHER": "ತಾಯಿ",
+    "FATHER": "ತಂದೆ",
+    "BROTHER": "ಸಹೋದರ",
+    "SISTER": "ಸಹೋದರಿ",
+    "DAUGHTER IN LAW": "ಸೊಸೆ",
+    "DAUGHTER-IN-LAW": "ಸೊಸೆ",
+    "SON IN LAW": "ಅಳಿಯ",
+    "SON-IN-LAW": "ಅಳಿಯ",
+    "GRANDSON": "ಮೊಮ್ಮಗ",
+    "GRANDDAUGHTER": "ಮೊಮ್ಮಗಳು",
+    "GRAND DAUGHTER": "ಮೊಮ್ಮಗಳು",
+    "FATHER IN LAW": "ಮಾವ",
+    "FATHER-IN-LAW": "ಮಾವ",
+    "MOTHER IN LAW": "ಅತ್ತೆ",
+    "MOTHER-IN-LAW": "ಅತ್ತೆ",
+    "MEMBER": "ಸದಸ್ಯರು"
+  };
+  return relMap[r] || (r.includes("HEAD") ? "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರು" : "ಸದಸ್ಯರು");
+}
+
+function getTranslatedGender(gender, isKn) {
+  if (!gender) return "";
+  const g = String(gender).trim().toUpperCase();
+  if (!isKn) return g;
+  if (g.startsWith("M") || g === "MALE") return "ಪುರುಷ";
+  if (g.startsWith("F") || g === "FEMALE") return "ಮಹಿಳೆ";
+  return "ಇತರೆ";
+}
+
+function getTranslatedCardType(type, isKn) {
+  if (!type) return isKn ? "ಆದ್ಯತಾ ಕುಟುಂಬ (BPL / PHH)" : "PHH / BPL Category";
+  if (!isKn) return type;
+  const t = String(type).toUpperCase();
+  if (t.includes("AAY") || t.includes("ANTYODAYA")) return "ಅಂತ್ಯೋದಯ (AAY)";
+  if (t.includes("BPL") || t.includes("PHH")) return "ಆದ್ಯತಾ ಕುಟುಂಬ (BPL / PHH)";
+  if (t.includes("NPHH") || t.includes("APL")) return "ಆದ್ಯತೇತರ ಕುಟುಂಬ (APL / NPHH)";
+  return type;
+}
 
 // Application State
 const appState = {
@@ -697,8 +811,20 @@ function applyLanguage(lang) {
   document.documentElement.lang = lang === "KN" ? "kn" : "en";
   langButtonLabel.textContent = t.langButton;
   document.getElementById("appTitleText").textContent = t.appTitle;
+  const appBrandSubtitle = document.getElementById("appBrandSubtitle");
+  if (appBrandSubtitle) appBrandSubtitle.textContent = t.appBrandSubtitle;
   if (topNavBackLabel) topNavBackLabel.textContent = t.topNavBack;
   if (topNavHomeLabel) topNavHomeLabel.textContent = t.topNavHome;
+
+  // Update Available Banner
+  const updateBannerText = document.getElementById("updateBannerText");
+  const updateBannerVersion = document.getElementById("updateBannerVersion");
+  if (updateBannerText) {
+    const vText = updateBannerVersion ? updateBannerVersion.textContent : "";
+    updateBannerText.innerHTML = `${t.updateBannerText} <strong id="updateBannerVersion">${vText}</strong>`;
+  }
+  const btnBannerUpdateText = document.getElementById("btnBannerUpdateText");
+  if (btnBannerUpdateText) btnBannerUpdateText.textContent = t.btnBannerUpdateText;
 
   // RC Search View
   const deptBadge = document.getElementById("deptBadgeText");
@@ -731,14 +857,35 @@ function applyLanguage(lang) {
   // Facilities Guide Modal
   const guideModalHeading = document.getElementById("guideModalHeading");
   if (guideModalHeading) guideModalHeading.textContent = t.guideModalHeading;
+  const guideDeptSubtitle = document.getElementById("guideDeptSubtitle");
+  if (guideDeptSubtitle) guideDeptSubtitle.textContent = t.guideDeptSubtitle;
   const guideQuotaTitle = document.getElementById("guideQuotaTitle");
   if (guideQuotaTitle) guideQuotaTitle.textContent = t.guideQuotaTitle;
+  const guideQuotaList = document.getElementById("guideQuotaList");
+  if (guideQuotaList) guideQuotaList.innerHTML = t.guideQuotaList;
   const guideFpsTitle = document.getElementById("guideFpsTitle");
   if (guideFpsTitle) guideFpsTitle.textContent = t.guideFpsTitle;
+  const guideFpsList = document.getElementById("guideFpsList");
+  if (guideFpsList) guideFpsList.innerHTML = t.guideFpsList;
+  const guideLocateMapBtnText = document.getElementById("guideLocateMapBtnText");
+  if (guideLocateMapBtnText) guideLocateMapBtnText.textContent = t.guideLocateMapBtnText;
   const guideSchemesTitle = document.getElementById("guideSchemesTitle");
   if (guideSchemesTitle) guideSchemesTitle.textContent = t.guideSchemesTitle;
+  const guideSchemesList = document.getElementById("guideSchemesList");
+  if (guideSchemesList) guideSchemesList.innerHTML = t.guideSchemesList;
+  const guideHelplineLabel = document.getElementById("guideHelplineLabel");
+  if (guideHelplineLabel) guideHelplineLabel.textContent = t.guideHelplineLabel;
   const btnDismissFacilitiesGuide = document.getElementById("btnDismissFacilitiesGuide");
   if (btnDismissFacilitiesGuide) btnDismissFacilitiesGuide.textContent = t.closeGuideBtn;
+
+  // Smart PVC Card
+  const pvcGovtText = document.getElementById("pvcGovtText");
+  if (pvcGovtText) pvcGovtText.textContent = t.pvcGovtText;
+  const pvcStatusText = document.getElementById("pvcStatusText");
+  if (pvcStatusText) pvcStatusText.textContent = t.pvcStatusText;
+  document.getElementById("pvcRcLabel").textContent = t.pvcRcLabel;
+  document.getElementById("pvcHofLabel").textContent = t.pvcHofLabel;
+  document.getElementById("pvcSchemeLabel").textContent = t.pvcSchemeLabel;
 
   // Tabs & Return Buttons
   const tabMembersLabel = document.getElementById("tabMembersLabel");
@@ -752,19 +899,27 @@ function applyLanguage(lang) {
   const btnSchemesBackToMembersText = document.getElementById("btnSchemesBackToMembersText");
   if (btnSchemesBackToMembersText) btnSchemesBackToMembersText.textContent = t.btnReturnToMembersText;
 
-  // Quota & FPS
+  // Quota & FPS Tab
   const quotaHeaderTitle = document.getElementById("quotaHeaderTitle");
   if (quotaHeaderTitle) quotaHeaderTitle.textContent = t.quotaHeaderTitle;
   const quotaSubheader = document.getElementById("quotaSubheader");
   if (quotaSubheader) quotaSubheader.textContent = t.quotaSubheader;
   const quotaRiceLabel = document.getElementById("quotaRiceLabel");
   if (quotaRiceLabel) quotaRiceLabel.textContent = t.quotaRiceLabel;
+  const quotaRiceSub = document.getElementById("quotaRiceSub");
+  if (quotaRiceSub) quotaRiceSub.textContent = t.quotaRiceSub;
   const quotaDbtLabel = document.getElementById("quotaDbtLabel");
   if (quotaDbtLabel) quotaDbtLabel.textContent = t.quotaDbtLabel;
+  const quotaDbtSub = document.getElementById("quotaDbtSub");
+  if (quotaDbtSub) quotaDbtSub.textContent = t.quotaDbtSub;
   const quotaGrainsLabel = document.getElementById("quotaGrainsLabel");
   if (quotaGrainsLabel) quotaGrainsLabel.textContent = t.quotaGrainsLabel;
+  const quotaGrainsSub = document.getElementById("quotaGrainsSub");
+  if (quotaGrainsSub) quotaGrainsSub.textContent = t.quotaGrainsSub;
   const quotaSugarLabel = document.getElementById("quotaSugarLabel");
   if (quotaSugarLabel) quotaSugarLabel.textContent = t.quotaSugarLabel;
+  const quotaSugarSub = document.getElementById("quotaSugarSub");
+  if (quotaSugarSub) quotaSugarSub.textContent = t.quotaSugarSub;
 
   const fpsDetailsHeader = document.getElementById("fpsDetailsHeader");
   if (fpsDetailsHeader) fpsDetailsHeader.textContent = t.fpsDetailsHeader;
@@ -797,11 +952,23 @@ function applyLanguage(lang) {
   const fpsHelplineLabel = document.getElementById("fpsHelplineLabel");
   if (fpsHelplineLabel) fpsHelplineLabel.textContent = t.fpsHelplineLabel;
 
-  // Schemes
+  // Schemes Tab
   const schemesHeaderTitle = document.getElementById("schemesHeaderTitle");
   if (schemesHeaderTitle) schemesHeaderTitle.textContent = t.schemesHeaderTitle;
   const schemesHeaderDesc = document.getElementById("schemesHeaderDesc");
   if (schemesHeaderDesc) schemesHeaderDesc.textContent = t.schemesHeaderDesc;
+  const badgeEligible = document.getElementById("badgeEligible");
+  if (badgeEligible) badgeEligible.textContent = t.badgeEligible;
+  const badgeMonthlyCash = document.getElementById("badgeMonthlyCash");
+  if (badgeMonthlyCash) badgeMonthlyCash.textContent = t.badgeMonthlyCash;
+  const badgeHealthCover = document.getElementById("badgeHealthCover");
+  if (badgeHealthCover) badgeHealthCover.textContent = t.badgeHealthCover;
+  const badgeSubsidized = document.getElementById("badgeSubsidized");
+  if (badgeSubsidized) badgeSubsidized.textContent = t.badgeSubsidized;
+  const badgeEducationAid = document.getElementById("badgeEducationAid");
+  if (badgeEducationAid) badgeEducationAid.textContent = t.badgeEducationAid;
+  const badgeHousingAid = document.getElementById("badgeHousingAid");
+  if (badgeHousingAid) badgeHousingAid.textContent = t.badgeHousingAid;
   const schemeAnnaTitle = document.getElementById("schemeAnnaTitle");
   if (schemeAnnaTitle) schemeAnnaTitle.textContent = t.schemeAnnaTitle;
   const schemeAnnaDesc = document.getElementById("schemeAnnaDesc");
@@ -828,9 +995,6 @@ function applyLanguage(lang) {
   if (schemeHousingDesc) schemeHousingDesc.textContent = t.schemeHousingDesc;
 
   // Roster View
-  document.getElementById("pvcRcLabel").textContent = t.pvcRcLabel;
-  document.getElementById("pvcHofLabel").textContent = t.pvcHofLabel;
-  document.getElementById("pvcSchemeLabel").textContent = t.pvcSchemeLabel;
   document.getElementById("rosterHeaderLabel").textContent = t.rosterHeaderLabel;
   document.getElementById("backBtnText").textContent = t.backBtnText;
   document.getElementById("proceedBioText").textContent = t.proceedBioText;
@@ -848,6 +1012,8 @@ function applyLanguage(lang) {
   // Certificate View
   document.getElementById("certMainHeading").textContent = t.certMainHeading;
   document.getElementById("certRefLabel").textContent = t.certRefLabel;
+  const certVerifiedBadgeText = document.getElementById("certVerifiedBadgeText");
+  if (certVerifiedBadgeText) certVerifiedBadgeText.textContent = t.certVerifiedBadgeText;
   document.getElementById("certCitizenLabel").textContent = t.certCitizenLabel;
   const certHofLabel = document.getElementById("certHofLabel");
   if (certHofLabel) certHofLabel.textContent = t.certHofLabel;
@@ -856,8 +1022,18 @@ function applyLanguage(lang) {
   document.getElementById("certAadhaarLabel").textContent = t.certAadhaarLabel;
   document.getElementById("certRcLabel").textContent = t.certRcLabel;
   document.getElementById("certSourceLabel").textContent = t.certSourceLabel;
+  const certSourceValue = document.getElementById("certSourceValue");
+  if (certSourceValue) certSourceValue.textContent = t.certSourceValue;
+  const certVerifiedDateLabel = document.getElementById("certVerifiedDateLabel");
+  if (certVerifiedDateLabel) certVerifiedDateLabel.textContent = t.certVerifiedDateLabel;
+  const certApprovedMeta = document.getElementById("certApprovedMeta");
+  if (certApprovedMeta) certApprovedMeta.textContent = t.certApprovedMeta;
   document.getElementById("printCertText").textContent = t.printCertText;
   document.getElementById("newSessionText").textContent = t.newSessionText;
+
+  // App Footer
+  const appFooterText = document.getElementById("appFooterText");
+  if (appFooterText) appFooterText.textContent = t.appFooterText;
 
   // Scanner Modal
   scannerModalTitle.textContent = t.scannerModalTitle;
@@ -1383,7 +1559,7 @@ function renderFamilyRoster(data) {
   if (pvcHof) pvcHof.textContent = hofName;
 
   const schemeEl = document.getElementById("pvcSchemeValue");
-  if (schemeEl) schemeEl.textContent = data.cardType || data.cardTypeLabel || "PHH / BPL Category";
+  if (schemeEl) schemeEl.textContent = getTranslatedCardType(data.cardType || data.cardTypeLabel, isKn);
 
   const members = Array.isArray(data.members) ? data.members : [];
   const memberCount = members.length;
@@ -1391,8 +1567,10 @@ function renderFamilyRoster(data) {
   if (countEl) countEl.textContent = isKn ? `${memberCount} ಸದಸ್ಯರು` : `${memberCount} Members`;
 
   // Dynamic Quota & Entitlement Calculations
-  const quotaMembersBadge = document.getElementById("quotaMembersCount");
-  if (quotaMembersBadge) quotaMembersBadge.textContent = memberCount;
+  const quotaMembersBadge = document.getElementById("quotaMembersBadge");
+  if (quotaMembersBadge) {
+    quotaMembersBadge.innerHTML = `<span id="quotaMembersCount">${memberCount}</span> ${isKn ? "ಸದಸ್ಯರು" : "Members"}`;
+  }
   
   const riceKg = memberCount * 5;
   const dbtCash = memberCount * 170;
@@ -1415,7 +1593,7 @@ function renderFamilyRoster(data) {
   appState.selectedMember = null;
 
   if (members.length === 0) {
-    container.innerHTML = `<div class="p-4 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-slate-200">No active members found on this ration card.</div>`;
+    container.innerHTML = `<div class="p-4 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-slate-200">${translations[appState.currentLang].noActiveMembers}</div>`;
     return;
   }
 
@@ -1436,15 +1614,18 @@ function renderFamilyRoster(data) {
     }`;
 
     const displayName = isKannada ? (member.nameKn || member.nameEn) : member.nameEn;
-    const relationName = isKannada 
-      ? (member.relation === "HEAD" || member.relation === "HEAD OF FAMILY" ? "ಮುಖ್ಯಸ್ಥರು" : "ಸದಸ್ಯರು")
-      : member.relation;
+    const relationName = getTranslatedRelation(member.relation, isKannada);
+    const genderName = getTranslatedGender(member.gender, isKannada);
     const initials = (member.nameEn || "KA").slice(0, 2).toUpperCase();
 
     const isVerified = (member.ekyc === "VERIFIED" || member.isKycComplete === true);
     const kycBadge = isVerified 
       ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1 shadow-2xs"><i class="fa-solid fa-circle-check text-[9px] text-emerald-600"></i> ${translations[appState.currentLang].ekycVerifiedBadge}</span>`
       : `<span class="text-[9px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1"><i class="fa-solid fa-clock text-[8px] text-slate-400"></i> ${translations[appState.currentLang].ekycPendingBadge}</span>`;
+
+    const aadhaarLabel = isKannada ? "ಆಧಾರ್" : "Aadhaar";
+    const ageLabel = isKannada ? "ವಯಸ್ಸು" : "Age";
+    const selectPillText = translations[appState.currentLang].selectionPill || (isKannada ? "ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ" : "Selected");
 
     card.innerHTML = `
       <div class="member-card-main flex items-center gap-3">
@@ -1460,15 +1641,15 @@ function renderFamilyRoster(data) {
           </div>
           <div class="member-meta flex items-center gap-2 mt-1 text-[11px] text-slate-500">
             <span class="member-aadhaar text-emerald-700 font-semibold font-mono text-[10px] flex items-center gap-1">
-              <i class="fa-solid fa-fingerprint text-[9px]"></i> Aadhaar: •••• ${member.aadhaarLast4}
+              <i class="fa-solid fa-fingerprint text-[9px]"></i> ${aadhaarLabel}: •••• ${member.aadhaarLast4}
             </span>
             <span class="member-meta-separator">•</span>
-            <span class="member-demographics text-[10px] text-slate-400 font-mono">${member.gender} | Age: ${member.age}</span>
+            <span class="member-demographics text-[10px] text-slate-400 font-mono">${genderName} | ${ageLabel}: ${member.age}</span>
           </div>
         </div>
       </div>
       <div class="selection-pill ${isDefault ? '' : 'hidden'} text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full flex items-center gap-1">
-        <i class="fa-solid fa-check text-[9px]"></i> Selected
+        <i class="fa-solid fa-check text-[9px]"></i> ${selectPillText}
       </div>
     `;
 
@@ -1507,7 +1688,7 @@ function updateCandidateDisplay() {
   const aadhaarEl = document.getElementById("bioAadhaarPill");
 
   if (nameEl) nameEl.textContent = isKn ? (appState.selectedMember.nameKn || appState.selectedMember.nameEn) : appState.selectedMember.nameEn;
-  if (aadhaarEl) aadhaarEl.textContent = `Aadhaar: •••• ${appState.selectedMember.aadhaarLast4}`;
+  if (aadhaarEl) aadhaarEl.textContent = `${isKn ? "ಆಧಾರ್" : "Aadhaar"}: •••• ${appState.selectedMember.aadhaarLast4}`;
 }
 
 // Biometric Camera Controls
@@ -1641,23 +1822,31 @@ async function handleSubmitFinalKYC() {
 }
 
 function renderCertificateView(cert) {
+  const isKn = appState.currentLang === "KN";
   document.getElementById("certRefText").textContent = cert.kycReferenceId;
-  document.getElementById("certCitizenName").textContent = cert.beneficiary.memberNameEn;
+
+  const citizenName = isKn 
+    ? (appState.selectedMember?.nameKn || cert.beneficiary.memberNameKn || cert.beneficiary.memberNameEn)
+    : cert.beneficiary.memberNameEn;
+  document.getElementById("certCitizenName").textContent = citizenName;
 
   const hofEl = document.getElementById("certHofName");
   if (hofEl) {
-    hofEl.textContent = cert.beneficiary.headOfFamily || appState.cardData?.headOfFamily?.nameEn || "Hazira";
+    hofEl.textContent = isKn
+      ? (appState.cardData?.headOfFamily?.nameKn || cert.beneficiary.headOfFamilyKn || cert.beneficiary.headOfFamily || "Hazira")
+      : (cert.beneficiary.headOfFamily || appState.cardData?.headOfFamily?.nameEn || "Hazira");
   }
 
   const relEl = document.getElementById("certRelation");
   if (relEl) {
-    relEl.textContent = cert.beneficiary.relationship || appState.selectedMember?.relation || "MEMBER";
+    relEl.textContent = getTranslatedRelation(cert.beneficiary.relationship || appState.selectedMember?.relation || "MEMBER", isKn);
   }
 
   const last4 = (cert.beneficiary.aadhaarMasked || "").slice(-4) || appState.selectedMember?.aadhaarLast4 || "XXXX";
-  document.getElementById("certAadhaarStatus").textContent = `•••• ${last4} (${appState.currentLang === "KN" ? "ಪರಿಶೀಲಿಸಲಾಗಿದೆ ✓" : "Verified ✓"})`;
+  const verifiedBadge = isKn ? "ದೃಢೀಕರಿಸಲಾಗಿದೆ ✓" : "Verified ✓";
+  document.getElementById("certAadhaarStatus").textContent = `•••• ${last4} (${verifiedBadge})`;
   document.getElementById("certRcDisplay").textContent = cert.beneficiary.rationCardNumber;
-  document.getElementById("certTimestampText").textContent = new Date(cert.verifiedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  document.getElementById("certTimestampText").textContent = new Date(cert.verifiedAt).toLocaleDateString(isKn ? "kn-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" });
   
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(
     `KA-KYC:${cert.kycReferenceId}:${cert.beneficiary.rationCardNumber}:${cert.beneficiary.memberNameEn}`
