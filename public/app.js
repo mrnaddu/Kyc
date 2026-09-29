@@ -23,6 +23,7 @@ const translations = {
     rcInputPlaceholder: "Enter card number",
     captchaHeaderLabel: "Security Code",
     refreshCaptchaText: "New Code",
+    captchaHelpText: "Type 5 characters shown on left",
     consentTextLabel: "I agree to verify my ration card details for e-KYC.",
     fetchBtnText: "Find My Ration Card",
     pvcRcLabel: "Ration Card Number",
@@ -149,6 +150,7 @@ const translations = {
     rcInputPlaceholder: "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ",
     captchaHeaderLabel: "ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್",
     refreshCaptchaText: "ಹೊಸ ಕೋಡ್",
+    captchaHelpText: "ಎಡಭಾಗದಲ್ಲಿರುವ 5 ಅಕ್ಷರಗಳನ್ನು ನಮೂದಿಸಿ",
     consentTextLabel: "ಇ-ಕೆವೈಸಿಗಾಗಿ ನನ್ನ ಪಡಿತರ ಚೀಟಿ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ನಾನು ಸಮ್ಮತಿಸುತ್ತೇನೆ.",
     fetchBtnText: "ಪಡಿತರ ಚೀಟಿ ಹುಡುಕಿ",
     pvcRcLabel: "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ",
@@ -497,11 +499,29 @@ function initInputInteractions() {
     }
   });
 
-  // Auto-uppercase captcha input
+  // Auto-uppercase captcha input with live feedback
   captchaInput.addEventListener("input", (e) => {
     e.target.value = e.target.value.toUpperCase();
     clearCaptchaError();
+    updateCaptchaFeedback();
   });
+}
+
+function updateCaptchaFeedback() {
+  const charCount = document.getElementById("captchaCharCount");
+  const indicator = document.getElementById("captchaStatusIndicator");
+  const len = captchaInput ? captchaInput.value.length : 0;
+  if (charCount) {
+    charCount.textContent = `${len}/5`;
+    charCount.className = len === 5 ? "font-mono font-bold text-emerald-600" : "font-mono font-bold text-slate-400";
+  }
+  if (indicator) {
+    if (len === 5) {
+      indicator.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>';
+    } else {
+      indicator.innerHTML = '<i class="fa-solid fa-lock text-slate-300 text-xs"></i>';
+    }
+  }
 }
 
 function showRcError(msg) {
@@ -638,8 +658,12 @@ function applyLanguage(lang) {
   document.getElementById("rcInputLabel").innerHTML = `${t.rcInputLabel} <span class="text-rose-500">*</span>`;
   document.getElementById("scanRCText").textContent = t.scanRCText;
   rcInput.placeholder = t.rcInputPlaceholder;
-  document.getElementById("captchaHeaderLabel").textContent = t.captchaHeaderLabel;
-  document.getElementById("refreshCaptchaText").textContent = t.refreshCaptchaText;
+  const captchaHeaderLabel = document.getElementById("captchaHeaderLabel");
+  if (captchaHeaderLabel) captchaHeaderLabel.innerHTML = `<i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i> <span>${t.captchaHeaderLabel}</span>`;
+  const refreshCaptchaText = document.getElementById("refreshCaptchaText");
+  if (refreshCaptchaText) refreshCaptchaText.textContent = t.refreshCaptchaText;
+  const captchaHelpText = document.getElementById("captchaHelpText");
+  if (captchaHelpText) captchaHelpText.innerHTML = `<i class="fa-solid fa-circle-info text-[9px] text-slate-400"></i> <span>${t.captchaHelpText}</span>`;
   document.getElementById("consentTextLabel").innerHTML = t.consentTextLabel;
   document.getElementById("fetchBtnText").textContent = t.fetchBtnText;
 
@@ -1113,6 +1137,8 @@ function bindEventHandlers() {
 
   // RC Search & Captcha Refresh
   btnRefreshCaptcha.addEventListener("click", loadCaptcha);
+  const captchaBoxWrapper = document.getElementById("captchaBoxWrapper");
+  if (captchaBoxWrapper) captchaBoxWrapper.addEventListener("click", loadCaptcha);
   btnFetchRationCard.addEventListener("click", handleFetchRationCard);
 
   // Error Modal Actions
@@ -1162,6 +1188,7 @@ async function loadCaptcha() {
       captchaBox.innerHTML = `<img src="${data.imageUri}" alt="Captcha" class="h-full w-full object-contain" />`;
       captchaInput.value = "";
       clearCaptchaError();
+      updateCaptchaFeedback();
     }
   } catch (err) {
     captchaBox.innerHTML = `<span class="text-xs text-rose-500 font-semibold">Offline</span>`;
@@ -1648,6 +1675,7 @@ function handleNavHome() {
   appState.selectedMember = null;
   rcInput.value = "";
   captchaInput.value = "";
+  updateCaptchaFeedback();
   rcDigitCounter.textContent = "";
   rcDigitCounter.className = "text-[10px] font-mono text-slate-400";
   clearRcError();

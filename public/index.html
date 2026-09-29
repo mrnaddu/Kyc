@@ -165,17 +165,21 @@
           <!-- Ration Card Input Card -->
           <div id="rcCardContainer" class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2.5 shadow-xs transition-all">
             <div class="field-heading-row flex items-center justify-between">
-              <label id="rcInputLabel" class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Ration Card Number <span class="text-rose-500">*</span>
-              </label>
-              <div class="field-tools flex items-center gap-2">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <label id="rcInputLabel" class="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
+                  Ration Card Number <span class="text-rose-500">*</span>
+                </label>
                 <span id="rcDigitCounter" class="text-[10px] font-mono text-slate-400"></span>
-                <span class="text-slate-300">|</span>
-                <!-- Card OCR Scanner Trigger -->
-                <button type="button" id="btnScanRC" class="text-[11px] font-semibold text-slate-700 hover:text-slate-900 flex items-center gap-1 transition">
-                  <i class="fa-solid fa-camera text-slate-500"></i> <span id="scanRCText">Scan Card</span>
-                </button>
               </div>
+              <!-- Card OCR Scanner Trigger -->
+              <button 
+                type="button" 
+                id="btnScanRC" 
+                class="text-[11px] font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition active:scale-95 shadow-2xs shrink-0"
+              >
+                <i class="fa-solid fa-camera text-amber-600 text-xs"></i> 
+                <span id="scanRCText">Scan Card</span>
+              </button>
             </div>
 
             <div class="relative">
@@ -200,27 +204,65 @@
             </p>
           </div>
 
-          <!-- Security Captcha Card -->
+          <!-- Security Captcha Card (Redesigned & Modern) -->
           <div id="captchaCardContainer" class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2.5 shadow-xs transition-all">
             <div class="field-heading-row flex items-center justify-between">
-              <span id="captchaHeaderLabel" class="text-xs font-bold text-slate-700 uppercase tracking-wider">Security Code</span>
-              <button type="button" id="btnRefreshCaptcha" class="text-xs text-slate-600 hover:text-slate-900 flex items-center gap-1 font-medium transition">
-                <i class="fa-solid fa-rotate text-[10px]" id="captchaSpinIcon"></i> <span id="refreshCaptchaText">New Code</span>
+              <span id="captchaHeaderLabel" class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i>
+                <span>Security Code</span>
+              </span>
+              <button 
+                type="button" 
+                id="btnRefreshCaptcha" 
+                class="text-[11px] font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition active:scale-95 shadow-2xs shrink-0"
+                title="Get a new security code"
+              >
+                <i class="fa-solid fa-rotate text-amber-600 text-xs" id="captchaSpinIcon"></i>
+                <span id="refreshCaptchaText">New Code</span>
               </button>
             </div>
             
-            <div class="captcha-fields flex items-center gap-3">
-              <div id="captchaBox" class="h-12 w-36 rounded-xl bg-white border border-slate-200 overflow-hidden flex items-center justify-center shadow-inner shrink-0">
-                <span class="text-xs text-slate-400">Loading...</span>
+            <!-- Modern Side-by-Side Verification Widget -->
+            <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+              <!-- Left: Captcha Image Card with Interactive Tap-to-Refresh -->
+              <div 
+                id="captchaBoxWrapper"
+                class="group relative h-12 rounded-xl bg-gradient-to-br from-slate-100 to-amber-50/40 border border-slate-200 p-1 flex items-center justify-center cursor-pointer transition hover:border-amber-400/80 hover:shadow-2xs select-none active:scale-[0.98]"
+                title="Tap image to get a new code"
+              >
+                <div id="captchaBox" class="w-full h-full rounded-lg bg-white overflow-hidden flex items-center justify-center shadow-inner">
+                  <span class="text-xs text-slate-400 font-medium">Loading...</span>
+                </div>
+                <span class="absolute -bottom-1.5 right-2 px-1.5 py-0.2 rounded text-[8px] font-semibold bg-slate-800 text-slate-200 shadow-xs pointer-events-none opacity-80 group-hover:opacity-100 transition">
+                  tap ↻
+                </span>
               </div>
-              <input 
-                type="text" 
-                id="captchaInput" 
-                maxlength="5" 
-                placeholder="CODE"
-                autocomplete="off"
-                class="flex-1 py-2.5 px-3 text-center uppercase tracking-widest font-mono font-bold text-lg rounded-xl border border-slate-300 bg-white focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-              />
+
+              <!-- Right: Stylized Input Field -->
+              <div class="relative flex items-center">
+                <input 
+                  type="text" 
+                  id="captchaInput" 
+                  maxlength="5" 
+                  placeholder="CODE"
+                  autocomplete="off"
+                  autocapitalize="characters"
+                  class="w-full h-12 py-2.5 pl-3 pr-8 text-center uppercase tracking-widest font-mono font-extrabold text-base rounded-xl border border-slate-300 bg-white focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 transition shadow-2xs placeholder:tracking-normal placeholder:font-normal placeholder:text-slate-300"
+                />
+                <!-- Live status checkmark / lock icon -->
+                <span id="captchaStatusIndicator" class="absolute right-2.5 text-slate-300 text-sm pointer-events-none transition-colors">
+                  <i class="fa-solid fa-lock text-xs"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Helpful Micro-Caption -->
+            <div class="flex items-center justify-between text-[10px] text-slate-400 px-0.5 pt-0.5">
+              <span class="flex items-center gap-1" id="captchaHelpText">
+                <i class="fa-solid fa-circle-info text-[9px] text-slate-400"></i>
+                <span>Type 5 characters shown on left</span>
+              </span>
+              <span id="captchaCharCount" class="font-mono font-bold text-slate-400">0/5</span>
             </div>
 
             <!-- Inline Friendly Captcha Error -->
