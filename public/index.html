@@ -211,15 +211,6 @@
                 <i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i>
                 <span>Security Code</span>
               </span>
-              <button 
-                type="button" 
-                id="btnRefreshCaptcha" 
-                class="text-[11px] font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition active:scale-95 shadow-2xs shrink-0"
-                title="Get a new security code"
-              >
-                <i class="fa-solid fa-rotate text-amber-600 text-xs" id="captchaSpinIcon"></i>
-                <span id="refreshCaptchaText">New Code</span>
-              </button>
             </div>
             
             <!-- Modern Side-by-Side Verification Widget -->
@@ -229,12 +220,15 @@
                 id="captchaBoxWrapper"
                 class="group relative h-12 rounded-xl bg-gradient-to-br from-slate-100 to-amber-50/40 border border-slate-200 p-1 flex items-center justify-center cursor-pointer transition hover:border-amber-400/80 hover:shadow-2xs select-none active:scale-[0.98]"
                 title="Tap image to get a new code"
+                role="button"
+                tabindex="0"
               >
                 <div id="captchaBox" class="w-full h-full rounded-lg bg-white overflow-hidden flex items-center justify-center shadow-inner">
                   <span class="text-xs text-slate-400 font-medium">Loading...</span>
                 </div>
-                <span class="absolute -bottom-1.5 right-2 px-1.5 py-0.2 rounded text-[8px] font-semibold bg-slate-800 text-slate-200 shadow-xs pointer-events-none opacity-80 group-hover:opacity-100 transition">
-                  tap ↻
+                <span class="absolute -bottom-1.5 right-2 px-1.5 py-0.5 rounded-full text-[8px] font-bold bg-slate-900 text-white shadow-xs pointer-events-none opacity-85 group-hover:opacity-100 transition flex items-center gap-1">
+                  <i class="fa-solid fa-rotate text-[7px]" id="captchaSpinIcon"></i>
+                  <span id="tapToRefreshText">tap ↻</span>
                 </span>
               </div>
 

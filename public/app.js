@@ -23,6 +23,7 @@ const translations = {
     rcInputPlaceholder: "Enter card number",
     captchaHeaderLabel: "Security Code",
     refreshCaptchaText: "New Code",
+    tapToRefreshText: "tap ↻",
     captchaHelpText: "Type 5 characters shown on left",
     consentTextLabel: "I agree to verify my ration card details for e-KYC.",
     fetchBtnText: "Find My Ration Card",
@@ -150,6 +151,7 @@ const translations = {
     rcInputPlaceholder: "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ",
     captchaHeaderLabel: "ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್",
     refreshCaptchaText: "ಹೊಸ ಕೋಡ್",
+    tapToRefreshText: "ಬದಲಿಸಿ ↻",
     captchaHelpText: "ಎಡಭಾಗದಲ್ಲಿರುವ 5 ಅಕ್ಷರಗಳನ್ನು ನಮೂದಿಸಿ",
     consentTextLabel: "ಇ-ಕೆವೈಸಿಗಾಗಿ ನನ್ನ ಪಡಿತರ ಚೀಟಿ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ನಾನು ಸಮ್ಮತಿಸುತ್ತೇನೆ.",
     fetchBtnText: "ಪಡಿತರ ಚೀಟಿ ಹುಡುಕಿ",
@@ -499,12 +501,60 @@ function initInputInteractions() {
     }
   });
 
-  // Auto-uppercase captcha input with live feedback
+  // Auto-uppercase captcha input with live feedback & auto-dismiss keyboard on 5 characters
   captchaInput.addEventListener("input", (e) => {
     e.target.value = e.target.value.toUpperCase();
     clearCaptchaError();
     updateCaptchaFeedback();
+    if (e.target.value.length === 5) {
+      dismissKeyboard();
+    }
   });
+
+  // Enter key handling on Ration Card input
+  rcInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (captchaInput) {
+        captchaInput.focus();
+      } else {
+        dismissKeyboard();
+      }
+    }
+  });
+
+  // Enter key handling on Captcha input
+  captchaInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      dismissKeyboard();
+      handleFetchRationCard();
+    }
+  });
+
+  // Tap outside inputs to dismiss keyboard
+  const handleOutsideTap = (e) => {
+    const active = document.activeElement;
+    if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA")) {
+      if (!e.target.closest("input, textarea, button, [role='button'], a, label, #captchaBoxWrapper")) {
+        dismissKeyboard();
+      }
+    }
+  };
+  document.addEventListener("touchstart", handleOutsideTap, { passive: true });
+  document.addEventListener("mousedown", handleOutsideTap);
+}
+
+// Dismiss soft keyboard across mobile browsers and native Android WebView
+function dismissKeyboard() {
+  if (document.activeElement && typeof document.activeElement.blur === "function") {
+    document.activeElement.blur();
+  }
+  if (window.AndroidKyc && typeof window.AndroidKyc.hideKeyboard === "function") {
+    try {
+      window.AndroidKyc.hideKeyboard();
+    } catch (_) {}
+  }
 }
 
 function updateCaptchaFeedback() {
@@ -662,6 +712,8 @@ function applyLanguage(lang) {
   if (captchaHeaderLabel) captchaHeaderLabel.innerHTML = `<i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i> <span>${t.captchaHeaderLabel}</span>`;
   const refreshCaptchaText = document.getElementById("refreshCaptchaText");
   if (refreshCaptchaText) refreshCaptchaText.textContent = t.refreshCaptchaText;
+  const tapToRefreshText = document.getElementById("tapToRefreshText");
+  if (tapToRefreshText) tapToRefreshText.textContent = t.tapToRefreshText || "tap ↻";
   const captchaHelpText = document.getElementById("captchaHelpText");
   if (captchaHelpText) captchaHelpText.innerHTML = `<i class="fa-solid fa-circle-info text-[9px] text-slate-400"></i> <span>${t.captchaHelpText}</span>`;
   document.getElementById("consentTextLabel").innerHTML = t.consentTextLabel;
@@ -1136,10 +1188,30 @@ function bindEventHandlers() {
   if (btnSchemesReturnToMembers) btnSchemesReturnToMembers.addEventListener("click", () => switchRosterTab("members"));
 
   // RC Search & Captcha Refresh
-  btnRefreshCaptcha.addEventListener("click", loadCaptcha);
+  if (btnRefreshCaptcha) {
+    btnRefreshCaptcha.addEventListener("click", () => {
+      dismissKeyboard();
+      loadCaptcha();
+    });
+  }
   const captchaBoxWrapper = document.getElementById("captchaBoxWrapper");
-  if (captchaBoxWrapper) captchaBoxWrapper.addEventListener("click", loadCaptcha);
-  btnFetchRationCard.addEventListener("click", handleFetchRationCard);
+  if (captchaBoxWrapper) {
+    captchaBoxWrapper.addEventListener("click", () => {
+      dismissKeyboard();
+      loadCaptcha();
+    });
+    captchaBoxWrapper.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        dismissKeyboard();
+        loadCaptcha();
+      }
+    });
+  }
+  btnFetchRationCard.addEventListener("click", () => {
+    dismissKeyboard();
+    handleFetchRationCard();
+  });
 
   // Error Modal Actions
   btnErrorRetry.addEventListener("click", () => {
@@ -1199,6 +1271,7 @@ async function loadCaptcha() {
 
 // Fetch Ration Card with Multi-Stage Loading & Friendly Error Handling
 async function handleFetchRationCard() {
+  dismissKeyboard();
   hideToast();
   clearRcError();
   clearCaptchaError();

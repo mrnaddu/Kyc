@@ -57,6 +57,25 @@ final class NativeKycBridge {
     }
 
     @JavascriptInterface
+    public void hideKeyboard() {
+        activity.runOnUiThread(() -> {
+            try {
+                android.view.View view = activity.getCurrentFocus();
+                if (view == null) {
+                    view = webView;
+                }
+                if (view != null) {
+                    android.view.inputmethod.InputMethodManager imm =
+                            (android.view.inputmethod.InputMethodManager) activity.getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                }
+            } catch (Exception ignored) {}
+        });
+    }
+
+    @JavascriptInterface
     public void request(String requestId, String endpoint, String requestBody) {
         executor.execute(() -> {
             JSONObject result;
