@@ -6,10 +6,10 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Nanna Ration" />
+  <meta name="apple-mobile-web-app-title" content="Nanna Seva" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="theme-color" content="#f8fafc" />
-  <title>Nanna Ration (ನನ್ನ ರೇಷನ್) - e-KYC | Government of Karnataka</title>
+  <title>Nanna Seva (ನನ್ನ ಸೇವೆ) • Karnataka Aadhaar & Ration Services</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -55,8 +55,8 @@
       </div>
       <div class="launch-copy">
         <p class="launch-department">Government of Karnataka</p>
-        <h1>Nanna Ration</h1>
-        <p class="launch-kannada font-kannada">ನನ್ನ ರೇಷನ್ • ಆಹಾರ ಮತ್ತು ನಾಗರಿಕ ಸರಬರಾಜು ಇಲಾಖೆ</p>
+        <h1>Nanna Seva</h1>
+        <p class="launch-kannada font-kannada">ನನ್ನ ಸೇವೆ • ಆಧಾರ್ ಮತ್ತು ಪಡಿತರ ಸೇವೆಗಳು</p>
       </div>
     </div>
 
@@ -93,8 +93,8 @@
             <i class="fa-solid fa-landmark"></i>
           </div>
           <div>
-            <h1 id="appTitleText" class="text-xs font-bold text-slate-900 uppercase tracking-wider leading-none">Nanna Ration</h1>
-            <p id="appBrandSubtitle" class="app-brand-subtitle text-[9px] text-slate-500 font-kannada leading-tight mt-0.5">ಕರ್ನಾಟಕ ಸರ್ಕಾರ • ಆಹಾರ ಇಲಾಖೆ</p>
+            <h1 id="appTitleText" class="text-xs font-bold text-slate-900 uppercase tracking-wider leading-none">Nanna Seva</h1>
+            <p id="appBrandSubtitle" class="app-brand-subtitle text-[9px] text-slate-500 font-kannada leading-tight mt-0.5">ಕರ್ನಾಟಕ ಸರ್ಕಾರ • ಆಧಾರ್ & ಪಡಿತರ ಸೇವೆಗಳು</p>
           </div>
         </div>
       </div>
@@ -155,9 +155,9 @@
             <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
             <span id="deptBadgeText">Food & Civil Supplies Department • Government of Karnataka</span>
           </div>
-          <h2 id="rcSearchHeading" class="text-xl font-extrabold text-slate-900 tracking-tight">Ration Card e-KYC</h2>
+          <h2 id="rcSearchHeading" class="text-xl font-extrabold text-slate-900 tracking-tight">Nanna Seva e-KYC</h2>
           <p id="rcSearchSubheading" class="text-xs text-slate-500 mt-1 leading-relaxed">
-            Enter your ration card number to verify your family details.
+            Enter your ration card number to verify Aadhaar and family details.
           </p>
         </div>
 
@@ -1182,6 +1182,34 @@
               <a href="https://ahara.karnataka.gov.in/" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-center block text-[11px] transition shadow-xs">
                 <span id="btnRcChangeHof">Apply for HOF Change ↗</span>
               </a>
+            </div>
+
+            <!-- Correction 4: Transfer Ration Card & FPS (Within Karnataka) -->
+            <div class="p-3 rounded-xl bg-white border border-blue-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-truck-ramp-box text-blue-600"></i>
+                  <span id="rcTransferTitle">Transfer Ration Card (Within Karnataka)</span>
+                </span>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800" id="rcTransferBadge">SAKALA • ₹25–₹50</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="rcTransferDesc">
+                Shift your ration card between districts (e.g. Mysuru to Bengaluru) or change your Fair Price Shop (FPS) within Karnataka.
+              </p>
+              <div class="p-2 rounded-lg bg-amber-50/80 border border-amber-200/70 text-[10px] text-amber-900 leading-relaxed" id="rcTransferRule">
+                <strong>Rule (Aadhaar First):</strong> Update your residential address in Aadhaar before applying, as the Ahara ePDS system verifies your new address against UIDAI database.
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="rcTransferProofs">
+                <strong>Required Proofs:</strong> Updated Aadhaar card, Electricity Bill / Rental Agreement / Gas Connection, Existing Ration Card Number, Head of Family Aadhaar OTP/Biometric.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                <a href="https://ahara.kar.nic.in/" target="_blank" rel="noopener" class="flex-1 py-2 px-3 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-bold text-center block text-[11px] transition shadow-xs">
+                  <span id="btnRcTransferApply">Apply on Ahara Amendment Portal ↗</span>
+                </a>
+                <a href="https://gramaone.karnataka.gov.in/" target="_blank" rel="noopener" class="py-2 px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-center block text-[11px] transition border border-slate-300">
+                  <span id="btnRcTransferCsc">Locate Nearest Grama One ↗</span>
+                </a>
+              </div>
             </div>
 
             <!-- Assisted Service Centres -->

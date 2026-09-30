@@ -285,7 +285,7 @@ app.post("/api/confirm-kyc", (req, res) => {
 // Start Server
 app.listen(PORT, () => {
   console.log(`=======================================================`);
-  console.log(`  Karnataka Ahara Ration Card KYC Server Active!       `);
+  console.log(`  Karnataka Nanna Seva (Aadhaar & Ration) Server Active!`);
   console.log(`  Local URL: http://localhost:${PORT}                  `);
   console.log(`=======================================================`);
 });

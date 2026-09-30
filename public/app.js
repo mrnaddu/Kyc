@@ -7,8 +7,8 @@
 // Bilingual Localization Dictionary
 const translations = {
   EN: {
-    appTitle: "Nanna Ration",
-    appBrandSubtitle: "Govt of Karnataka • Food Dept",
+    appTitle: "Nanna Seva",
+    appBrandSubtitle: "Govt of Karnataka • Aadhaar & Ration",
     langButton: "ಕನ್ನಡ",
     steps: [
       "Step 1 of 4: Enter Ration Card Number",
@@ -17,8 +17,8 @@ const translations = {
       "Step 4 of 4: e-KYC Certificate"
     ],
     deptBadgeText: "Food & Civil Supplies Department • Government of Karnataka",
-    rcSearchHeading: "Nanna Ration e-KYC",
-    rcSearchSubheading: "Enter your ration card number to verify your family details.",
+    rcSearchHeading: "Nanna Seva e-KYC",
+    rcSearchSubheading: "Enter your ration card number to verify Aadhaar and family details.",
     rcInputLabel: "Ration Card Number",
     rcInputPlaceholder: "Enter card number (e.g. 260300261661)",
     rcErrorInvalid: "Please enter a valid Ration Card number.",
@@ -204,6 +204,13 @@ const translations = {
     rcChangeHofTitle: "Change Head of Family (HOF)",
     rcChangeHofDesc: "Required to receive ₹2,000/month Gruha Lakshmi aid if the previous head is deceased or if a male member was registered as HOF. Must designate the eldest adult female.",
     btnRcChangeHof: "Apply for HOF Change ↗",
+    rcTransferTitle: "Transfer Ration Card (Within Karnataka)",
+    rcTransferBadge: "SAKALA • ₹25–₹50",
+    rcTransferDesc: "Shift your ration card between districts (e.g. Mysuru to Bengaluru) or change your Fair Price Shop (FPS) within Karnataka.",
+    rcTransferRule: "<strong>Rule (Aadhaar First):</strong> Update your residential address in Aadhaar before applying, as the Ahara ePDS system verifies your new address against UIDAI database.",
+    rcTransferProofs: "<strong>Required Proofs:</strong> Updated Aadhaar card, Electricity Bill / Rental Agreement / Gas Connection, Existing Ration Card Number, Head of Family Aadhaar OTP/Biometric.",
+    btnRcTransferApply: "Apply on Ahara Amendment Portal ↗",
+    btnRcTransferCsc: "Locate Nearest Grama One ↗",
     cscLabel: "Need In-Person Help?",
     cscDesc: "Visit nearest Grama One or Karnataka One",
     btnFindCsc: "Find Centre ↗",
@@ -211,8 +218,8 @@ const translations = {
     closeUpdateModalBtn: "Close Hub"
   },
   KN: {
-    appTitle: "ನನ್ನ ರೇಷನ್",
-    appBrandSubtitle: "ಕರ್ನಾಟಕ ಸರ್ಕಾರ • ಆಹಾರ ಇಲಾಖೆ",
+    appTitle: "ನನ್ನ ಸೇವೆ",
+    appBrandSubtitle: "ಕರ್ನಾಟಕ ಸರ್ಕಾರ • ಆಧಾರ್ & ಪಡಿತರ ಸೇವೆಗಳು",
     langButton: "English",
     steps: [
       "ಹಂತ 1/4: ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ",
@@ -221,8 +228,8 @@ const translations = {
       "ಹಂತ 4/4: ಇ-ಕೆವೈಸಿ ಪ್ರಮಾಣಪತ್ರ"
     ],
     deptBadgeText: "ಆಹಾರ ಮತ್ತು ನಾಗರಿಕ ಸರಬರಾಜು ಇಲಾಖೆ • ಕರ್ನಾಟಕ ಸರ್ಕಾರ",
-    rcSearchHeading: "ನನ್ನ ರೇಷನ್ ಇ-ಕೆವೈಸಿ",
-    rcSearchSubheading: "ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ ವಿವರಗಳನ್ನು ಪಡೆಯಿರಿ.",
+    rcSearchHeading: "ನನ್ನ ಸೇವೆ ಇ-ಕೆವೈಸಿ",
+    rcSearchSubheading: "ನಿಮ್ಮ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ ಆಧಾರ್ ಮತ್ತು ಕುಟುಂಬದ ವಿವರಗಳನ್ನು ಪಡೆಯಿರಿ.",
     rcInputLabel: "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ",
     rcInputPlaceholder: "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ (ಉದಾ: 260300261661)",
     rcErrorInvalid: "ದಯವಿಟ್ಟು ಸರಿಯಾದ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.",
@@ -409,6 +416,13 @@ const translations = {
     rcChangeHofTitle: "ಕುಟುಂಬದ ಯಜಮಾನಿ ಬದಲಾವಣೆ",
     rcChangeHofDesc: "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಹಣ ಪಡೆಯಲು ಕುಟುಂಬದ ಹಿರಿಯ ಮಹಿಳೆಯನ್ನು ಯಜಮಾನಿ ಎಂದು ನಮೂದಿಸಬೇಕು. ಹಿಂದಿನ ಯಜಮಾನಿ ತೀರಿಕೊಂಡಿದ್ದರೆ ಅಥವಾ ಪುರುಷನ ಹೆಸರು ಇದ್ದರೆ ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ.",
     btnRcChangeHof: "ಯಜಮಾನಿ ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗",
+    rcTransferTitle: "ಪಡಿತರ ಚೀಟಿ ವರ್ಗಾವಣೆ (ಕರ್ನಾಟಕದೊಳಗೆ)",
+    rcTransferBadge: "ಸಕಾಲ ಸೇವೆ • ₹25–₹50",
+    rcTransferDesc: "ಕರ್ನಾಟಕದೊಳಗೆ ಒಂದು ಜಿಲ್ಲೆಯಿಂದ ಮತ್ತೊಂದು ಜಿಲ್ಲೆಗೆ (ಉದಾ: ಮೈಸೂರಿನಿಂದ ಬೆಂಗಳೂರಿಗೆ) ವಿಳಾಸ ಬದಲಾವಣೆ ಅಥವಾ ಸ್ಥಳೀಯ ನ್ಯಾಯಬೆಲೆ ಅಂಗಡಿ (FPS) ವರ್ಗಾವಣೆ.",
+    rcTransferRule: "<strong>ನಿಯಮ (ಆಧಾರ್ ಮೊದಲು):</strong> ಅರ್ಜಿ ಸಲ್ಲಿಸುವ ಮುನ್ನ ನಿಮ್ಮ ಆಧಾರ್ ಕಾರ್ಡ್‌ನಲ್ಲಿ ಹೊಸ ವಿಳಾಸ ಬದಲಾಯಿಸಿರಬೇಕು. ಆಹಾರ ಇಲಾಖೆಯ ತಂತ್ರಾಂಶವು ಆಧಾರ್ ಡೇಟಾವನ್ನು ನೇರವಾಗಿ ಪರಿಶೀಲಿಸುತ್ತದೆ.",
+    rcTransferProofs: "<strong>ಅಗತ್ಯ ದಾಖಲೆಗಳು:</strong> ಹೊಸ ವಿಳಾಸವಿರುವ ಆಧಾರ್ ಕಾರ್ಡ್, ವಿದ್ಯುತ್ ಬಿಲ್ / ಬಾಡಿಗೆ ಕರಾರು ಪತ್ರ / ಗ್ಯಾಸ್ ಬಿಲ್, ಪ್ರಸ್ತುತ ರೇಷನ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ, ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಆಧಾರ್ OTP / ಬಯೋಮೆಟ್ರಿಕ್.",
+    btnRcTransferApply: "ಆಹಾರ ಇಲಾಖೆ ತಿದ್ದುಪಡಿ ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗",
+    btnRcTransferCsc: "ಹತ್ತಿರದ ಗ್ರಾಮ ಒನ್ ಕೇಂದ್ರ ಹುಡುಕಿ ↗",
     cscLabel: "ಆನ್‌ಲೈನ್ ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಸಹಾಯ ಬೇಕೇ?",
     cscDesc: "ಹತ್ತಿರದ ಗ್ರಾಮ ಒನ್ ಅಥವಾ ಕರ್ನಾಟಕ ಒನ್‌ಗೆ ಭೇಟಿ ನೀಡಿ",
     btnFindCsc: "ಸೇವಾ ಕೇಂದ್ರ ಹುಡುಕಿ ↗",
@@ -1053,6 +1067,20 @@ function applyLanguage(lang) {
   if (rcChangeHofDesc) rcChangeHofDesc.textContent = t.rcChangeHofDesc;
   const btnRcChangeHof = document.getElementById("btnRcChangeHof");
   if (btnRcChangeHof) btnRcChangeHof.textContent = t.btnRcChangeHof;
+  const rcTransferTitle = document.getElementById("rcTransferTitle");
+  if (rcTransferTitle) rcTransferTitle.textContent = t.rcTransferTitle;
+  const rcTransferBadge = document.getElementById("rcTransferBadge");
+  if (rcTransferBadge) rcTransferBadge.textContent = t.rcTransferBadge;
+  const rcTransferDesc = document.getElementById("rcTransferDesc");
+  if (rcTransferDesc) rcTransferDesc.textContent = t.rcTransferDesc;
+  const rcTransferRule = document.getElementById("rcTransferRule");
+  if (rcTransferRule) rcTransferRule.innerHTML = t.rcTransferRule;
+  const rcTransferProofs = document.getElementById("rcTransferProofs");
+  if (rcTransferProofs) rcTransferProofs.innerHTML = t.rcTransferProofs;
+  const btnRcTransferApply = document.getElementById("btnRcTransferApply");
+  if (btnRcTransferApply) btnRcTransferApply.textContent = t.btnRcTransferApply;
+  const btnRcTransferCsc = document.getElementById("btnRcTransferCsc");
+  if (btnRcTransferCsc) btnRcTransferCsc.textContent = t.btnRcTransferCsc;
   const cscLabel = document.getElementById("cscLabel");
   if (cscLabel) cscLabel.textContent = t.cscLabel;
   const cscDesc = document.getElementById("cscDesc");
