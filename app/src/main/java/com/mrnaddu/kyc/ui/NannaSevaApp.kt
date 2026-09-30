@@ -361,6 +361,18 @@ fun NannaSevaApp(
                                         } else {
                                             errorMessage = t("Please select a family member.", "ದಯವಿಟ್ಟು ಕುಟುಂಬದ ಸದಸ್ಯರನ್ನು ಆಯ್ಕೆಮಾಡಿ.")
                                         }
+                                    },
+                                    onUpdateMember = { updatedMember ->
+                                        val updatedMembers = card.members.map {
+                                            if (it.id == updatedMember.id) updatedMember else it
+                                        }
+                                        val newHof = if (updatedMember.relation == "HEAD OF FAMILY" || updatedMember.id == card.members.firstOrNull()?.id) {
+                                            HeadOfFamily(updatedMember.nameEn, updatedMember.nameKn)
+                                        } else card.headOfFamily
+                                        val updatedCard = card.copy(members = updatedMembers, headOfFamily = newHof)
+                                        cardData = updatedCard
+                                        selectedMember = updatedMember
+                                        KycRepository.updateMember(card.rcNumber, updatedMember)
                                     }
                                 )
                             }
@@ -1105,11 +1117,25 @@ fun StepRosterScreen(
     selectedMember: Member?,
     onSelectMember: (Member) -> Unit,
     onOpenUpdateHub: (String) -> Unit,
-    onProceedToPhoto: () -> Unit
+    onProceedToPhoto: () -> Unit,
+    onUpdateMember: (Member) -> Unit = {}
 ) {
     fun t(en: String, kn: String): String = if (isKn) kn else en
     var selectedTab by remember { mutableIntStateOf(0) } // 0: Members, 1: Shop, 2: Schemes
+    var editingMember by remember { mutableStateOf<Member?>(null) }
     val isApl = card.cardCategory == "APL" || card.cardType.contains("APL") || card.cardType.contains("NPHH")
+
+    if (editingMember != null) {
+        EditMemberDialog(
+            isKn = isKn,
+            member = editingMember!!,
+            onDismiss = { editingMember = null },
+            onSave = { updated ->
+                onUpdateMember(updated)
+                editingMember = null
+            }
+        )
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         // Smart PVC Ration Card Display with Accurate APL / BPL Identification
@@ -1403,26 +1429,49 @@ fun StepRosterScreen(
 
                                             Spacer(modifier = Modifier.height(10.dp))
 
-                                            // Member-Specific Action Button
-                                            Button(
-                                                onClick = onProceedToPhoto,
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .height(42.dp),
-                                                shape = RoundedCornerShape(10.dp),
-                                                colors = ButtonDefaults.buttonColors(containerColor = if (member.ekyc == "VERIFIED") Color(0xFF0F766E) else Color(0xFF1D4ED8))
+                                            // Member-Specific Action Buttons: Correct Details & Biometric Photo
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                                verticalAlignment = Alignment.CenterVertically
                                             ) {
-                                                Icon(Icons.Default.AccountBox, contentDescription = null, modifier = Modifier.size(16.dp))
-                                                Spacer(modifier = Modifier.width(6.dp))
-                                                Text(
-                                                    text = if (member.ekyc == "VERIFIED") {
-                                                        t("Re-verify / Retake Photo for ${member.nameEn} ➔", "${if (isKn) member.nameKn else member.nameEn} ರವರ ಫೋಟೋ ಮರುಪರಿಶೀಲಿಸಿ ➔")
-                                                    } else {
-                                                        t("Proceed to Biometric Photo for ${member.nameEn} ➔", "${if (isKn) member.nameKn else member.nameEn} ರವರ ಮುಖದ ಫೋಟೋ ತೆಗೆದುಕೊಳ್ಳಿ ➔")
-                                                    },
-                                                    fontSize = 12.sp,
-                                                    fontWeight = FontWeight.Bold
-                                                )
+                                                OutlinedButton(
+                                                    onClick = { editingMember = member },
+                                                    modifier = Modifier
+                                                        .weight(1f)
+                                                        .height(42.dp),
+                                                    shape = RoundedCornerShape(10.dp),
+                                                    border = BorderStroke(1.dp, Color(0xFF2563EB)),
+                                                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1D4ED8)),
+                                                    contentPadding = PaddingValues(horizontal = 6.dp)
+                                                ) {
+                                                    Icon(Icons.Default.AccountBox, contentDescription = null, modifier = Modifier.size(15.dp))
+                                                    Spacer(modifier = Modifier.width(4.dp))
+                                                    Text(t("Correct Details", "ವಿವರ ತಿದ್ದುಪಡಿ"), fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                                }
+
+                                                Button(
+                                                    onClick = onProceedToPhoto,
+                                                    modifier = Modifier
+                                                        .weight(1.35f)
+                                                        .height(42.dp),
+                                                    shape = RoundedCornerShape(10.dp),
+                                                    colors = ButtonDefaults.buttonColors(containerColor = if (member.ekyc == "VERIFIED") Color(0xFF0F766E) else Color(0xFF1D4ED8)),
+                                                    contentPadding = PaddingValues(horizontal = 6.dp)
+                                                ) {
+                                                    Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(15.dp))
+                                                    Spacer(modifier = Modifier.width(4.dp))
+                                                    Text(
+                                                        text = if (member.ekyc == "VERIFIED") {
+                                                            t("Re-verify Photo ➔", "ಮರುಪರಿಶೀಲಿಸಿ ➔")
+                                                        } else {
+                                                            t("Biometric Photo ➔", "ಮುಖದ ಫೋಟೋ ➔")
+                                                        },
+                                                        fontSize = 11.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        maxLines = 1
+                                                    )
+                                                }
                                             }
                                         }
                                     }
@@ -2514,3 +2563,269 @@ fun UpdateItemCard(
         }
     }
 }
+
+// -------------------------------------------------------------
+// EDIT / CORRECT MEMBER DETAILS DIALOG
+// -------------------------------------------------------------
+@Composable
+fun EditMemberDialog(
+    isKn: Boolean,
+    member: Member,
+    onDismiss: () -> Unit,
+    onSave: (Member) -> Unit
+) {
+    fun t(en: String, kn: String): String = if (isKn) kn else en
+
+    var nameEn by remember { mutableStateOf(member.nameEn) }
+    var nameKn by remember { mutableStateOf(member.nameKn) }
+    var dob by remember { mutableStateOf(member.dob) }
+    var age by remember { mutableStateOf(member.age) }
+    var gender by remember { mutableStateOf(member.gender) }
+    var relation by remember { mutableStateOf(member.relation) }
+    var mobile by remember { mutableStateOf(member.mobileMasked) }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth(0.94f)
+                .fillMaxHeight(0.88f),
+            shape = RoundedCornerShape(20.dp),
+            color = Color.White
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp)
+            ) {
+                // Header
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = t("Correct Member Details", "ಸದಸ್ಯರ ವಿವರಗಳ ತಿದ್ದುಪಡಿ"),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = BrandNavy
+                        )
+                        Text(
+                            text = t("Updates apply immediately to active roster & certificate", "ರೇಷನ್ ಕಾರ್ಡ್ ಮತ್ತು ಪ್ರಮಾಣಪತ್ರದಲ್ಲಿ ಅಪ್‌ಡೇಟ್ ಆಗುತ್ತದೆ"),
+                            fontSize = 10.sp,
+                            color = Color.Gray
+                        )
+                    }
+                    IconButton(onClick = onDismiss) {
+                        Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.Gray)
+                    }
+                }
+
+                HorizontalDivider(color = Color(0xFFE2E8F0), modifier = Modifier.padding(vertical = 10.dp))
+
+                // Scrollable Form Fields
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    // Legal Name English
+                    Text(t("Full Legal Name (English)", "ಪೂರ್ಣ ಹೆಸರು (ಇಂಗ್ಲಿಷ್)"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    OutlinedTextField(
+                        value = nameEn,
+                        onValueChange = { nameEn = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    // Legal Name Kannada
+                    Text(t("Full Name in Kannada", "ಕನ್ನಡದಲ್ಲಿ ಹೆಸರು"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    OutlinedTextField(
+                        value = nameKn,
+                        onValueChange = { nameKn = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    // Date of Birth & Age Row
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Column(modifier = Modifier.weight(1.3f)) {
+                            Text(t("Date of Birth (DD/MM/YYYY)", "ಜನ್ಮ ದಿನಾಂಕ (DD/MM/YYYY)"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            OutlinedTextField(
+                                value = dob,
+                                onValueChange = { input ->
+                                    dob = input
+                                    // Auto calculate age if valid year provided
+                                    val parts = input.split("/")
+                                    if (parts.size == 3 && parts[2].length == 4) {
+                                        val birthYear = parts[2].toIntOrNull()
+                                        if (birthYear != null && birthYear in 1920..2025) {
+                                            age = "${2025 - birthYear}"
+                                        }
+                                    }
+                                },
+                                placeholder = { Text("DD/MM/YYYY", fontSize = 11.sp, color = Color.Gray) },
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                        }
+
+                        Column(modifier = Modifier.weight(0.7f)) {
+                            Text(t("Age (Years)", "ವಯಸ್ಸು (ವರ್ಷ)"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            OutlinedTextField(
+                                value = age,
+                                onValueChange = { age = it },
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Gender Selection Chips
+                    Text(t("Gender", "ಲಿಂಗ"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        listOf("MALE" to t("Male", "ಪುರುಷ"), "FEMALE" to t("Female", "ಮಹಿಳೆ"), "OTHER" to t("Other", "ಇತರ")).forEach { (key, label) ->
+                            val isSel = gender.equals(key, ignoreCase = true)
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = if (isSel) Color(0xFF2563EB) else Color(0xFFF1F5F9),
+                                border = BorderStroke(1.dp, if (isSel) Color(0xFF1D4ED8) else Color(0xFFCBD5E1)),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable { gender = key }
+                            ) {
+                                Text(
+                                    text = label,
+                                    fontSize = 11.sp,
+                                    fontWeight = if (isSel) FontWeight.Bold else FontWeight.Medium,
+                                    color = if (isSel) Color.White else Color(0xFF334155),
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.padding(vertical = 8.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Relation to Head of Family Chips
+                    Text(t("Relation to Head of Family", "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರೊಂದಿಗೆ ಸಂಬಂಧ"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                    Spacer(modifier = Modifier.height(6.dp))
+                    val relations = listOf(
+                        "HEAD OF FAMILY" to t("Head of Family", "ಮುಖ್ಯಸ್ಥರು"),
+                        "SON" to t("Son", "ಮಗ"),
+                        "DAUGHTER" to t("Daughter", "ಮಗಳು"),
+                        "SPOUSE" to t("Spouse", "ಪತ್ನಿ/ಪತಿ"),
+                        "MOTHER" to t("Mother", "ತಾಯಿ"),
+                        "FATHER" to t("Father", "ತಂದೆ")
+                    )
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        relations.chunked(3).forEach { row ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                row.forEach { (relKey, relLabel) ->
+                                    val isSel = relation.equals(relKey, ignoreCase = true)
+                                    Surface(
+                                        shape = RoundedCornerShape(8.dp),
+                                        color = if (isSel) Color(0xFF0F766E) else Color(0xFFF8FAFC),
+                                        border = BorderStroke(1.dp, if (isSel) Color(0xFF0D9488) else Color(0xFFE2E8F0)),
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clickable { relation = relKey }
+                                    ) {
+                                        Text(
+                                            text = relLabel,
+                                            fontSize = 10.sp,
+                                            fontWeight = if (isSel) FontWeight.Bold else FontWeight.Normal,
+                                            color = if (isSel) Color.White else Color(0xFF334155),
+                                            textAlign = TextAlign.Center,
+                                            modifier = Modifier.padding(vertical = 6.dp, horizontal = 2.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Registered Mobile
+                    Text(t("Registered Mobile Number", "ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    OutlinedTextField(
+                        value = mobile,
+                        onValueChange = { mobile = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                HorizontalDivider(color = Color(0xFFE2E8F0), modifier = Modifier.padding(vertical = 10.dp))
+
+                // Actions: Cancel & Save
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Text(t("Cancel", "ರದ್ದುಮಾಡಿ"), fontSize = 12.sp)
+                    }
+
+                    Button(
+                        onClick = {
+                            val updated = member.copy(
+                                nameEn = nameEn.trim().ifEmpty { member.nameEn },
+                                nameKn = nameKn.trim().ifEmpty { member.nameKn },
+                                dob = dob.trim().ifEmpty { member.dob },
+                                age = age.trim().ifEmpty { member.age },
+                                gender = gender,
+                                relation = relation,
+                                mobileMasked = mobile.trim().ifEmpty { member.mobileMasked }
+                            )
+                            onSave(updated)
+                        },
+                        modifier = Modifier.weight(1.5f),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1D4ED8))
+                    ) {
+                        Text(t("Save & Update ➔", "ಉಳಿಸಿ ಮತ್ತು ಅಪ್‌ಡೇಟ್ ➔"), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
+    }
+}
+
