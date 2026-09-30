@@ -161,7 +161,54 @@ const translations = {
     errorDismissBtnText: "Cancel",
     rosterSelectPrompt: "Please tap on your name in the list to continue.",
     ekycVerifiedBadge: "KYC Done ✓",
-    ekycPendingBadge: "KYC Pending"
+    ekycPendingBadge: "KYC Pending",
+
+    // Home Aadhaar & Card Updates Quick Card
+    homeAadhaarUpdateTitle: "Aadhaar & Card Updates",
+    homeAadhaarUpdateAction: "Update Services",
+    homeAadhaarUpdateDesc: "Official links to update Aadhaar address, mobile number link guide, add/remove members, and check NPCI bank seeding.",
+    rosterUpdateNoticeText: "Need to correct name, age, or link unseeded Aadhaar?",
+    rosterUpdateNoticeBtn: "Update Services →",
+
+    // Aadhaar & Ration Card Updates Modal
+    updateModalHeading: "Aadhaar & Card Corrections",
+    updateDeptSubtitle: "Official UIDAI & Karnataka Ahara Services",
+    modalTabAadhaarText: "Aadhaar (UIDAI)",
+    modalTabRationText: "Ration Card (Ahara)",
+    uidaiNoticeText: "<strong>Government Security Note:</strong> UIDAI strictly prohibits any third-party app from directly modifying Aadhaar records. All updates must be submitted through the official myAadhaar portal or at authorized government centres.",
+    srvAddressTitle: "Update Address Online",
+    srvAddressBadge: "ONLINE",
+    srvAddressDesc: "Update your residential address on Aadhaar directly online using valid address proof or Head of Family (HOF) consent.",
+    btnOpenMyAadhaarAddress: "Open Official myAadhaar Portal ↗",
+    srvMobileTitle: "Link Mobile Number & Biometrics",
+    srvMobileBadge: "IN-PERSON",
+    srvMobileDesc: "To prevent fraud, UIDAI requires mandatory in-person biometric authentication (fingerprint/iris) to update mobile numbers, photos, or fingerprints. Visit your nearest Post Office, Grama One, or Aadhaar Seva Kendra.",
+    btnLocateAsk: "Locate Nearest Aadhaar Kendra (ASK) ↗",
+    srvNpciTitle: "Bank-Aadhaar DBT Seeding Status",
+    srvNpciBadge: "DBT ESSENTIAL",
+    srvNpciDesc: "Check whether your bank account is mapped to Aadhaar with NPCI to receive monthly cash DBT for Anna Bhagya (₹170/member) and Gruha Lakshmi (₹2,000/month).",
+    btnCheckNpci: "Check Bank Seeding on UIDAI ↗",
+    srvDocTitle: "Update Supporting Identity Documents",
+    srvDocBadge: "FREE",
+    srvDocDesc: "UIDAI recommends revalidating Aadhaar cards older than 10 years by uploading recent Proof of Identity (PoI) and Proof of Address (PoA).",
+    btnUploadDoc: "Upload Proof on myAadhaar ↗",
+    rcLinkAadhaarTitle: "Link Aadhaar with Ration Card (e-KYC)",
+    rcLinkAadhaarDesc: "To link unseeded Aadhaar or complete pending e-KYC:",
+    rcLinkAadhaarSteps: "<p>• <strong>At Fair Price Shop</strong>: Visit your local ration shop and authenticate your fingerprint on the e-PoS device.</p><p>• <strong>From Home</strong>: Download the official NIC <strong>'Mera eKYC'</strong> & <strong>'Aadhaar Face RD'</strong> apps for face authentication.</p><p>• <strong>At Grama One Centre</strong>: Take your Ration Card & Aadhaar to your village Grama One / Karnataka One centre.</p>",
+    rcAddMemberTitle: "Add New Member (Child / Spouse)",
+    rcAddMemberDesc: "<strong>Required Proofs:</strong> Child's Birth Certificate, Child's Aadhaar (if above 5 yrs), Spouse's Aadhaar & Marriage Certificate, Head of Family consent.",
+    btnRcAddMember: "Apply on Ahara e-Services ↗",
+    rcDeleteMemberTitle: "Delete / Transfer Member",
+    rcDeleteMemberDesc: "<strong>Required Proofs:</strong> Marriage certificate for daughter/sister moving to spouse's card, or Death certificate for deceased family members.",
+    btnRcDeleteMember: "Apply on Seva Sindhu ↗",
+    rcChangeHofTitle: "Change Head of Family (HOF)",
+    rcChangeHofDesc: "Required to receive ₹2,000/month Gruha Lakshmi aid if the previous head is deceased or if a male member was registered as HOF. Must designate the eldest adult female.",
+    btnRcChangeHof: "Apply for HOF Change ↗",
+    cscLabel: "Need In-Person Help?",
+    cscDesc: "Visit nearest Grama One or Karnataka One",
+    btnFindCsc: "Find Centre ↗",
+    updateModalHelpline: "Helpline: 1967 • UIDAI: 1947",
+    closeUpdateModalBtn: "Close Hub"
   },
   KN: {
     appTitle: "ನನ್ನ ರೇಷನ್",
@@ -319,7 +366,54 @@ const translations = {
     errorDismissBtnText: "ರದ್ದುಮಾಡಿ",
     rosterSelectPrompt: "ದಯವಿಟ್ಟು ಮುಂದುವರಿಯಲು ಪಟ್ಟಿಯಿಂದ ನಿಮ್ಮ ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
     ekycVerifiedBadge: "ಇ-ಕೆವೈಸಿ ಮುಗಿದಿದೆ ✓",
-    ekycPendingBadge: "ಇ-ಕೆವೈಸಿ ಬಾಕಿ ಇದೆ"
+    ekycPendingBadge: "ಇ-ಕೆವೈಸಿ ಬಾಕಿ ಇದೆ",
+
+    // Home Aadhaar & Card Updates Quick Card
+    homeAadhaarUpdateTitle: "ಆಧಾರ್ & ಪಡಿತರ ತಿದ್ದುಪಡಿ",
+    homeAadhaarUpdateAction: "ತಿದ್ದುಪಡಿ ಸೇವೆಗಳು",
+    homeAadhaarUpdateDesc: "ಆಧಾರ್ ವಿಳಾಸ ಬದಲಾವಣೆ, ಮೊಬೈಲ್ ನಂಬರ್ ಲಿಂಕ್ ಮಾರ್ಗದರ್ಶಿ, ಸದಸ್ಯರ ಸೇರ್ಪಡೆ/ತೆಗೆದುಹಾಕುವುದು ಮತ್ತು ಬ್ಯಾಂಕ್ ಸೀಡಿಂಗ್ ಅಧಿಕೃತ ಲಿಂಕ್‌ಗಳು.",
+    rosterUpdateNoticeText: "ಹೆಸರು, ವಯಸ್ಸು ತಿದ್ದುಪಡಿ ಅಥವಾ ಆಧಾರ್ ಲಿಂಕ್ ಮಾಡಬೇಕೇ?",
+    rosterUpdateNoticeBtn: "ತಿದ್ದುಪಡಿ ಸೇವೆಗಳು →",
+
+    // Aadhaar & Ration Card Updates Modal
+    updateModalHeading: "ಆಧಾರ್ & ಪಡಿತರ ಚೀಟಿ ತಿದ್ದುಪಡಿ ಕೇಂದ್ರ",
+    updateDeptSubtitle: "ಅಧಿಕೃತ ಯುಐಡಿಎಐ & ಕರ್ನಾಟಕ ಆಹಾರ ಇಲಾಖೆ ಸೇವೆಗಳು",
+    modalTabAadhaarText: "ಆಧಾರ್ ಸೇವೆಗಳು (UIDAI)",
+    modalTabRationText: "ಪಡಿತರ ಚೀಟಿ (ಆಹಾರ ಇಲಾಖೆ)",
+    uidaiNoticeText: "<strong>ಸರ್ಕಾರಿ ಭದ್ರತಾ ನಿಯಮ:</strong> ಯಾವುದೇ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಆ್ಯಪ್‌ಗಳು ಆಧಾರ್ ಡೇಟಾವನ್ನು ನೇರವಾಗಿ ಬದಲಾಯಿಸಲು UIDAI ಅನುಮತಿಸುವುದಿಲ್ಲ. ಎಲ್ಲಾ ತಿದ್ದುಪಡಿಗಳನ್ನು ಅಧಿಕೃತ myAadhaar ಪೋರ್ಟಲ್ ಅಥವಾ ಸರ್ಕಾರಿ ನೋಂದಾಯಿತ ಕೇಂದ್ರಗಳಲ್ಲಿ ಮಾತ್ರ ಮಾಡಬೇಕು.",
+    srvAddressTitle: "ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಆಧಾರ್ ವಿಳಾಸ ಬದಲಾವಣೆ",
+    srvAddressBadge: "ಆನ್‌ಲೈನ್",
+    srvAddressDesc: "ಮಾನ್ಯ ವಿಳಾಸ ದಾಖಲೆ ಅಥವಾ ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ (HOF) ಒಪ್ಪಿಗೆಯೊಂದಿಗೆ ಮನೆಯಲ್ಲೇ ಕುಳಿತು ನಿಮ್ಮ ಆಧಾರ್ ವಿಳಾಸವನ್ನು ಬದಲಾಯಿಸಿ.",
+    btnOpenMyAadhaarAddress: "ಅಧಿಕೃತ myAadhaar ಪೋರ್ಟಲ್ ತೆರೆಯಿರಿ ↗",
+    srvMobileTitle: "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ & ಬಯೋಮೆಟ್ರಿಕ್ ಲಿಂಕ್",
+    srvMobileBadge: "ನೇರ ಭೇಟಿ ಕಡ್ಡಾಯ",
+    srvMobileDesc: "ವಂಚನೆ ತಡೆಯಲು, ಆಧಾರ್‌ನಲ್ಲಿ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ, ಫೋಟೋ ಅಥವಾ ಬೆರಳಚ್ಚು ಅಪ್‌ಡೇಟ್ ಮಾಡಲು <strong>ಬಯೋಮೆಟ್ರಿಕ್ ಹಾಜರಾತಿ ಕಡ್ಡಾಯ</strong>. ಹತ್ತಿರದ ಅಂಚೆ ಕಚೇರಿ, ಗ್ರಾಮ ಒನ್ ಅಥವಾ ಆಧಾರ್ ಸೇವಾ ಕೇಂದ್ರಕ್ಕೆ ಭೇಟಿ ನೀಡಿ.",
+    btnLocateAsk: "ಹತ್ತಿರದ ಆಧಾರ್ ಕೇಂದ್ರ ಹುಡುಕಿ (ASK) ↗",
+    srvNpciTitle: "ಬ್ಯಾಂಕ್-ಆಧಾರ್ (NPCI) ಸೀಡಿಂಗ್ ಸ್ಥಿತಿ",
+    srvNpciBadge: "ಡಿಬಿಟಿಗೆ ಕಡ್ಡಾಯ",
+    srvNpciDesc: "ಅನ್ನಭಾಗ್ಯ (₹170) ಮತ್ತು ಗೃಹಲಕ್ಷ್ಮಿ (₹2,000) ಮಾಸಿಕ ನಗದು ಹಣ ಪಡೆಯಲು ನಿಮ್ಮ ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ಆಧಾರ್ ಡಿಬಿಟಿ ಸೀಡಿಂಗ್ ಆಗಿದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ.",
+    btnCheckNpci: "ಬ್ಯಾಂಕ್ ಸೀಡಿಂಗ್ ಸ್ಥಿತಿ ಪರಿಶೀಲಿಸಿ ↗",
+    srvDocTitle: "ಆಧಾರ್ ದಾಖಲೆಗಳ ನವೀಕರಣ (ಉಚಿತ)",
+    srvDocBadge: "ಉಚಿತ",
+    srvDocDesc: "10 ವರ್ಷಗಳಿಗಿಂತ ಹಳೆಯದಾದ ಆಧಾರ್ ಕಾರ್ಡ್‌ದಾರರು ತಮ್ಮ ಗುರುತಿನ ಮತ್ತು ವಿಳಾಸದ ಪುರಾವೆಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಆಧಾರ್ ನವೀಕರಿಸಲು UIDAI ಸೂಚಿಸಿದೆ.",
+    btnUploadDoc: "ದಾಖಲೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ (myAadhaar) ↗",
+    rcLinkAadhaarTitle: "ಪಡಿತರ ಚೀಟಿಗೆ ಆಧಾರ್ ಲಿಂಕ್ (ಇ-ಕೆವೈಸಿ)",
+    rcLinkAadhaarDesc: "ಆಧಾರ್ ಲಿಂಕ್ ಮಾಡಲು ಅಥವಾ ಬಾಕಿ ಇರುವ ಇ-ಕೆವೈಸಿ ಪೂರ್ಣಗೊಳಿಸಲು:",
+    rcLinkAadhaarSteps: "<p>• <strong>ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ</strong>: ನಿಮ್ಮ ರೇಷನ್ ಅಂಗಡಿಗೆ ಭೇಟಿ ನೀಡಿ e-PoS ಯಂತ್ರದಲ್ಲಿ ಬೆರಳಚ್ಚು ನೀಡಿ.</p><p>• <strong>ಮನೆಯಲ್ಲೇ ಕುಳಿತು</strong>: NIC ಯ ಅಧಿಕೃತ <strong>'Mera eKYC'</strong> & <strong>'Aadhaar Face RD'</strong> ಆ್ಯಪ್ ಬಳಸಿ ಮುಖದ ಬಯೋಮೆಟ್ರಿಕ್ ನೀಡಿ.</p><p>• <strong>ಗ್ರಾಮ ಒನ್ ಕೇಂದ್ರ</strong>: ರೇಷನ್ ಕಾರ್ಡ್ ಮತ್ತು ಆಧಾರ್ ಕಾರ್ಡ್‌ನೊಂದಿಗೆ ಗ್ರಾಮ ಒನ್ / ಕರ್ನಾಟಕ ಒನ್ ಕೇಂದ್ರಕ್ಕೆ ಭೇಟಿ ನೀಡಿ.</p>",
+    rcAddMemberTitle: "ಹೊಸ ಸದಸ್ಯರ ಸೇರ್ಪಡೆ (ಮಗು / ಸೊಸೆ)",
+    rcAddMemberDesc: "<strong>ಅಗತ್ಯ ದಾಖಲೆಗಳು:</strong> ಮಗುವಿನ ಜನನ ಪ್ರಮಾಣಪತ್ರ, ಮಗುವಿನ ಆಧಾರ್ (5 ವರ್ಷ ಮೇಲ್ಪಟ್ಟಿದ್ದರೆ), ಸೊಸೆಯ ಆಧಾರ್ & ವಿವಾಹ ನೋಂದಣಿ ಪ್ರಮಾಣಪತ್ರ, ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಒಪ್ಪಿಗೆ.",
+    btnRcAddMember: "ಆಹಾರ ಇಲಾಖೆ ಇ-ಸೇವೆಗಳಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗",
+    rcDeleteMemberTitle: "ಸದಸ್ಯರ ಹೆಸರು ತೆಗೆದುಹಾಕುವುದು",
+    rcDeleteMemberDesc: "<strong>ಅಗತ್ಯ ದಾಖಲೆಗಳು:</strong> ವಿವಾಹವಾಗಿ ಬೇರೆಡೆ ತೆರಳಿದವರಿಗೆ ಮದುವೆ ಪ್ರಮಾಣಪತ್ರ, ಅಥವಾ ಮರಣ ಹೊಂದಿದ ಸದಸ್ಯರಿಗೆ ಮರಣ ಪ್ರಮಾಣಪತ್ರ.",
+    btnRcDeleteMember: "ಸೇವಾ ಸಿಂಧು ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗",
+    rcChangeHofTitle: "ಕುಟುಂಬದ ಯಜಮಾನಿ ಬದಲಾವಣೆ",
+    rcChangeHofDesc: "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಹಣ ಪಡೆಯಲು ಕುಟುಂಬದ ಹಿರಿಯ ಮಹಿಳೆಯನ್ನು ಯಜಮಾನಿ ಎಂದು ನಮೂದಿಸಬೇಕು. ಹಿಂದಿನ ಯಜಮಾನಿ ತೀರಿಕೊಂಡಿದ್ದರೆ ಅಥವಾ ಪುರುಷನ ಹೆಸರು ಇದ್ದರೆ ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ.",
+    btnRcChangeHof: "ಯಜಮಾನಿ ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗",
+    cscLabel: "ಆನ್‌ಲೈನ್ ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಸಹಾಯ ಬೇಕೇ?",
+    cscDesc: "ಹತ್ತಿರದ ಗ್ರಾಮ ಒನ್ ಅಥವಾ ಕರ್ನಾಟಕ ಒನ್‌ಗೆ ಭೇಟಿ ನೀಡಿ",
+    btnFindCsc: "ಸೇವಾ ಕೇಂದ್ರ ಹುಡುಕಿ ↗",
+    updateModalHelpline: "ಸಹಾಯವಾಣಿ: 1967 • ಆಧಾರ್ ಸಹಾಯವಾಣಿ: 1947",
+    closeUpdateModalBtn: "ಮುಚ್ಚಿ"
   }
 };
 
@@ -878,6 +972,98 @@ function applyLanguage(lang) {
   const btnDismissFacilitiesGuide = document.getElementById("btnDismissFacilitiesGuide");
   if (btnDismissFacilitiesGuide) btnDismissFacilitiesGuide.textContent = t.closeGuideBtn;
 
+  // Home Aadhaar & Card Updates Quick Card
+  const homeAadhaarUpdateTitle = document.getElementById("homeAadhaarUpdateTitle");
+  if (homeAadhaarUpdateTitle) homeAadhaarUpdateTitle.innerHTML = `<i class="fa-solid fa-id-card-clip text-blue-600"></i> <span>${t.homeAadhaarUpdateTitle}</span>`;
+  const homeAadhaarUpdateAction = document.getElementById("homeAadhaarUpdateAction");
+  if (homeAadhaarUpdateAction) homeAadhaarUpdateAction.textContent = t.homeAadhaarUpdateAction;
+  const homeAadhaarUpdateDesc = document.getElementById("homeAadhaarUpdateDesc");
+  if (homeAadhaarUpdateDesc) homeAadhaarUpdateDesc.textContent = t.homeAadhaarUpdateDesc;
+
+  // In-Roster Quick Update Action Banner
+  const rosterUpdateNoticeText = document.getElementById("rosterUpdateNoticeText");
+  if (rosterUpdateNoticeText) rosterUpdateNoticeText.textContent = t.rosterUpdateNoticeText;
+  const rosterUpdateNoticeBtn = document.getElementById("rosterUpdateNoticeBtn");
+  if (rosterUpdateNoticeBtn) rosterUpdateNoticeBtn.textContent = t.rosterUpdateNoticeBtn;
+
+  // Aadhaar & Ration Card Updates Modal
+  const updateModalHeading = document.getElementById("updateModalHeading");
+  if (updateModalHeading) updateModalHeading.textContent = t.updateModalHeading;
+  const updateDeptSubtitle = document.getElementById("updateDeptSubtitle");
+  if (updateDeptSubtitle) updateDeptSubtitle.textContent = t.updateDeptSubtitle;
+  const modalTabAadhaarText = document.getElementById("modalTabAadhaarText");
+  if (modalTabAadhaarText) modalTabAadhaarText.textContent = t.modalTabAadhaarText;
+  const modalTabRationText = document.getElementById("modalTabRationText");
+  if (modalTabRationText) modalTabRationText.textContent = t.modalTabRationText;
+  const uidaiNoticeText = document.getElementById("uidaiNoticeText");
+  if (uidaiNoticeText) uidaiNoticeText.innerHTML = t.uidaiNoticeText;
+  const srvAddressTitle = document.getElementById("srvAddressTitle");
+  if (srvAddressTitle) srvAddressTitle.textContent = t.srvAddressTitle;
+  const srvAddressBadge = document.getElementById("srvAddressBadge");
+  if (srvAddressBadge) srvAddressBadge.textContent = t.srvAddressBadge;
+  const srvAddressDesc = document.getElementById("srvAddressDesc");
+  if (srvAddressDesc) srvAddressDesc.textContent = t.srvAddressDesc;
+  const btnOpenMyAadhaarAddress = document.getElementById("btnOpenMyAadhaarAddress");
+  if (btnOpenMyAadhaarAddress) btnOpenMyAadhaarAddress.textContent = t.btnOpenMyAadhaarAddress;
+  const srvMobileTitle = document.getElementById("srvMobileTitle");
+  if (srvMobileTitle) srvMobileTitle.textContent = t.srvMobileTitle;
+  const srvMobileBadge = document.getElementById("srvMobileBadge");
+  if (srvMobileBadge) srvMobileBadge.textContent = t.srvMobileBadge;
+  const srvMobileDesc = document.getElementById("srvMobileDesc");
+  if (srvMobileDesc) srvMobileDesc.innerHTML = t.srvMobileDesc;
+  const btnLocateAsk = document.getElementById("btnLocateAsk");
+  if (btnLocateAsk) btnLocateAsk.textContent = t.btnLocateAsk;
+  const srvNpciTitle = document.getElementById("srvNpciTitle");
+  if (srvNpciTitle) srvNpciTitle.textContent = t.srvNpciTitle;
+  const srvNpciBadge = document.getElementById("srvNpciBadge");
+  if (srvNpciBadge) srvNpciBadge.textContent = t.srvNpciBadge;
+  const srvNpciDesc = document.getElementById("srvNpciDesc");
+  if (srvNpciDesc) srvNpciDesc.textContent = t.srvNpciDesc;
+  const btnCheckNpci = document.getElementById("btnCheckNpci");
+  if (btnCheckNpci) btnCheckNpci.textContent = t.btnCheckNpci;
+  const srvDocTitle = document.getElementById("srvDocTitle");
+  if (srvDocTitle) srvDocTitle.textContent = t.srvDocTitle;
+  const srvDocBadge = document.getElementById("srvDocBadge");
+  if (srvDocBadge) srvDocBadge.textContent = t.srvDocBadge;
+  const srvDocDesc = document.getElementById("srvDocDesc");
+  if (srvDocDesc) srvDocDesc.textContent = t.srvDocDesc;
+  const btnUploadDoc = document.getElementById("btnUploadDoc");
+  if (btnUploadDoc) btnUploadDoc.textContent = t.btnUploadDoc;
+  const rcLinkAadhaarTitle = document.getElementById("rcLinkAadhaarTitle");
+  if (rcLinkAadhaarTitle) rcLinkAadhaarTitle.textContent = t.rcLinkAadhaarTitle;
+  const rcLinkAadhaarDesc = document.getElementById("rcLinkAadhaarDesc");
+  if (rcLinkAadhaarDesc) rcLinkAadhaarDesc.textContent = t.rcLinkAadhaarDesc;
+  const rcLinkAadhaarSteps = document.getElementById("rcLinkAadhaarSteps");
+  if (rcLinkAadhaarSteps) rcLinkAadhaarSteps.innerHTML = t.rcLinkAadhaarSteps;
+  const rcAddMemberTitle = document.getElementById("rcAddMemberTitle");
+  if (rcAddMemberTitle) rcAddMemberTitle.textContent = t.rcAddMemberTitle;
+  const rcAddMemberDesc = document.getElementById("rcAddMemberDesc");
+  if (rcAddMemberDesc) rcAddMemberDesc.innerHTML = t.rcAddMemberDesc;
+  const btnRcAddMember = document.getElementById("btnRcAddMember");
+  if (btnRcAddMember) btnRcAddMember.textContent = t.btnRcAddMember;
+  const rcDeleteMemberTitle = document.getElementById("rcDeleteMemberTitle");
+  if (rcDeleteMemberTitle) rcDeleteMemberTitle.textContent = t.rcDeleteMemberTitle;
+  const rcDeleteMemberDesc = document.getElementById("rcDeleteMemberDesc");
+  if (rcDeleteMemberDesc) rcDeleteMemberDesc.innerHTML = t.rcDeleteMemberDesc;
+  const btnRcDeleteMember = document.getElementById("btnRcDeleteMember");
+  if (btnRcDeleteMember) btnRcDeleteMember.textContent = t.btnRcDeleteMember;
+  const rcChangeHofTitle = document.getElementById("rcChangeHofTitle");
+  if (rcChangeHofTitle) rcChangeHofTitle.textContent = t.rcChangeHofTitle;
+  const rcChangeHofDesc = document.getElementById("rcChangeHofDesc");
+  if (rcChangeHofDesc) rcChangeHofDesc.textContent = t.rcChangeHofDesc;
+  const btnRcChangeHof = document.getElementById("btnRcChangeHof");
+  if (btnRcChangeHof) btnRcChangeHof.textContent = t.btnRcChangeHof;
+  const cscLabel = document.getElementById("cscLabel");
+  if (cscLabel) cscLabel.textContent = t.cscLabel;
+  const cscDesc = document.getElementById("cscDesc");
+  if (cscDesc) cscDesc.textContent = t.cscDesc;
+  const btnFindCsc = document.getElementById("btnFindCsc");
+  if (btnFindCsc) btnFindCsc.textContent = t.btnFindCsc;
+  const updateModalHelpline = document.getElementById("updateModalHelpline");
+  if (updateModalHelpline) updateModalHelpline.textContent = t.updateModalHelpline;
+  const closeUpdateModalBtn = document.getElementById("closeUpdateModalBtn");
+  if (closeUpdateModalBtn) closeUpdateModalBtn.textContent = t.closeUpdateModalBtn;
+
   // Smart PVC Card
   const pvcGovtText = document.getElementById("pvcGovtText");
   if (pvcGovtText) pvcGovtText.textContent = t.pvcGovtText;
@@ -1342,10 +1528,105 @@ function bindEventHandlers() {
     });
   }
 
+  // Aadhaar & Ration Card Updates Modal Actions & Sub-Tabs
+  const cardAadhaarUpdateHub = document.getElementById("cardAadhaarUpdateHub");
+  const btnOpenAadhaarUpdateHub = document.getElementById("btnOpenAadhaarUpdateHub");
+  const btnRosterOpenUpdateHub = document.getElementById("btnRosterOpenUpdateHub");
+  const btnCloseAadhaarUpdateModal = document.getElementById("btnCloseAadhaarUpdateModal");
+  const btnDismissAadhaarUpdateModal = document.getElementById("btnDismissAadhaarUpdateModal");
+  const aadhaarUpdateModal = document.getElementById("aadhaarUpdateModal");
+  const modalTabAadhaar = document.getElementById("modalTabAadhaar");
+  const modalTabRation = document.getElementById("modalTabRation");
+
+  const switchAadhaarUpdateTab = (tab) => {
+    const tabA = document.getElementById("modalTabAadhaar");
+    const tabR = document.getElementById("modalTabRation");
+    const panelA = document.getElementById("modalPanelAadhaar");
+    const panelR = document.getElementById("modalPanelRation");
+
+    const activeClasses = ["bg-white", "text-blue-700", "border", "border-blue-200", "shadow-2xs"];
+    const inactiveClasses = ["text-slate-600", "hover:text-slate-900"];
+
+    if (tab === "ration") {
+      if (tabA) {
+        tabA.classList.remove(...activeClasses);
+        tabA.classList.add(...inactiveClasses);
+      }
+      if (tabR) {
+        tabR.classList.remove(...inactiveClasses);
+        tabR.classList.add(...activeClasses);
+      }
+      if (panelA) panelA.classList.add("hidden");
+      if (panelR) panelR.classList.remove("hidden");
+    } else {
+      if (tabR) {
+        tabR.classList.remove(...activeClasses);
+        tabR.classList.add(...inactiveClasses);
+      }
+      if (tabA) {
+        tabA.classList.remove(...inactiveClasses);
+        tabA.classList.add(...activeClasses);
+      }
+      if (panelR) panelR.classList.add("hidden");
+      if (panelA) panelA.classList.remove("hidden");
+    }
+  };
+
+  const openAadhaarUpdateModal = (tab = "aadhaar") => {
+    if (aadhaarUpdateModal) {
+      switchAadhaarUpdateTab(tab);
+      aadhaarUpdateModal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+  };
+
+  const closeAadhaarUpdateModal = () => {
+    if (aadhaarUpdateModal) {
+      aadhaarUpdateModal.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+  };
+
+  if (cardAadhaarUpdateHub) {
+    cardAadhaarUpdateHub.addEventListener("click", () => openAadhaarUpdateModal("aadhaar"));
+    cardAadhaarUpdateHub.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openAadhaarUpdateModal("aadhaar");
+      }
+    });
+  }
+
+  if (btnOpenAadhaarUpdateHub) {
+    btnOpenAadhaarUpdateHub.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openAadhaarUpdateModal("aadhaar");
+    });
+  }
+
+  if (btnRosterOpenUpdateHub) {
+    btnRosterOpenUpdateHub.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openAadhaarUpdateModal("ration");
+    });
+  }
+
+  if (btnCloseAadhaarUpdateModal) btnCloseAadhaarUpdateModal.addEventListener("click", closeAadhaarUpdateModal);
+  if (btnDismissAadhaarUpdateModal) btnDismissAadhaarUpdateModal.addEventListener("click", closeAadhaarUpdateModal);
+  if (aadhaarUpdateModal) {
+    aadhaarUpdateModal.addEventListener("click", (e) => {
+      if (e.target === aadhaarUpdateModal) closeAadhaarUpdateModal();
+    });
+  }
+
+  if (modalTabAadhaar) modalTabAadhaar.addEventListener("click", () => switchAadhaarUpdateTab("aadhaar"));
+  if (modalTabRation) modalTabRation.addEventListener("click", () => switchAadhaarUpdateTab("ration"));
+
   // Global Escape key listener
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeFacilitiesGuideModal();
+      closeAadhaarUpdateModal();
       closeDocumentScanner();
       hideErrorModal();
     }
@@ -1907,6 +2188,14 @@ function handleNavBack() {
   const facilitiesGuideModal = document.getElementById("facilitiesGuideModal");
   if (facilitiesGuideModal && !facilitiesGuideModal.classList.contains("hidden")) {
     facilitiesGuideModal.classList.add("hidden");
+    document.body.style.overflow = "";
+    return;
+  }
+
+  // If aadhaar update modal is open, close it
+  const aadhaarUpdateModal = document.getElementById("aadhaarUpdateModal");
+  if (aadhaarUpdateModal && !aadhaarUpdateModal.classList.contains("hidden")) {
+    aadhaarUpdateModal.classList.add("hidden");
     document.body.style.overflow = "";
     return;
   }

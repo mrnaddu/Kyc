@@ -295,6 +295,29 @@
               Check monthly 10kg rice quota, Anna Bhagya ₹170 DBT, Gruha Lakshmi ₹2,000, and locate your nearest Fair Price Shop.
             </p>
           </div>
+
+          <!-- Aadhaar & Ration Card Updates / Corrections Hub Card -->
+          <div 
+            id="cardAadhaarUpdateHub" 
+            role="button" 
+            tabindex="0"
+            class="mt-3 p-3.5 rounded-2xl bg-blue-500/10 hover:bg-blue-500/15 border border-blue-500/20 text-slate-800 space-y-2 cursor-pointer transition active:scale-[0.99] select-none"
+            aria-label="Aadhaar and Ration Card Correction & Update Services"
+          >
+            <div class="flex items-center justify-between pointer-events-none">
+              <span class="text-xs font-bold text-blue-950 flex items-center gap-1.5" id="homeAadhaarUpdateTitle">
+                <i class="fa-solid fa-id-card-clip text-blue-600"></i>
+                <span>Aadhaar & Card Updates</span>
+              </span>
+              <span id="btnOpenAadhaarUpdateHub" class="text-[11px] font-bold text-blue-700 flex items-center gap-1">
+                <span id="homeAadhaarUpdateAction">Update Services</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </span>
+            </div>
+            <p class="text-[11px] text-blue-900/80 leading-relaxed pointer-events-none" id="homeAadhaarUpdateDesc">
+              Official links to update Aadhaar address, mobile number link guide, add/remove members, and check NPCI bank seeding.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -367,6 +390,17 @@
 
             <div id="rosterListContainer" class="space-y-2">
               <!-- Dynamically populated roster list -->
+            </div>
+
+            <!-- In-Roster Quick Update Action -->
+            <div id="rosterUpdateNotice" class="mt-3 p-3 rounded-xl bg-blue-50/70 border border-blue-200/80 text-xs flex items-center justify-between gap-2 shadow-2xs">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square text-blue-600 text-xs shrink-0"></i>
+                <span id="rosterUpdateNoticeText" class="text-[11px] text-blue-950/80 leading-tight">Need to correct name, age, or link unseeded Aadhaar?</span>
+              </div>
+              <button type="button" id="btnRosterOpenUpdateHub" class="shrink-0 text-[10px] font-bold text-blue-700 hover:text-blue-800 bg-white hover:bg-blue-100 border border-blue-200 px-2 py-1 rounded-lg transition active:scale-95 shadow-2xs">
+                <span id="rosterUpdateNoticeBtn">Update Services →</span>
+              </button>
             </div>
           </div>
 
@@ -966,6 +1000,208 @@
         <div class="modal-footer">
           <button id="btnDismissFacilitiesGuide" type="button" class="w-full py-2.5 btn-primary font-semibold text-xs rounded-xl transition active:scale-[0.99]">
             Close Guide
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Official Aadhaar & Ration Card Corrections & Updates Modal -->
+    <div id="aadhaarUpdateModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex flex-col items-center justify-center p-3 sm:p-4 overscroll-none">
+      <div class="modal-card">
+        <!-- Modal Header -->
+        <div class="modal-header flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">
+              <i class="fa-solid fa-id-card-clip"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900" id="updateModalHeading">Aadhaar & Card Corrections</h3>
+              <p class="text-[10px] text-slate-500" id="updateDeptSubtitle">Official UIDAI & Karnataka Ahara Services</p>
+            </div>
+          </div>
+          <button id="btnCloseAadhaarUpdateModal" type="button" class="text-slate-400 hover:text-slate-700 p-2.5 -mr-1 rounded-xl active:bg-slate-200 transition shrink-0" aria-label="Close modal">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Sub Tabs inside Modal: Aadhaar (UIDAI) | Ration Card (Ahara) -->
+        <div class="px-4 pt-2.5 pb-2 bg-slate-50 border-b border-slate-200/80 flex gap-2">
+          <button type="button" id="modalTabAadhaar" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition bg-white text-blue-700 border border-blue-200 shadow-2xs">
+            <i class="fa-solid fa-fingerprint mr-1"></i> <span id="modalTabAadhaarText">Aadhaar (UIDAI)</span>
+          </button>
+          <button type="button" id="modalTabRation" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900">
+            <i class="fa-solid fa-address-card mr-1"></i> <span id="modalTabRationText">Ration Card (Ahara)</span>
+          </button>
+        </div>
+
+        <!-- Scrollable Modal Body -->
+        <div class="modal-body space-y-3.5 text-xs">
+          <!-- PANEL A: UIDAI Aadhaar Services -->
+          <div id="modalPanelAadhaar" class="space-y-3">
+            <!-- Official Security Reality Notice -->
+            <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-[10px] text-amber-900 flex items-start gap-2">
+              <i class="fa-solid fa-shield-halved text-amber-600 text-xs mt-0.5 shrink-0"></i>
+              <p id="uidaiNoticeText" class="leading-relaxed">
+                <strong>Government Security Note:</strong> UIDAI strictly prohibits any third-party app from directly modifying Aadhaar records. All updates must be submitted through the official myAadhaar portal or at authorized government centres.
+              </p>
+            </div>
+
+            <!-- Service 1: Update Address Online -->
+            <div class="p-3 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-house-user text-blue-600"></i>
+                  <span id="srvAddressTitle">Update Address Online</span>
+                </span>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200" id="srvAddressBadge">ONLINE</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="srvAddressDesc">
+                Update your residential address on Aadhaar directly online using valid address proof or Head of Family (HOF) consent.
+              </p>
+              <a href="https://myaadhaar.uidai.gov.in/" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-center block text-[11px] transition shadow-xs">
+                <span id="btnOpenMyAadhaarAddress">Open Official myAadhaar Portal ↗</span>
+              </a>
+            </div>
+
+            <!-- Service 2: Update Mobile Number & Biometrics -->
+            <div class="p-3 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-mobile-screen-button text-purple-600"></i>
+                  <span id="srvMobileTitle">Link Mobile Number & Biometrics</span>
+                </span>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200" id="srvMobileBadge">IN-PERSON</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="srvMobileDesc">
+                To prevent fraud, UIDAI requires mandatory in-person biometric authentication (fingerprint/iris) to update mobile numbers, photos, or fingerprints. Visit your nearest Post Office, Grama One, or Aadhaar Seva Kendra.
+              </p>
+              <a href="https://appointments.uidai.gov.in/easearch.aspx" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-900 text-white font-bold text-center block text-[11px] transition shadow-xs">
+                <i class="fa-solid fa-location-dot mr-1"></i> <span id="btnLocateAsk">Locate Nearest Aadhaar Kendra (ASK) ↗</span>
+              </a>
+            </div>
+
+            <!-- Service 3: Check Bank-Aadhaar (NPCI) Seeding Status -->
+            <div class="p-3 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-building-columns text-emerald-600"></i>
+                  <span id="srvNpciTitle">Bank-Aadhaar DBT Seeding Status</span>
+                </span>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200" id="srvNpciBadge">DBT ESSENTIAL</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="srvNpciDesc">
+                Check whether your bank account is mapped to Aadhaar with NPCI to receive monthly cash DBT for Anna Bhagya (₹170/member) and Gruha Lakshmi (₹2,000/month).
+              </p>
+              <a href="https://myaadhaar.uidai.gov.in/check-aadhaar-banking-status" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-center block text-[11px] transition shadow-xs">
+                <i class="fa-solid fa-circle-check mr-1"></i> <span id="btnCheckNpci">Check Bank Seeding on UIDAI ↗</span>
+              </a>
+            </div>
+
+            <!-- Service 4: Document Revalidation -->
+            <div class="p-3 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-file-shield text-indigo-600"></i>
+                  <span id="srvDocTitle">Update Supporting Identity Documents</span>
+                </span>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200" id="srvDocBadge">FREE</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="srvDocDesc">
+                UIDAI recommends revalidating Aadhaar cards older than 10 years by uploading recent Proof of Identity (PoI) and Proof of Address (PoA).
+              </p>
+              <a href="https://myaadhaar.uidai.gov.in/" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-center block text-[11px] transition shadow-xs">
+                <span id="btnUploadDoc">Upload Proof on myAadhaar ↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- PANEL B: Karnataka Ration Card Corrections (Ahara / Seva Sindhu) -->
+          <div id="modalPanelRation" class="hidden space-y-3">
+            <!-- How to Link Aadhaar with Ration Card (e-KYC) -->
+            <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70 space-y-2">
+              <h4 class="font-bold text-amber-950 flex items-center gap-1.5">
+                <i class="fa-solid fa-link text-amber-700"></i>
+                <span id="rcLinkAadhaarTitle">Link Aadhaar with Ration Card (e-KYC)</span>
+              </h4>
+              <p class="text-[11px] text-amber-950/80 leading-relaxed" id="rcLinkAadhaarDesc">
+                To link unseeded Aadhaar or complete pending e-KYC:
+              </p>
+              <div id="rcLinkAadhaarSteps" class="text-[11px] text-slate-700 space-y-1 bg-white p-2.5 rounded-lg border border-amber-200/60 leading-relaxed">
+                <p>• <strong>At Fair Price Shop</strong>: Visit your local ration shop and authenticate your fingerprint on the e-PoS device.</p>
+                <p>• <strong>From Home</strong>: Download the official NIC <strong>'Mera eKYC'</strong> & <strong>'Aadhaar Face RD'</strong> apps for face authentication.</p>
+                <p>• <strong>At Grama One Centre</strong>: Take your Ration Card & Aadhaar to your village Grama One / Karnataka One centre.</p>
+              </div>
+            </div>
+
+            <!-- Correction 1: Add Family Member -->
+            <div class="p-3 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-user-plus text-emerald-600"></i>
+                  <span id="rcAddMemberTitle">Add New Member (Child / Spouse)</span>
+                </span>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">SEVA SINDHU</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="rcAddMemberDesc">
+                <strong>Required Proofs:</strong> Child's Birth Certificate, Child's Aadhaar (if above 5 yrs), Spouse's Aadhaar & Marriage Certificate, Head of Family consent.
+              </p>
+              <a href="https://ahara.karnataka.gov.in/" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-center block text-[11px] transition shadow-xs">
+                <span id="btnRcAddMember">Apply on Ahara e-Services ↗</span>
+              </a>
+            </div>
+
+            <!-- Correction 2: Delete Member (Marriage / Deceased) -->
+            <div class="p-3 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-user-minus text-rose-600"></i>
+                  <span id="rcDeleteMemberTitle">Delete / Transfer Member</span>
+                </span>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">FOOD DEPT</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="rcDeleteMemberDesc">
+                <strong>Required Proofs:</strong> Marriage certificate for daughter/sister moving to spouse's card, or Death certificate for deceased family members.
+              </p>
+              <a href="https://sevasindhu.karnataka.gov.in/" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-900 text-white font-bold text-center block text-[11px] transition shadow-xs">
+                <span id="btnRcDeleteMember">Apply on Seva Sindhu ↗</span>
+              </a>
+            </div>
+
+            <!-- Correction 3: Change Head of Family -->
+            <div class="p-3 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-person-breastfeeding text-amber-600"></i>
+                  <span id="rcChangeHofTitle">Change Head of Family (HOF)</span>
+                </span>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">GRUHA LAKSHMI</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed" id="rcChangeHofDesc">
+                Required to receive ₹2,000/month Gruha Lakshmi aid if the previous head is deceased or if a male member was registered as HOF. Must designate the eldest adult female.
+              </p>
+              <a href="https://ahara.karnataka.gov.in/" target="_blank" rel="noopener" class="w-full py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-center block text-[11px] transition shadow-xs">
+                <span id="btnRcChangeHof">Apply for HOF Change ↗</span>
+              </a>
+            </div>
+
+            <!-- Assisted Service Centres -->
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center justify-between">
+              <div>
+                <p class="font-bold text-slate-800" id="cscLabel">Need In-Person Help?</p>
+                <p class="text-[10px] text-slate-500" id="cscDesc">Visit nearest Grama One or Karnataka One</p>
+              </div>
+              <a href="https://www.karnatakaone.gov.in/" target="_blank" rel="noopener" class="py-1.5 px-2.5 rounded-lg bg-slate-900 text-white font-bold text-[10px] hover:bg-slate-800 transition">
+                <span id="btnFindCsc">Find Centre ↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer flex items-center justify-between">
+          <span class="text-[10px] text-slate-400 font-medium" id="updateModalHelpline">Helpline: 1967 • UIDAI: 1947</span>
+          <button id="btnDismissAadhaarUpdateModal" type="button" class="py-2 px-4 btn-primary font-semibold text-xs rounded-xl transition active:scale-[0.99]">
+            <span id="closeUpdateModalBtn">Close Hub</span>
           </button>
         </div>
       </div>
