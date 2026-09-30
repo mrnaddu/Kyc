@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,12 +20,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -37,6 +42,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.mrnaddu.kyc.data.KycRepository
 import com.mrnaddu.kyc.model.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 // Color Palette for Karnataka GovTech
@@ -63,7 +69,16 @@ fun NannaSevaApp(
     var consentAgreed by remember { mutableStateOf(true) }
 
     var isLoading by remember { mutableStateOf(false) }
+    var loadingTitle by remember { mutableStateOf("") }
+    var loadingSubtitle by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    // App launch splash animation state
+    var isAppLaunching by remember { mutableStateOf(true) }
+    LaunchedEffect(Unit) {
+        delay(1200)
+        isAppLaunching = false
+    }
 
     var cardData by remember { mutableStateOf<RationCardData?>(null) }
     var selectedMember by remember { mutableStateOf<Member?>(null) }
@@ -77,6 +92,7 @@ fun NannaSevaApp(
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     // Helper translation string
     fun t(en: String, kn: String): String = if (isKn) kn else en
@@ -136,7 +152,7 @@ fun NannaSevaApp(
                     }
                 },
                 actions = {
-                    // Home button
+                    // Home button (only on subsequent steps)
                     if (currentStep > 0) {
                         IconButton(onClick = {
                             errorMessage = null
@@ -180,185 +196,241 @@ fun NannaSevaApp(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+            // Adaptive Centered Container for Horizontal / Mobile Landscape Alignment
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.TopCenter
             ) {
-                // Update Banner if available
-                if (updateAvailableVersion != null) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 12.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFEF3C7)),
-                        shape = RoundedCornerShape(12.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .widthIn(max = 580.dp) // Centered layout boundary for horizontal mode
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Animated Update Banner if available
+                    AnimatedVisibility(
+                        visible = updateAvailableVersion != null,
+                        enter = expandVertically() + fadeIn(),
+                        exit = shrinkVertically() + fadeOut()
                     ) {
-                        Row(
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(12.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(bottom = 12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFFEF3C7)),
+                            shape = RoundedCornerShape(12.dp)
                         ) {
-                            Text(
-                                text = t("New update $updateAvailableVersion is available!", "ಹೊಸ ಆವೃತ್ತಿಯ ಅಪ್‌ಡೇಟ್ $updateAvailableVersion ಲಭ್ಯವಿದೆ!"),
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF78350F)
-                            )
-                            Button(
-                                onClick = onCheckForUpdates,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB45309)),
-                                shape = RoundedCornerShape(8.dp),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(t("Update", "ಅಪ್‌ಡೇಟ್"), fontSize = 11.sp, color = Color.White)
+                                Text(
+                                    text = t("New update $updateAvailableVersion is available!", "ಹೊಸ ಆವೃತ್ತಿಯ ಅಪ್‌ಡೇಟ್ $updateAvailableVersion ಲಭ್ಯವಿದೆ!"),
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF78350F)
+                                )
+                                Button(
+                                    onClick = onCheckForUpdates,
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB45309)),
+                                    shape = RoundedCornerShape(8.dp),
+                                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                                ) {
+                                    Text(t("Update", "ಅಪ್‌ಡೇಟ್"), fontSize = 11.sp, color = Color.White)
+                                }
                             }
                         }
                     }
-                }
 
-                // Error Message Card
-                if (errorMessage != null) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 12.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFE4E6)),
-                        shape = RoundedCornerShape(12.dp)
+                    // Animated Error Message Card
+                    AnimatedVisibility(
+                        visible = errorMessage != null,
+                        enter = expandVertically() + fadeIn(),
+                        exit = shrinkVertically() + fadeOut()
                     ) {
-                        Row(
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(bottom = 12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFE4E6)),
+                            shape = RoundedCornerShape(12.dp)
                         ) {
-                            Icon(Icons.Default.Info, contentDescription = null, tint = BrandRose, modifier = Modifier.size(18.dp))
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = errorMessage ?: "",
-                                fontSize = 11.sp,
-                                color = Color(0xFF881337),
-                                modifier = Modifier.weight(1f)
-                            )
-                            IconButton(onClick = { errorMessage = null }, modifier = Modifier.size(24.dp)) {
-                                Icon(Icons.Default.Close, contentDescription = "Dismiss", tint = Color.Gray, modifier = Modifier.size(14.dp))
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Default.Info, contentDescription = null, tint = BrandRose, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = errorMessage ?: "",
+                                    fontSize = 11.sp,
+                                    color = Color(0xFF881337),
+                                    modifier = Modifier.weight(1f)
+                                )
+                                IconButton(onClick = { errorMessage = null }, modifier = Modifier.size(24.dp)) {
+                                    Icon(Icons.Default.Close, contentDescription = "Dismiss", tint = Color.Gray, modifier = Modifier.size(14.dp))
+                                }
                             }
                         }
                     }
-                }
 
-                // Screen Router
-                when (currentStep) {
-                    0 -> StepLookupScreen(
-                        isKn = isKn,
-                        rcNumber = rcNumberInput,
-                        onRcChange = { if (it.length <= 12) rcNumberInput = it.filter { ch -> ch.isLetterOrDigit() }.uppercase() },
-                        captcha = captchaInput,
-                        onCaptchaChange = { if (it.length <= 5) captchaInput = it.uppercase() },
-                        captchaCode = captchaData.code,
-                        onRefreshCaptcha = { captchaData = KycRepository.generateCaptcha(); captchaInput = "" },
-                        consent = consentAgreed,
-                        onConsentChange = { consentAgreed = it },
-                        isLoading = isLoading,
-                        onSearch = {
-                            if (rcNumberInput.length < 5) {
-                                errorMessage = t("Please enter a valid Ration Card number.", "ದಯವಿಟ್ಟು ಸರಿಯಾದ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.")
-                                return@StepLookupScreen
-                            }
-                            if (captchaInput.length < 5) {
-                                errorMessage = t("Please enter the 5-character security code.", "ದಯವಿಟ್ಟು 5 ಅಕ್ಷರಗಳ ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್ ನಮೂದಿಸಿ.")
-                                return@StepLookupScreen
-                            }
-                            if (!consentAgreed) {
-                                errorMessage = t("Please accept the e-KYC consent.", "ದಯವಿಟ್ಟು ಇ-ಕೆವೈಸಿ ಸಮ್ಮತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ.")
-                                return@StepLookupScreen
-                            }
-
-                            isLoading = true
-                            errorMessage = null
-                            coroutineScope.launch {
-                                val result = KycRepository.verifyRationCard(rcNumberInput, captchaInput, captchaData.token)
-                                isLoading = false
-                                result.onSuccess { data ->
-                                    cardData = data
-                                    selectedMember = data.members.firstOrNull { it.ekyc != "VERIFIED" } ?: data.members.firstOrNull()
-                                    currentStep = 1
-                                }.onFailure { err ->
-                                    errorMessage = err.message ?: t("Verification failed.", "ಪರಿಶೀಲನೆ ವಿಫಲವಾಗಿದೆ.")
-                                    captchaData = KycRepository.generateCaptcha()
-                                    captchaInput = ""
-                                }
+                    // Screen Router with Native Directional Animations
+                    AnimatedContent(
+                        targetState = currentStep,
+                        transitionSpec = {
+                            if (targetState > initialState) {
+                                (slideInHorizontally(animationSpec = tween(350, easing = FastOutSlowInEasing)) { it } + fadeIn(tween(300)))
+                                    .togetherWith(slideOutHorizontally(animationSpec = tween(350, easing = FastOutSlowInEasing)) { -it } + fadeOut(tween(250)))
+                            } else {
+                                (slideInHorizontally(animationSpec = tween(350, easing = FastOutSlowInEasing)) { -it } + fadeIn(tween(300)))
+                                    .togetherWith(slideOutHorizontally(animationSpec = tween(350, easing = FastOutSlowInEasing)) { it } + fadeOut(tween(250)))
                             }
                         },
-                        onOpenFacilities = { showFacilitiesDialog = true },
-                        onOpenUpdateHub = { tab -> updateHubDefaultTab = tab; showUpdateHubDialog = true }
-                    )
+                        label = "StepTransition"
+                    ) { step ->
+                        when (step) {
+                            0 -> StepLookupScreen(
+                                isKn = isKn,
+                                rcNumber = rcNumberInput,
+                                onRcChange = { if (it.length <= 12) rcNumberInput = it.filter { ch -> ch.isLetterOrDigit() }.uppercase() },
+                                captcha = captchaInput,
+                                onCaptchaChange = { if (it.length <= 5) captchaInput = it.uppercase() },
+                                captchaCode = captchaData.code,
+                                onRefreshCaptcha = { captchaData = KycRepository.generateCaptcha(); captchaInput = "" },
+                                consent = consentAgreed,
+                                onConsentChange = { consentAgreed = it },
+                                isLoading = isLoading,
+                                onSearch = {
+                                    keyboardController?.hide()
+                                    if (rcNumberInput.length < 5) {
+                                        errorMessage = t("Please enter a valid Ration Card number.", "ದಯವಿಟ್ಟು ಸರಿಯಾದ ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.")
+                                        return@StepLookupScreen
+                                    }
+                                    if (captchaInput.length < 5) {
+                                        errorMessage = t("Please enter the 5-character security code.", "ದಯವಿಟ್ಟು 5 ಅಕ್ಷರಗಳ ಸೆಕ್ಯುರಿಟಿ ಕೋಡ್ ನಮೂದಿಸಿ.")
+                                        return@StepLookupScreen
+                                    }
+                                    if (!consentAgreed) {
+                                        errorMessage = t("Please accept the e-KYC consent.", "ದಯವಿಟ್ಟು ಇ-ಕೆವೈಸಿ ಸಮ್ಮತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ.")
+                                        return@StepLookupScreen
+                                    }
 
-                    1 -> cardData?.let { card ->
-                        StepRosterScreen(
-                            isKn = isKn,
-                            card = card,
-                            selectedMember = selectedMember,
-                            onSelectMember = { selectedMember = it },
-                            onOpenUpdateHub = { tab -> updateHubDefaultTab = tab; showUpdateHubDialog = true },
-                            onProceedToPhoto = {
-                                if (selectedMember != null) {
-                                    currentStep = 2
-                                } else {
-                                    errorMessage = t("Please select a family member.", "ದಯವಿಟ್ಟು ಕುಟುಂಬದ ಸದಸ್ಯರನ್ನು ಆಯ್ಕೆಮಾಡಿ.")
-                                }
+                                    loadingTitle = t("Connecting to Karnataka ePDS...", "ಕರ್ನಾಟಕ ಆಹಾರ ePDS ಪೋರ್ಟಲ್ ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ...")
+                                    loadingSubtitle = t("Verifying Ration Card & Aadhaar database records", "ಪಡಿತರ ಚೀಟಿ & ಆಧಾರ್ ಸೀಡಿಂಗ್ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ")
+                                    isLoading = true
+                                    errorMessage = null
+
+                                    coroutineScope.launch {
+                                        val result = KycRepository.verifyRationCard(rcNumberInput, captchaInput, captchaData.token)
+                                        isLoading = false
+                                        result.onSuccess { data ->
+                                            cardData = data
+                                            selectedMember = data.members.firstOrNull { it.ekyc != "VERIFIED" } ?: data.members.firstOrNull()
+                                            currentStep = 1
+                                        }.onFailure { err ->
+                                            errorMessage = err.message ?: t("Verification failed.", "ಪರಿಶೀಲನೆ ವಿಫಲವಾಗಿದೆ.")
+                                            captchaData = KycRepository.generateCaptcha()
+                                            captchaInput = ""
+                                        }
+                                    }
+                                },
+                                onOpenFacilities = { showFacilitiesDialog = true },
+                                onOpenUpdateHub = { tab -> updateHubDefaultTab = tab; showUpdateHubDialog = true }
+                            )
+
+                            1 -> cardData?.let { card ->
+                                StepRosterScreen(
+                                    isKn = isKn,
+                                    card = card,
+                                    selectedMember = selectedMember,
+                                    onSelectMember = {
+                                        keyboardController?.hide()
+                                        selectedMember = it
+                                    },
+                                    onOpenUpdateHub = { tab -> updateHubDefaultTab = tab; showUpdateHubDialog = true },
+                                    onProceedToPhoto = {
+                                        keyboardController?.hide()
+                                        if (selectedMember != null) {
+                                            currentStep = 2
+                                        } else {
+                                            errorMessage = t("Please select a family member.", "ದಯವಿಟ್ಟು ಕುಟುಂಬದ ಸದಸ್ಯರನ್ನು ಆಯ್ಕೆಮಾಡಿ.")
+                                        }
+                                    }
+                                )
                             }
-                        )
-                    }
 
-                    2 -> StepBiometricScreen(
-                        isKn = isKn,
-                        selectedMember = selectedMember,
-                        photo = capturedPhoto,
-                        onPhotoCaptured = { capturedPhoto = it },
-                        isLoading = isLoading,
-                        onSubmitKyc = {
-                            val member = selectedMember
-                            val card = cardData
-                            if (member != null && card != null) {
-                                isLoading = true
-                                errorMessage = null
-                                coroutineScope.launch {
-                                    val res = KycRepository.submitKyc(card.rcNumber, member.id, capturedPhoto)
-                                    isLoading = false
-                                    res.onSuccess { cert ->
-                                        issuedCertificate = cert
-                                        currentStep = 3
-                                    }.onFailure { err ->
-                                        errorMessage = err.message ?: t("e-KYC submission failed.", "ಇ-ಕೆವೈಸಿ ಸಲ್ಲಿಕೆ ವಿಫಲವಾಗಿದೆ.")
+                            2 -> StepBiometricScreen(
+                                isKn = isKn,
+                                selectedMember = selectedMember,
+                                photo = capturedPhoto,
+                                onPhotoCaptured = { capturedPhoto = it },
+                                isLoading = isLoading,
+                                onSubmitKyc = {
+                                    keyboardController?.hide()
+                                    val member = selectedMember
+                                    val card = cardData
+                                    if (member != null && card != null) {
+                                        loadingTitle = t("Submitting Biometric Record...", "ಮುಖದ ಬಯೋಮೆಟ್ರಿಕ್ ಫೋಟೋ ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...")
+                                        loadingSubtitle = t("Authenticating with State ePDS registry", "ಆಹಾರ ಇಲಾಖೆಯ ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ದಾಖಲಿಸಲಾಗುತ್ತಿದೆ")
+                                        isLoading = true
+                                        errorMessage = null
+
+                                        coroutineScope.launch {
+                                            val res = KycRepository.submitKyc(card.rcNumber, member.id, capturedPhoto)
+                                            isLoading = false
+                                            res.onSuccess { cert ->
+                                                issuedCertificate = cert
+                                                currentStep = 3
+                                            }.onFailure { err ->
+                                                errorMessage = err.message ?: t("e-KYC submission failed.", "ಇ-ಕೆವೈಸಿ ಸಲ್ಲಿಕೆ ವಿಫಲವಾಗಿದೆ.")
+                                            }
+                                        }
                                     }
                                 }
+                            )
+
+                            3 -> issuedCertificate?.let { cert ->
+                                StepCertificateScreen(
+                                    isKn = isKn,
+                                    cert = cert,
+                                    onStartNew = {
+                                        currentStep = 0
+                                        rcNumberInput = ""
+                                        captchaInput = ""
+                                        captchaData = KycRepository.generateCaptcha()
+                                        cardData = null
+                                        selectedMember = null
+                                        capturedPhoto = null
+                                        issuedCertificate = null
+                                    }
+                                )
                             }
                         }
-                    )
-
-                    3 -> issuedCertificate?.let { cert ->
-                        StepCertificateScreen(
-                            isKn = isKn,
-                            cert = cert,
-                            onStartNew = {
-                                currentStep = 0
-                                rcNumberInput = ""
-                                captchaInput = ""
-                                captchaData = KycRepository.generateCaptcha()
-                                cardData = null
-                                selectedMember = null
-                                capturedPhoto = null
-                                issuedCertificate = null
-                            }
-                        )
                     }
                 }
             }
+
+            // Dedicated Animated Action Loading Screen
+            ActionLoadingOverlay(
+                isLoading = isLoading,
+                title = loadingTitle,
+                subtitle = loadingSubtitle,
+                isKn = isKn
+            )
+
+            // App Launch Splash Overlay
+            AppLaunchOverlay(
+                isVisible = isAppLaunching,
+                isKn = isKn
+            )
         }
     }
 
@@ -374,6 +446,251 @@ fun NannaSevaApp(
             initialTab = updateHubDefaultTab,
             onDismiss = { showUpdateHubDialog = false }
         )
+    }
+}
+
+// -------------------------------------------------------------
+// NATIVE ANIMATED LAUNCH SCREEN OVERLAY
+// -------------------------------------------------------------
+@Composable
+fun AppLaunchOverlay(
+    isVisible: Boolean,
+    isKn: Boolean
+) {
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(),
+        exit = fadeOut(tween(400, easing = FastOutSlowInEasing))
+    ) {
+        val infiniteTransition = rememberInfiniteTransition(label = "LaunchPulse")
+        val pulseScale by infiniteTransition.animateFloat(
+            initialValue = 0.94f,
+            targetValue = 1.06f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(800, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse
+            ),
+            label = "pulseScale"
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(Color(0xFF0F172A), Color(0xFF1E293B), Color(0xFF0F172A))
+                    )
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(24.dp)
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(24.dp),
+                    color = Color(0xFF1E293B),
+                    border = BorderStroke(2.dp, Color(0xFFFBBF24).copy(alpha = 0.7f)),
+                    modifier = Modifier
+                        .size(88.dp)
+                        .scale(pulseScale)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Default.AccountBox,
+                            contentDescription = "Emblem",
+                            tint = Color(0xFFFBBF24),
+                            modifier = Modifier.size(52.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    text = if (isKn) "ನನ್ನ ಸೇವೆ" else "Nanna Seva",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White,
+                    letterSpacing = 1.sp
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = if (isKn) "ಕರ್ನಾಟಕ ಸರ್ಕಾರ • ಆಹಾರ & ನಾಗರಿಕ ಸರಬರಾಜು" else "Government of Karnataka • Food & Civil Supplies",
+                    fontSize = 12.sp,
+                    color = Color(0xFF94A3B8),
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(28.dp))
+
+                CircularProgressIndicator(
+                    modifier = Modifier.size(28.dp),
+                    color = Color(0xFFFBBF24),
+                    strokeWidth = 3.dp
+                )
+            }
+        }
+    }
+}
+
+// -------------------------------------------------------------
+// DEDICATED ACTION LOADING OVERLAY WITH ANIMATED EMBLEM
+// -------------------------------------------------------------
+@Composable
+fun ActionLoadingOverlay(
+    isLoading: Boolean,
+    title: String,
+    subtitle: String,
+    isKn: Boolean
+) {
+    AnimatedVisibility(
+        visible = isLoading,
+        enter = fadeIn(tween(250)) + scaleIn(initialScale = 0.94f),
+        exit = fadeOut(tween(200)) + scaleOut(targetScale = 0.96f)
+    ) {
+        val infiniteTransition = rememberInfiniteTransition(label = "ActionLoadingPulse")
+        val pulseScale by infiniteTransition.animateFloat(
+            initialValue = 0.95f,
+            targetValue = 1.05f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(700, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse
+            ),
+            label = "pulseScale"
+        )
+        val rotationAngle by infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 360f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1800, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
+            ),
+            label = "rotationAngle"
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF0F172A).copy(alpha = 0.72f))
+                .clickable(enabled = false) {}, // Block clicks on backdrop
+            contentAlignment = Alignment.Center
+        ) {
+            Card(
+                modifier = Modifier
+                    .widthIn(max = 340.dp)
+                    .fillMaxWidth(0.85f),
+                shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+                border = BorderStroke(1.dp, Color(0xFFE2E8F0))
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Pulsating & rotating emblem badge
+                    Box(
+                        modifier = Modifier.size(76.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Canvas(modifier = Modifier.fillMaxSize().rotate(rotationAngle)) {
+                            drawCircle(
+                                brush = Brush.sweepGradient(
+                                    listOf(
+                                        Color(0xFF2563EB).copy(alpha = 0.1f),
+                                        Color(0xFF2563EB),
+                                        Color(0xFF059669),
+                                        Color(0xFF2563EB).copy(alpha = 0.1f)
+                                    )
+                                ),
+                                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4f)
+                            )
+                        }
+
+                        Surface(
+                            shape = CircleShape,
+                            color = BrandNavy,
+                            modifier = Modifier
+                                .size(54.dp)
+                                .scale(pulseScale)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Default.AccountBox,
+                                    contentDescription = null,
+                                    tint = Color(0xFFFBBF24),
+                                    modifier = Modifier.size(30.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = title,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = BrandNavy,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(
+                        text = subtitle,
+                        fontSize = 11.sp,
+                        color = Color(0xFF64748B),
+                        textAlign = TextAlign.Center,
+                        lineHeight = 15.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(18.dp))
+
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f)
+                            .height(5.dp)
+                            .clip(RoundedCornerShape(3.dp)),
+                        color = Color(0xFF2563EB),
+                        trackColor = Color(0xFFE2E8F0)
+                    )
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color(0xFFF1F5F9),
+                        modifier = Modifier.padding(horizontal = 4.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.Lock,
+                                contentDescription = null,
+                                tint = BrandEmerald,
+                                modifier = Modifier.size(12.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = if (isKn) "256-ಬಿಟ್ ಸುರಕ್ಷಿತ ಸರ್ಕಾರಿ ಸಂಪರ್ಕ" else "256-bit Secure GovTech Link",
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = BrandEmerald
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -397,6 +714,14 @@ fun StepLookupScreen(
     onOpenUpdateHub: (String) -> Unit
 ) {
     fun t(en: String, kn: String): String = if (isKn) kn else en
+
+    // Captcha rotation animation state
+    var captchaRotation by remember { mutableFloatStateOf(0f) }
+    val animatedRotation by animateFloatAsState(
+        targetValue = captchaRotation,
+        animationSpec = tween(450, easing = FastOutSlowInEasing),
+        label = "CaptchaRotation"
+    )
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         // Department Pill Badge
@@ -507,7 +832,7 @@ fun StepLookupScreen(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Stylized Compose Canvas Captcha
+                    // Stylized Compose Canvas Captcha with animated refresh
                     Box(
                         modifier = Modifier
                             .weight(1.1f)
@@ -515,7 +840,10 @@ fun StepLookupScreen(
                             .clip(RoundedCornerShape(12.dp))
                             .background(Color(0xFFF1F5F9))
                             .border(1.dp, Color(0xFFE2E8F0), RoundedCornerShape(12.dp))
-                            .clickable { onRefreshCaptcha() },
+                            .clickable {
+                                captchaRotation += 360f
+                                onRefreshCaptcha()
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         Canvas(modifier = Modifier.fillMaxSize()) {
@@ -546,20 +874,33 @@ fun StepLookupScreen(
                                 color = Color(0xFF1E293B)
                             )
                         }
-                        // tap to refresh badge
+                        // tap to refresh badge with animated rotation
                         Surface(
                             shape = RoundedCornerShape(6.dp),
-                            color = Color(0xFF0F172A).copy(alpha = 0.8f),
+                            color = Color(0xFF0F172A).copy(alpha = 0.85f),
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
                                 .padding(3.dp)
                         ) {
-                            Text(
-                                text = t("tap ↻", "ಬದಲಿಸಿ ↻"),
-                                fontSize = 8.sp,
-                                color = Color.White,
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
-                            )
+                            Row(
+                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    Icons.Default.Refresh,
+                                    contentDescription = "Refresh",
+                                    tint = Color.White,
+                                    modifier = Modifier
+                                        .size(10.dp)
+                                        .rotate(animatedRotation)
+                                )
+                                Spacer(modifier = Modifier.width(2.dp))
+                                Text(
+                                    text = t("tap", "ಬದಲಿಸಿ"),
+                                    fontSize = 8.sp,
+                                    color = Color.White
+                                )
+                            }
                         }
                     }
 
@@ -859,182 +1200,198 @@ fun StepRosterScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        when (selectedTab) {
-            0 -> {
-                // Family Members List
-                Text(
-                    text = t("Select member for biometric photo verification:", "ಫೋಟೋ ಪರಿಶೀಲನೆಗೆ ಸದಸ್ಯರನ್ನು ಆಯ್ಕೆಮಾಡಿ:"),
-                    fontSize = 11.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(bottom = 6.dp)
-                )
+        // Animated Tab Content Switching
+        AnimatedContent(
+            targetState = selectedTab,
+            transitionSpec = {
+                fadeIn(tween(250)) togetherWith fadeOut(tween(150))
+            },
+            label = "RosterTabTransition"
+        ) { tab ->
+            when (tab) {
+                0 -> {
+                    Column {
+                        // Family Members List
+                        Text(
+                            text = t("Select member for biometric photo verification:", "ಫೋಟೋ ಪರಿಶೀಲನೆಗೆ ಸದಸ್ಯರನ್ನು ಆಯ್ಕೆಮಾಡಿ:"),
+                            fontSize = 11.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(bottom = 6.dp)
+                        )
 
-                card.members.forEach { member ->
-                    val isSelected = selectedMember?.id == member.id
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp)
-                            .clickable { onSelectMember(member) },
-                        shape = RoundedCornerShape(12.dp),
-                        colors = CardDefaults.cardColors(containerColor = if (isSelected) Color(0xFFEFF6FF) else Color.White),
-                        border = BorderStroke(if (isSelected) 2.dp else 1.dp, if (isSelected) Color(0xFF3B82F6) else CardBorder)
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = isSelected,
-                                onClick = { onSelectMember(member) },
-                                colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF2563EB))
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Column(modifier = Modifier.weight(1f)) {
+                        card.members.forEach { member ->
+                            val isSelected = selectedMember?.id == member.id
+                            val targetBg = if (isSelected) Color(0xFFEFF6FF) else Color.White
+                            val targetBorder = if (isSelected) Color(0xFF3B82F6) else CardBorder
+                            val bgColor by animateColorAsState(targetBg, label = "memberBg")
+                            val borderColor by animateColorAsState(targetBorder, label = "memberBorder")
+
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                                    .clickable { onSelectMember(member) },
+                                shape = RoundedCornerShape(12.dp),
+                                colors = CardDefaults.cardColors(containerColor = bgColor),
+                                border = BorderStroke(if (isSelected) 2.dp else 1.dp, borderColor)
+                            ) {
                                 Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(12.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(
-                                        text = if (isKn) member.nameKn else member.nameEn,
-                                        fontSize = 13.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = BrandNavy
+                                    RadioButton(
+                                        selected = isSelected,
+                                        onClick = { onSelectMember(member) },
+                                        colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF2563EB))
                                     )
-                                    Surface(
-                                        shape = RoundedCornerShape(6.dp),
-                                        color = if (member.ekyc == "VERIFIED") Color(0xFFD1FAE5) else Color(0xFFFEF3C7)
-                                    ) {
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = if (isKn) member.nameKn else member.nameEn,
+                                                fontSize = 13.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = BrandNavy
+                                            )
+                                            Surface(
+                                                shape = RoundedCornerShape(6.dp),
+                                                color = if (member.ekyc == "VERIFIED") Color(0xFFD1FAE5) else Color(0xFFFEF3C7)
+                                            ) {
+                                                Text(
+                                                    text = if (member.ekyc == "VERIFIED") t("VERIFIED", "ಪೂರ್ಣಗೊಂಡಿದೆ") else t("PENDING", "ಬಾಕಿ ಇದೆ"),
+                                                    fontSize = 9.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = if (member.ekyc == "VERIFIED") Color(0xFF065F46) else Color(0xFF92400E),
+                                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                                )
+                                            }
+                                        }
                                         Text(
-                                            text = if (member.ekyc == "VERIFIED") t("VERIFIED", "ಪೂರ್ಣಗೊಂಡಿದೆ") else t("PENDING", "ಬಾಕಿ ಇದೆ"),
-                                            fontSize = 9.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = if (member.ekyc == "VERIFIED") Color(0xFF065F46) else Color(0xFF92400E),
-                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                            text = "${member.relation} • ${member.gender} • ${member.age} yrs",
+                                            fontSize = 10.sp,
+                                            color = Color.Gray
+                                        )
+                                        Text(
+                                            text = "Aadhaar: XXXX-XXXX-${member.aadhaarLast4}",
+                                            fontSize = 10.sp,
+                                            fontFamily = FontFamily.Monospace,
+                                            color = Color(0xFF475569)
                                         )
                                     }
                                 }
-                                Text(
-                                    text = "${member.relation} • ${member.gender} • ${member.age} yrs",
-                                    fontSize = 10.sp,
-                                    color = Color.Gray
-                                )
-                                Text(
-                                    text = "Aadhaar: XXXX-XXXX-${member.aadhaarLast4}",
-                                    fontSize = 10.sp,
-                                    fontFamily = FontFamily.Monospace,
-                                    color = Color(0xFF475569)
-                                )
                             }
                         }
-                    }
-                }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
 
-                // Roster Update Notice Banner
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
-                    border = BorderStroke(1.dp, Color(0xFFBFDBFE))
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = t("Need to correct name, age, or link unseeded Aadhaar?", "ಹೆಸರು, ವಯಸ್ಸು ತಿದ್ದುಪಡಿ ಅಥವಾ ಆಧಾರ್ ಲಿಂಕ್ ಮಾಡಬೇಕೆ?"),
-                            fontSize = 10.sp,
-                            color = Color(0xFF1E40AF),
-                            modifier = Modifier.weight(1f)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Button(
-                            onClick = { onOpenUpdateHub("ration") },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color(0xFF1D4ED8)),
-                            shape = RoundedCornerShape(8.dp),
-                            border = BorderStroke(1.dp, Color(0xFF93C5FD)),
-                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
-                            modifier = Modifier.height(30.dp)
+                        // Roster Update Notice Banner
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFEFF6FF)),
+                            border = BorderStroke(1.dp, Color(0xFFBFDBFE))
                         ) {
-                            Text(t("Update Services ↗", "ತಿದ್ದುಪಡಿ ಸೇವೆಗಳು ↗"), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = t("Need to correct name, age, or link unseeded Aadhaar?", "ಹೆಸರು, ವಯಸ್ಸು ತಿದ್ದುಪಡಿ ಅಥವಾ ಆಧಾರ್ ಲಿಂಕ್ ಮಾಡಬೇಕೆ?"),
+                                    fontSize = 10.sp,
+                                    color = Color(0xFF1E40AF),
+                                    modifier = Modifier.weight(1f)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Button(
+                                    onClick = { onOpenUpdateHub("ration") },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color(0xFF1D4ED8)),
+                                    shape = RoundedCornerShape(8.dp),
+                                    border = BorderStroke(1.dp, Color(0xFF93C5FD)),
+                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                                    modifier = Modifier.height(30.dp)
+                                ) {
+                                    Text(t("Update Services ↗", "ತಿದ್ದುಪಡಿ ಸೇವೆಗಳು ↗"), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Proceed Button
+                        Button(
+                            onClick = onProceedToPhoto,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = BrandNavy)
+                        ) {
+                            Text(t("Proceed to Biometric Photo ➔", "ಮುಖದ ಫೋಟೋ ತೆಗೆದುಕೊಳ್ಳಿ ➔"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color.White)
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Proceed Button
-                Button(
-                    onClick = onProceedToPhoto,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = BrandNavy)
-                ) {
-                    Text(t("Proceed to Biometric Photo ➔", "ಮುಖದ ಫೋಟೋ ತೆಗೆದುಕೊಳ್ಳಿ ➔"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                }
-            }
-
-            1 -> {
-                // Fair Price Shop Details
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, CardBorder)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(t("Fair Price Shop (FPS) Details", "ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ವಿವರ"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(t("Shop Name:", "ಅಂಗಡಿ ಹೆಸರು:"), fontSize = 10.sp, color = Color.Gray)
-                        Text(card.location.fpsDealerName, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = BrandNavy)
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(t("FPS Code:", "ಅಂಗಡಿ ಕೋಡ್:"), fontSize = 10.sp, color = Color.Gray)
-                        Text(card.location.fpsCode, fontSize = 12.sp, fontFamily = FontFamily.Monospace, color = BrandNavy)
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(t("District & Taluk:", "ಜಿಲ್ಲೆ ಮತ್ತು ತಾಲೂಕು:"), fontSize = 10.sp, color = Color.Gray)
-                        Text("${card.location.district}, ${card.location.taluk}", fontSize = 12.sp, color = BrandNavy)
+                1 -> {
+                    // Fair Price Shop Details
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        border = BorderStroke(1.dp, CardBorder)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(t("Fair Price Shop (FPS) Details", "ನ್ಯಾಯ ಬೆಲೆ ಅಂಗಡಿ ವಿವರ"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(t("Shop Name:", "ಅಂಗಡಿ ಹೆಸರು:"), fontSize = 10.sp, color = Color.Gray)
+                            Text(card.location.fpsDealerName, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = BrandNavy)
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(t("FPS Code:", "ಅಂಗಡಿ ಕೋಡ್:"), fontSize = 10.sp, color = Color.Gray)
+                            Text(card.location.fpsCode, fontSize = 12.sp, fontFamily = FontFamily.Monospace, color = BrandNavy)
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(t("District & Taluk:", "ಜಿಲ್ಲೆ ಮತ್ತು ತಾಲೂಕು:"), fontSize = 10.sp, color = Color.Gray)
+                            Text("${card.location.district}, ${card.location.taluk}", fontSize = 12.sp, color = BrandNavy)
+                        }
                     }
                 }
-            }
 
-            2 -> {
-                // Welfare Benefits
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, CardBorder)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(t("Government Welfare Entitlements", "ಸರ್ಕಾರಿ ಪಡಿತರ ಸೌಲಭ್ಯಗಳು"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
-                        Spacer(modifier = Modifier.height(10.dp))
-                        BenefitItem(
-                            icon = Icons.Default.CheckCircle,
-                            title = t("Anna Bhagya 10kg Free Rice", "ಅನ್ನಭಾಗ್ಯ 10 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ"),
-                            desc = t("5kg Central NFSA + 5kg Karnataka State quota per person free.", "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ ಒಟ್ಟು 10 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ.")
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        BenefitItem(
-                            icon = Icons.Default.AccountBox,
-                            title = t("Anna Bhagya Cash Transfer (DBT)", "ಅನ್ನಭಾಗ್ಯ ನಗದು ವರ್ಗಾವಣೆ (DBT)"),
-                            desc = t("₹170 per person credited directly to seeded Aadhaar bank account.", "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ₹170 ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ನೇರ ನಗದು ವರ್ಗಾವಣೆ.")
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        BenefitItem(
-                            icon = Icons.Default.Person,
-                            title = t("Gruha Lakshmi ₹2,000 / month", "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಮಾಸಿಕ ಧನಸಹಾಯ"),
-                            desc = t("Direct financial assistance to the female Head of Family.", "ಕುಟುಂಬದ ಮಹಿಳಾ ಯಜಮಾನಿಗೆ ತಿಂಗಳಿಗೆ ₹2,000 ನೇರ ಜಮೆ.")
-                        )
+                2 -> {
+                    // Welfare Benefits
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        border = BorderStroke(1.dp, CardBorder)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(t("Government Welfare Entitlements", "ಸರ್ಕಾರಿ ಪಡಿತರ ಸೌಲಭ್ಯಗಳು"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                            Spacer(modifier = Modifier.height(10.dp))
+                            BenefitItem(
+                                icon = Icons.Default.CheckCircle,
+                                title = t("Anna Bhagya 10kg Free Rice", "ಅನ್ನಭಾಗ್ಯ 10 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ"),
+                                desc = t("5kg Central NFSA + 5kg Karnataka State quota per person free.", "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ ಒಟ್ಟು 10 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ.")
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            BenefitItem(
+                                icon = Icons.Default.AccountBox,
+                                title = t("Anna Bhagya Cash Transfer (DBT)", "ಅನ್ನಭಾಗ್ಯ ನಗದು ವರ್ಗಾವಣೆ (DBT)"),
+                                desc = t("₹170 per person credited directly to seeded Aadhaar bank account.", "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ₹170 ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ನೇರ ನಗದು ವರ್ಗಾವಣೆ.")
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            BenefitItem(
+                                icon = Icons.Default.Person,
+                                title = t("Gruha Lakshmi ₹2,000 / month", "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಮಾಸಿಕ ಧನಸಹಾಯ"),
+                                desc = t("Direct financial assistance to the female Head of Family.", "ಕುಟುಂಬದ ಮಹಿಳಾ ಯಜಮಾನಿಗೆ ತಿಂಗಳಿಗೆ ₹2,000 ನೇರ ಜಮೆ.")
+                            )
+                        }
                     }
                 }
             }
@@ -1055,7 +1412,7 @@ fun BenefitItem(icon: androidx.compose.ui.graphics.vector.ImageVector, title: St
 }
 
 // -------------------------------------------------------------
-// STEP 2: BIOMETRIC PHOTO SCREEN
+// STEP 2: BIOMETRIC PHOTO SCREEN WITH SCANLINE ANIMATION
 // -------------------------------------------------------------
 @Composable
 fun StepBiometricScreen(
@@ -1076,6 +1433,18 @@ fun StepBiometricScreen(
         }
     }
 
+    // Biometric Laser Scanner Animation
+    val scanTransition = rememberInfiniteTransition(label = "ScanLaser")
+    val scanProgress by scanTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2200, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "scanProgress"
+    )
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -1094,7 +1463,7 @@ fun StepBiometricScreen(
             modifier = Modifier.padding(top = 2.dp, bottom = 12.dp)
         )
 
-        // Viewfinder Frame
+        // Viewfinder Frame with Scanner Laser Animation
         Box(
             modifier = Modifier
                 .size(240.dp, 280.dp)
@@ -1129,6 +1498,26 @@ fun StepBiometricScreen(
                         color = Color(0xFF94A3B8)
                     )
                 }
+
+                // Laser Scanline overlay
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(2.dp)
+                        .align(Alignment.TopCenter)
+                        .offset(y = (270.dp * scanProgress))
+                        .background(
+                            Brush.horizontalGradient(
+                                listOf(
+                                    Color.Transparent,
+                                    Color(0xFF38BDF8),
+                                    Color.White,
+                                    Color(0xFF38BDF8),
+                                    Color.Transparent
+                                )
+                            )
+                        )
+                )
             }
         }
 
@@ -1194,7 +1583,7 @@ fun StepBiometricScreen(
 }
 
 // -------------------------------------------------------------
-// STEP 3: CERTIFICATE SCREEN
+// STEP 3: CERTIFICATE SCREEN WITH POP-IN ANIMATIONS
 // -------------------------------------------------------------
 @Composable
 fun StepCertificateScreen(
@@ -1205,13 +1594,36 @@ fun StepCertificateScreen(
     fun t(en: String, kn: String): String = if (isKn) kn else en
     val context = LocalContext.current
 
+    // Spring Bounce Pop-In Animation for Verified Seal
+    val sealScale = remember { Animatable(0f) }
+    val cardScale = remember { Animatable(0.92f) }
+    val cardAlpha = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        launch { cardAlpha.animateTo(1f, tween(300)) }
+        launch { cardScale.animateTo(1f, spring(dampingRatio = Spring.DampingRatioLowBouncy)) }
+        launch {
+            delay(150)
+            sealScale.animateTo(
+                targetValue = 1f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            )
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Certificate Card
+        // Certificate Card with Scale & Fade Entrance
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .scale(cardScale.value)
+                .alpha(cardAlpha.value),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(2.dp, Color(0xFF10B981))
@@ -1239,14 +1651,16 @@ fun StepCertificateScreen(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
-                // Green Verified Seal
+                // Green Verified Seal with Spring Pop-In Scale
                 Surface(
                     shape = CircleShape,
                     color = Color(0xFFD1FAE5),
-                    modifier = Modifier.size(54.dp)
+                    modifier = Modifier
+                        .size(56.dp)
+                        .scale(sealScale.value)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = BrandEmerald, modifier = Modifier.size(36.dp))
+                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = BrandEmerald, modifier = Modifier.size(38.dp))
                     }
                 }
 
@@ -1343,7 +1757,7 @@ fun CertRow(label: String, value: String) {
 }
 
 // -------------------------------------------------------------
-// DIALOG 1: FACILITIES & BENEFIT GUIDE
+// DIALOG 1: FACILITIES & BENEFIT GUIDE (RESPONSIVE HORIZONTAL)
 // -------------------------------------------------------------
 @Composable
 fun FacilitiesGuideDialog(
@@ -1359,8 +1773,9 @@ fun FacilitiesGuideDialog(
     ) {
         Card(
             modifier = Modifier
+                .widthIn(max = 560.dp) // Centered adaptive constraint for horizontal mode
                 .fillMaxWidth(0.92f)
-                .fillMaxHeight(0.85f),
+                .fillMaxHeight(0.88f),
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
@@ -1534,6 +1949,7 @@ fun UpdateHubDialog(
     ) {
         Card(
             modifier = Modifier
+                .widthIn(max = 560.dp) // Centered adaptive constraint for horizontal mode
                 .fillMaxWidth(0.94f)
                 .fillMaxHeight(0.9f),
             shape = RoundedCornerShape(20.dp),
@@ -1603,179 +2019,189 @@ fun UpdateHubDialog(
                     }
                 }
 
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    if (subTab == "aadhaar") {
-                        // UIDAI Security Note
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            color = Color(0xFFFEF3C7),
-                            border = BorderStroke(1.dp, Color(0xFFFDE68A)),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.Top) {
-                                Icon(Icons.Default.Lock, contentDescription = null, tint = Color(0xFFD97706), modifier = Modifier.size(16.dp))
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = t(
-                                        "Government Security Note: UIDAI strictly prohibits 3rd-party apps from modifying Aadhaar records directly. All updates must be submitted via the official myAadhaar portal or at authorized government centres.",
-                                        "ಸರ್ಕಾರಿ ಭದ್ರತಾ ನಿಯಮ: ಯಾವುದೇ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಆ್ಯಪ್‌ಗಳು ಆಧಾರ್ ಡೇಟಾವನ್ನು ನೇರವಾಗಿ ಬದಲಾಯಿಸಲು UIDAI ಅನುಮತಿಸುವುದಿಲ್ಲ. ಎಲ್ಲಾ ತಿದ್ದುಪಡಿಗಳನ್ನು ಅಧಿಕೃತ myAadhaar ಪೋರ್ಟಲ್ ಅಥವಾ ಸರ್ಕಾರಿ ನೋಂದಾಯಿತ ಕೇಂದ್ರಗಳಲ್ಲಿ ಮಾತ್ರ ಮಾಡಬೇಕು."
-                                    ),
-                                    fontSize = 10.sp,
-                                    color = Color(0xFF78350F),
-                                    lineHeight = 14.sp
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // Aadhaar 1: Update Address Online
-                        UpdateItemCard(
-                            title = t("Update Address Online", "ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಆಧಾರ್ ವಿಳಾಸ ಬದಲಾವಣೆ"),
-                            badge = t("ONLINE", "ಆನ್‌ಲೈನ್"),
-                            desc = t("Update residential address directly online using valid address proof or Head of Family (HOF) consent.", "ಮಾನ್ಯ ವಿಳಾಸ ದಾಖಲೆ ಅಥವಾ ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಒಪ್ಪಿಗೆಯೊಂದಿಗೆ ಮನೆಯಲ್ಲೇ ಕುಳಿತು ಆಧಾರ್ ವಿಳಾಸ ಬದಲಾಯಿಸಿ."),
-                            btnLabel = t("Open Official myAadhaar Portal ↗", "ಅಧಿಕೃತ myAadhaar ಪೋರ್ಟಲ್ ತೆರೆಯಿರಿ ↗"),
-                            btnColor = Color(0xFF2563EB),
-                            onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://myaadhaar.uidai.gov.in/"))) }
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // Aadhaar 2: Link Mobile & Biometrics
-                        UpdateItemCard(
-                            title = t("Link Mobile Number & Biometrics", "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ & ಬಯೋಮೆಟ್ರಿಕ್ ಲಿಂಕ್"),
-                            badge = t("IN-PERSON", "ನೇರ ಭೇಟಿ ಕಡ್ಡಾಯ"),
-                            desc = t("To prevent fraud, UIDAI requires in-person biometric authentication at authorized ASK or Post Office centres.", "ವಂಚನೆ ತಡೆಯಲು, ಆಧಾರ್‌ಗೆ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ, ಫೋಟೋ ಮತ್ತು ಬಯೋಮೆಟ್ರಿಕ್ ಲಿಂಕ್ ಮಾಡಲು ಹತ್ತಿರದ ಆಧಾರ್ ಸೇವಾ ಕೇಂದ್ರ (ASK) ಅಥವಾ ಅಂಚೆ ಕಚೇರಿಗೆ ಭೇಟಿ ನೀಡಿ."),
-                            btnLabel = t("Locate Nearest Aadhaar Kendra (ASK) ↗", "ಹತ್ತಿರದ ಆಧಾರ್ ಸೇವಾ ಕೇಂದ್ರ ಹುಡುಕಿ ↗"),
-                            btnColor = BrandNavy,
-                            onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://bws.uidai.gov.in/"))) }
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // Aadhaar 3: Bank Seeding NPCI
-                        UpdateItemCard(
-                            title = t("Check Bank Seeding (NPCI Direct Benefit)", "ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ಆಧಾರ್ ಲಿಂಕ್ (NPCI ಪರಿಶೀಲನೆ)"),
-                            badge = "DBT",
-                            desc = t("Verify whether your bank account is active on NPCI mapper to receive Anna Bhagya and Gruha Lakshmi aid.", "ಅನ್ನಭಾಗ್ಯ ₹170 ಮತ್ತು ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಹಣ ಸರಿಯಾಗಿ ಜಮೆಯಾಗಲು ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ NPCI ಮ್ಯಾಪಿಂಗ್ ಸಕ್ರಿಯವಾಗಿದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ."),
-                            btnLabel = t("Check Bank Seeding on UIDAI ↗", "ಬ್ಯಾಂಕ್ ಸೀಡಿಂಗ್ ಸ್ಥಿತಿ ಪರಿಶೀಲಿಸಿ ↗"),
-                            btnColor = Color(0xFF0F766E),
-                            onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://myaadhaar.uidai.gov.in/check-aadhaar-banking-status"))) }
-                        )
-                    } else {
-                        // RATION CARD SUB-TAB
-
-                        // 1. Transfer Card (Within Karnataka)
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White),
-                            border = BorderStroke(1.dp, Color(0xFF93C5FD))
-                        ) {
-                            Column(modifier = Modifier.padding(12.dp)) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
+                // Animated Tab Content for Update Hub
+                AnimatedContent(
+                    targetState = subTab,
+                    transitionSpec = {
+                        fadeIn(tween(250)) togetherWith fadeOut(tween(150))
+                    },
+                    modifier = Modifier.weight(1f),
+                    label = "HubTabTransition"
+                ) { currentSubTab ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        if (currentSubTab == "aadhaar") {
+                            // UIDAI Security Note
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = Color(0xFFFEF3C7),
+                                border = BorderStroke(1.dp, Color(0xFFFDE68A)),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.Top) {
+                                    Icon(Icons.Default.Lock, contentDescription = null, tint = Color(0xFFD97706), modifier = Modifier.size(16.dp))
+                                    Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = t("Transfer Ration Card (Within Karnataka)", "ಪಡಿತರ ಚೀಟಿ ವರ್ಗಾವಣೆ (ಕರ್ನಾಟಕದೊಳಗೆ)"),
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = BrandNavy,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                    Surface(shape = RoundedCornerShape(6.dp), color = Color(0xFFDBEAFE)) {
-                                        Text("SAKALA • ₹25–₹50", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1E40AF), modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp))
-                                    }
-                                }
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = t("Shift your ration card between districts (e.g. Mysuru to Bengaluru) or change your Fair Price Shop within Karnataka.", "ಕರ್ನಾಟಕದೊಳಗೆ ಒಂದು ಜಿಲ್ಲೆಯಿಂದ ಮತ್ತೊಂದು ಜಿಲ್ಲೆಗೆ (ಉದಾ: ಮೈಸೂರಿನಿಂದ ಬೆಂಗಳೂರಿಗೆ) ವಿಳಾಸ ಬದಲಾವಣೆ ಅಥವಾ ನ್ಯಾಯಬೆಲೆ ಅಂಗಡಿ ವರ್ಗಾವಣೆ."),
-                                    fontSize = 10.sp,
-                                    color = Color(0xFF334155)
-                                )
-                                Spacer(modifier = Modifier.height(6.dp))
-                                Surface(
-                                    shape = RoundedCornerShape(6.dp),
-                                    color = Color(0xFFFEF3C7)
-                                ) {
-                                    Text(
-                                        text = t("Rule (Aadhaar First): Update your residential address in Aadhaar before applying, as the Ahara ePDS system verifies your new address against UIDAI database.", "ನಿಯಮ (ಆಧಾರ್ ಮೊದಲು): ಅರ್ಜಿ ಸಲ್ಲಿಸುವ ಮುನ್ನ ನಿಮ್ಮ ಆಧಾರ್ ಕಾರ್ಡ್‌ನಲ್ಲಿ ಹೊಸ ವಿಳಾಸ ಬದಲಾಯಿಸಿರಬೇಕು. ಆಹಾರ ಇಲಾಖೆಯ ತಂತ್ರಾಂಶವು ಆಧಾರ್ ಡೇಟಾವನ್ನು ನೇರವಾಗಿ ಪರಿಶೀಲಿಸುತ್ತದೆ."),
-                                        fontSize = 9.sp,
-                                        color = Color(0xFF92400E),
-                                        modifier = Modifier.padding(6.dp)
+                                        text = t(
+                                            "Government Security Note: UIDAI strictly prohibits 3rd-party apps from modifying Aadhaar records directly. All updates must be submitted via the official myAadhaar portal or at authorized government centres.",
+                                            "ಸರ್ಕಾರಿ ಭದ್ರತಾ ನಿಯಮ: ಯಾವುದೇ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಆ್ಯಪ್‌ಗಳು ಆಧಾರ್ ಡೇಟಾವನ್ನು ನೇರವಾಗಿ ಬದಲಾಯಿಸಲು UIDAI ಅನುಮತಿಸುವುದಿಲ್ಲ. ಎಲ್ಲಾ ತಿದ್ದುಪಡಿಗಳನ್ನು ಅಧಿಕೃತ myAadhaar ಪೋರ್ಟಲ್ ಅಥವಾ ಸರ್ಕಾರಿ ನೋಂದಾಯಿತ ಕೇಂದ್ರಗಳಲ್ಲಿ ಮಾತ್ರ ಮಾಡಬೇಕು."
+                                        ),
+                                        fontSize = 10.sp,
+                                        color = Color(0xFF78350F),
+                                        lineHeight = 14.sp
                                     )
                                 }
-                                Spacer(modifier = Modifier.height(6.dp))
-                                Text(
-                                    text = t("Required Proofs: Updated Aadhaar card, Electricity Bill / Rental Agreement / Gas Connection, Existing Ration Card Number, Head of Family Aadhaar OTP/Biometric.", "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ಹೊಸ ವಿಳಾಸವಿರುವ ಆಧಾರ್ ಕಾರ್ಡ್, ವಿದ್ಯುತ್ ಬಿಲ್ / ಬಾಡಿಗೆ ಕರಾರು ಪತ್ರ / ಗ್ಯಾಸ್ ಬಿಲ್, ಪ್ರಸ್ತುತ ರೇಷನ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ, ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಆಧಾರ್ OTP / ಬಯೋಮೆಟ್ರಿಕ್."),
-                                    fontSize = 10.sp,
-                                    color = Color(0xFF475569)
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Row {
-                                    Button(
-                                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.kar.nic.in/"))) },
-                                        modifier = Modifier.weight(1f),
-                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1D4ED8)),
-                                        shape = RoundedCornerShape(8.dp),
-                                        contentPadding = PaddingValues(vertical = 4.dp)
+                            }
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            // Aadhaar 1: Update Address Online
+                            UpdateItemCard(
+                                title = t("Update Address Online", "ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಆಧಾರ್ ವಿಳಾಸ ಬದಲಾವಣೆ"),
+                                badge = t("ONLINE", "ಆನ್‌ಲೈನ್"),
+                                desc = t("Update residential address directly online using valid address proof or Head of Family (HOF) consent.", "ಮಾನ್ಯ ವಿಳಾಸ ದಾಖಲೆ ಅಥವಾ ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಒಪ್ಪಿಗೆಯೊಂದಿಗೆ ಮನೆಯಲ್ಲೇ ಕುಳಿತು ಆಧಾರ್ ವಿಳಾಸ ಬದಲಾಯಿಸಿ."),
+                                btnLabel = t("Open Official myAadhaar Portal ↗", "ಅಧಿಕೃತ myAadhaar ಪೋರ್ಟಲ್ ತೆರೆಯಿರಿ ↗"),
+                                btnColor = Color(0xFF2563EB),
+                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://myaadhaar.uidai.gov.in/"))) }
+                            )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            // Aadhaar 2: Link Mobile & Biometrics
+                            UpdateItemCard(
+                                title = t("Link Mobile Number & Biometrics", "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ & ಬಯೋಮೆಟ್ರಿಕ್ ಲಿಂಕ್"),
+                                badge = t("IN-PERSON", "ನೇರ ಭೇಟಿ ಕಡ್ಡಾಯ"),
+                                desc = t("To prevent fraud, UIDAI requires in-person biometric authentication at authorized ASK or Post Office centres.", "ವಂಚನೆ ತಡೆಯಲು, ಆಧಾರ್‌ಗೆ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ, ಫೋಟೋ ಮತ್ತು ಬಯೋಮೆಟ್ರಿಕ್ ಲಿಂಕ್ ಮಾಡಲು ಹತ್ತಿರದ ಆಧಾರ್ ಸೇವಾ ಕೇಂದ್ರ (ASK) ಅಥವಾ ಅಂಚೆ ಕಚೇರಿಗೆ ಭೇಟಿ ನೀಡಿ."),
+                                btnLabel = t("Locate Nearest Aadhaar Kendra (ASK) ↗", "ಹತ್ತಿರದ ಆಧಾರ್ ಸೇವಾ ಕೇಂದ್ರ ಹುಡುಕಿ ↗"),
+                                btnColor = BrandNavy,
+                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://bws.uidai.gov.in/"))) }
+                            )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            // Aadhaar 3: Bank Seeding NPCI
+                            UpdateItemCard(
+                                title = t("Check Bank Seeding (NPCI Direct Benefit)", "ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ಆಧಾರ್ ಲಿಂಕ್ (NPCI ಪರಿಶೀಲನೆ)"),
+                                badge = "DBT",
+                                desc = t("Verify whether your bank account is active on NPCI mapper to receive Anna Bhagya and Gruha Lakshmi aid.", "ಅನ್ನಭಾಗ್ಯ ₹170 ಮತ್ತು ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಹಣ ಸರಿಯಾಗಿ ಜಮೆಯಾಗಲು ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ NPCI ಮ್ಯಾಪಿಂಗ್ ಸಕ್ರಿಯವಾಗಿದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ."),
+                                btnLabel = t("Check Bank Seeding on UIDAI ↗", "ಬ್ಯಾಂಕ್ ಸೀಡಿಂಗ್ ಸ್ಥಿತಿ ಪರಿಶೀಲಿಸಿ ↗"),
+                                btnColor = Color(0xFF0F766E),
+                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://myaadhaar.uidai.gov.in/check-aadhaar-banking-status"))) }
+                            )
+                        } else {
+                            // RATION CARD SUB-TAB
+
+                            // 1. Transfer Card (Within Karnataka)
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color.White),
+                                border = BorderStroke(1.dp, Color(0xFF93C5FD))
+                            ) {
+                                Column(modifier = Modifier.padding(12.dp)) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
                                     ) {
-                                        Text(t("Apply on Ahara ↗", "ಆಹಾರ ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಅರ್ಜಿ ↗"), fontSize = 10.sp)
+                                        Text(
+                                            text = t("Transfer Ration Card (Within Karnataka)", "ಪಡಿತರ ಚೀಟಿ ವರ್ಗಾವಣೆ (ಕರ್ನಾಟಕದೊಳಗೆ)"),
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = BrandNavy,
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                        Surface(shape = RoundedCornerShape(6.dp), color = Color(0xFFDBEAFE)) {
+                                            Text("SAKALA • ₹25–₹50", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1E40AF), modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp))
+                                        }
                                     }
-                                    Spacer(modifier = Modifier.width(6.dp))
-                                    OutlinedButton(
-                                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://gramaone.karnataka.gov.in/"))) },
-                                        modifier = Modifier.weight(1f),
-                                        shape = RoundedCornerShape(8.dp),
-                                        contentPadding = PaddingValues(vertical = 4.dp)
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = t("Shift your ration card between districts (e.g. Mysuru to Bengaluru) or change your Fair Price Shop within Karnataka.", "ಕರ್ನಾಟಕದೊಳಗೆ ಒಂದು ಜಿಲ್ಲೆಯಿಂದ ಮತ್ತೊಂದು ಜಿಲ್ಲೆಗೆ (ಉದಾ: ಮೈಸೂರಿನಿಂದ ಬೆಂಗಳೂರಿಗೆ) ವಿಳಾಸ ಬದಲಾವಣೆ ಅಥವಾ ನ್ಯಾಯಬೆಲೆ ಅಂಗಡಿ ವರ್ಗಾವಣೆ."),
+                                        fontSize = 10.sp,
+                                        color = Color(0xFF334155)
+                                    )
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Surface(
+                                        shape = RoundedCornerShape(6.dp),
+                                        color = Color(0xFFFEF3C7)
                                     ) {
-                                        Text(t("Grama One ↗", "ಗ್ರಾಮ ಒನ್ ↗"), fontSize = 10.sp)
+                                        Text(
+                                            text = t("Rule (Aadhaar First): Update your residential address in Aadhaar before applying, as the Ahara ePDS system verifies your new address against UIDAI database.", "ನಿಯಮ (ಆಧಾರ್ ಮೊದಲು): ಅರ್ಜಿ ಸಲ್ಲಿಸುವ ಮುನ್ನ ನಿಮ್ಮ ಆಧಾರ್ ಕಾರ್ಡ್‌ನಲ್ಲಿ ಹೊಸ ವಿಳಾಸ ಬದಲಾಯಿಸಿರಬೇಕು. ಆಹಾರ ಇಲಾಖೆಯ ತಂತ್ರಾಂಶವು ಆಧಾರ್ ಡೇಟಾವನ್ನು ನೇರವಾಗಿ ಪರಿಶೀಲಿಸುತ್ತದೆ."),
+                                            fontSize = 9.sp,
+                                            color = Color(0xFF92400E),
+                                            modifier = Modifier.padding(6.dp)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Text(
+                                        text = t("Required Proofs: Updated Aadhaar card, Electricity Bill / Rental Agreement / Gas Connection, Existing Ration Card Number, Head of Family Aadhaar OTP/Biometric.", "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ಹೊಸ ವಿಳಾಸವಿರುವ ಆಧಾರ್ ಕಾರ್ಡ್, ವಿದ್ಯುತ್ ಬಿಲ್ / ಬಾಡಿಗೆ ಕರಾರು ಪತ್ರ / ಗ್ಯಾಸ್ ಬಿಲ್, ಪ್ರಸ್ತುತ ರೇಷನ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ, ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಆಧಾರ್ OTP / ಬಯೋಮೆಟ್ರಿಕ್."),
+                                        fontSize = 10.sp,
+                                        color = Color(0xFF475569)
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Row {
+                                        Button(
+                                            onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.kar.nic.in/"))) },
+                                            modifier = Modifier.weight(1f),
+                                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1D4ED8)),
+                                            shape = RoundedCornerShape(8.dp),
+                                            contentPadding = PaddingValues(vertical = 4.dp)
+                                        ) {
+                                            Text(t("Apply on Ahara ↗", "ಆಹಾರ ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಅರ್ಜಿ ↗"), fontSize = 10.sp)
+                                        }
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        OutlinedButton(
+                                            onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://gramaone.karnataka.gov.in/"))) },
+                                            modifier = Modifier.weight(1f),
+                                            shape = RoundedCornerShape(8.dp),
+                                            contentPadding = PaddingValues(vertical = 4.dp)
+                                        ) {
+                                            Text(t("Grama One ↗", "ಗ್ರಾಮ ಒನ್ ↗"), fontSize = 10.sp)
+                                        }
                                     }
                                 }
                             }
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            // 2. Add Member
+                            UpdateItemCard(
+                                title = t("Add New Member (Child / Spouse)", "ಹೊಸ ಸದಸ್ಯರ ಸೇರ್ಪಡೆ (ಮಗು / ಸೊಸೆ)"),
+                                badge = "SEVA SINDHU",
+                                desc = t("Required Proofs: Child's Birth Certificate, Child's Aadhaar (if above 5 yrs), Spouse's Aadhaar & Marriage Certificate, Head of Family consent.", "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ಮಗುವಿನ ಜನನ ಪ್ರಮಾಣಪತ್ರ, ಮಗುವಿನ ಆಧಾರ್, ಸೊಸೆಯ ಆಧಾರ್ & ವಿವಾಹ ನೋಂದಣಿ ಪ್ರಮಾಣಪತ್ರ, ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಒಪ್ಪಿಗೆ."),
+                                btnLabel = t("Apply on Ahara e-Services ↗", "ಆಹಾರ ಇಲಾಖೆ ಇ-ಸೇವೆಗಳಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
+                                btnColor = Color(0xFF047857),
+                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.karnataka.gov.in/"))) }
+                            )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            // 3. Delete Member
+                            UpdateItemCard(
+                                title = t("Delete / Transfer Member", "ಸದಸ್ಯರ ಹೆಸರು ತೆಗೆದುಹಾಕುವುದು"),
+                                badge = "FOOD DEPT",
+                                desc = t("Required Proofs: Marriage certificate for daughter/sister moving to spouse's card, or Death certificate for deceased family members.", "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ವಿವಾಹವಾಗಿ ಬೇರೆಡೆ ತೆರಳಿದವರಿಗೆ ಮದುವೆ ಪ್ರಮಾಣಪತ್ರ, ಅಥವಾ ಮರಣ ಹೊಂದಿದ ಸದಸ್ಯರಿಗೆ ಮರಣ ಪ್ರಮಾಣಪತ್ರ."),
+                                btnLabel = t("Apply on Seva Sindhu ↗", "ಸೇವಾ ಸಿಂಧು ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
+                                btnColor = BrandNavy,
+                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sevasindhu.karnataka.gov.in/"))) }
+                            )
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            // 4. Change HOF
+                            UpdateItemCard(
+                                title = t("Change Head of Family (HOF)", "ಕುಟುಂಬದ ಯಜಮಾನಿ ಬದಲಾವಣೆ"),
+                                badge = "GRUHA LAKSHMI",
+                                desc = t("Required to receive ₹2,000/month Gruha Lakshmi aid. Must designate the eldest adult female.", "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಹಣ ಪಡೆಯಲು ಕುಟುಂಬದ ಹಿರಿಯ ಮಹಿಳೆಯನ್ನು ಯಜಮಾನಿ ಎಂದು ನಮೂದಿಸಬೇಕು. ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ."),
+                                btnLabel = t("Apply for HOF Change ↗", "ಯಜಮಾನಿ ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
+                                btnColor = Color(0xFFD97706),
+                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.karnataka.gov.in/"))) }
+                            )
                         }
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // 2. Add Member
-                        UpdateItemCard(
-                            title = t("Add New Member (Child / Spouse)", "ಹೊಸ ಸದಸ್ಯರ ಸೇರ್ಪಡೆ (ಮಗು / ಸೊಸೆ)"),
-                            badge = "SEVA SINDHU",
-                            desc = t("Required Proofs: Child's Birth Certificate, Child's Aadhaar (if above 5 yrs), Spouse's Aadhaar & Marriage Certificate, Head of Family consent.", "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ಮಗುವಿನ ಜನನ ಪ್ರಮಾಣಪತ್ರ, ಮಗುವಿನ ಆಧಾರ್, ಸೊಸೆಯ ಆಧಾರ್ & ವಿವಾಹ ನೋಂದಣಿ ಪ್ರಮಾಣಪತ್ರ, ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಒಪ್ಪಿಗೆ."),
-                            btnLabel = t("Apply on Ahara e-Services ↗", "ಆಹಾರ ಇಲಾಖೆ ಇ-ಸೇವೆಗಳಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
-                            btnColor = Color(0xFF047857),
-                            onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.karnataka.gov.in/"))) }
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // 3. Delete Member
-                        UpdateItemCard(
-                            title = t("Delete / Transfer Member", "ಸದಸ್ಯರ ಹೆಸರು ತೆಗೆದುಹಾಕುವುದು"),
-                            badge = "FOOD DEPT",
-                            desc = t("Required Proofs: Marriage certificate for daughter/sister moving to spouse's card, or Death certificate for deceased family members.", "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ವಿವಾಹವಾಗಿ ಬೇರೆಡೆ ತೆರಳಿದವರಿಗೆ ಮದುವೆ ಪ್ರಮಾಣಪತ್ರ, ಅಥವಾ ಮರಣ ಹೊಂದಿದ ಸದಸ್ಯರಿಗೆ ಮರಣ ಪ್ರಮಾಣಪತ್ರ."),
-                            btnLabel = t("Apply on Seva Sindhu ↗", "ಸೇವಾ ಸಿಂಧು ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
-                            btnColor = BrandNavy,
-                            onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sevasindhu.karnataka.gov.in/"))) }
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // 4. Change HOF
-                        UpdateItemCard(
-                            title = t("Change Head of Family (HOF)", "ಕುಟುಂಬದ ಯಜಮಾನಿ ಬದಲಾವಣೆ"),
-                            badge = "GRUHA LAKSHMI",
-                            desc = t("Required to receive ₹2,000/month Gruha Lakshmi aid. Must designate the eldest adult female.", "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಹಣ ಪಡೆಯಲು ಕುಟುಂಬದ ಹಿರಿಯ ಮಹಿಳೆಯನ್ನು ಯಜಮಾನಿ ಎಂದು ನಮೂದಿಸಬೇಕು. ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ."),
-                            btnLabel = t("Apply for HOF Change ↗", "ಯಜಮಾನಿ ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
-                            btnColor = Color(0xFFD97706),
-                            onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.karnataka.gov.in/"))) }
-                        )
                     }
                 }
 
