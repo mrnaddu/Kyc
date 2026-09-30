@@ -59,7 +59,8 @@ fun NannaSevaApp(
     onCheckForUpdates: () -> Unit = {},
     updateAvailableVersion: String? = null
 ) {
-    var currentLang by remember { mutableStateOf("KN") } // Default to authentic Kannada
+    // Default language set to English per user request
+    var currentLang by remember { mutableStateOf("EN") }
     val isKn = currentLang == "KN"
 
     var currentStep by remember { mutableIntStateOf(0) } // 0: Search, 1: Roster, 2: Camera, 3: Certificate
@@ -139,10 +140,7 @@ fun NannaSevaApp(
                         IconButton(onClick = {
                             errorMessage = null
                             if (currentStep == 3) {
-                                currentStep = 0
-                                rcNumberInput = ""
-                                captchaInput = ""
-                                captchaData = KycRepository.generateCaptcha()
+                                currentStep = 1 // Back to Roster so user sees updated status
                             } else {
                                 currentStep -= 1
                             }
@@ -371,15 +369,24 @@ fun NannaSevaApp(
                                 isKn = isKn,
                                 selectedMember = selectedMember,
                                 photo = capturedPhoto,
-                                onPhotoCaptured = { capturedPhoto = it },
+                                onPhotoCaptured = {
+                                    capturedPhoto = it
+                                    errorMessage = null
+                                },
                                 isLoading = isLoading,
                                 onSubmitKyc = {
                                     keyboardController?.hide()
                                     val member = selectedMember
                                     val card = cardData
+
+                                    if (capturedPhoto == null) {
+                                        errorMessage = t("Please capture a live photo or tap 'Demo Photo' to continue.", "ದಯವಿಟ್ಟು ಸಲ್ಲಿಸುವ ಮುನ್ನ ಫೋಟೋ ತೆಗೆದುಕೊಳ್ಳಿ ಅಥವಾ 'ಮಾದರಿ ಫೋಟೋ' ಆಯ್ಕೆಮಾಡಿ.")
+                                        return@StepBiometricScreen
+                                    }
+
                                     if (member != null && card != null) {
-                                        loadingTitle = t("Submitting Biometric Record...", "ಮುಖದ ಬಯೋಮೆಟ್ರಿಕ್ ಫೋಟೋ ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...")
-                                        loadingSubtitle = t("Authenticating with State ePDS registry", "ಆಹಾರ ಇಲಾಖೆಯ ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ದಾಖಲಿಸಲಾಗುತ್ತಿದೆ")
+                                        loadingTitle = t("Submitting Biometric Verification...", "ಮುಖದ ಬಯೋಮೆಟ್ರಿಕ್ ಫೋಟೋ ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...")
+                                        loadingSubtitle = t("Authenticating with Karnataka Ahara ePDS registry", "ಆಹಾರ ಇಲಾಖೆಯ ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ದಾಖಲಿಸಲಾಗುತ್ತಿದೆ")
                                         isLoading = true
                                         errorMessage = null
 
@@ -388,6 +395,19 @@ fun NannaSevaApp(
                                             isLoading = false
                                             res.onSuccess { cert ->
                                                 issuedCertificate = cert
+
+                                                // Update local state so that when user navigates back to Roster, member shows VERIFIED!
+                                                val updatedMembers = card.members.map {
+                                                    if (it.id == member.id) {
+                                                        it.copy(
+                                                            ekyc = "VERIFIED",
+                                                            dbtEligibility = if (card.cardCategory == "APL") "APL - Not eligible for BPL cash DBT" else "₹170/mo Anna Bhagya DBT (Active & Verified)"
+                                                        )
+                                                    } else it
+                                                }
+                                                val updatedCard = card.copy(members = updatedMembers)
+                                                cardData = updatedCard
+                                                selectedMember = updatedCard.members.find { it.id == member.id }
                                                 currentStep = 3
                                             }.onFailure { err ->
                                                 errorMessage = err.message ?: t("e-KYC submission failed.", "ಇ-ಕೆವೈಸಿ ಸಲ್ಲಿಕೆ ವಿಫಲವಾಗಿದೆ.")
@@ -401,6 +421,10 @@ fun NannaSevaApp(
                                 StepCertificateScreen(
                                     isKn = isKn,
                                     cert = cert,
+                                    onBackToRoster = {
+                                        currentStep = 1
+                                        capturedPhoto = null
+                                    },
                                     onStartNew = {
                                         currentStep = 0
                                         rcNumberInput = ""
@@ -1212,7 +1236,7 @@ fun StepRosterScreen(
                     Column {
                         // Family Members List
                         Text(
-                            text = t("Click on any member to view full details and age:", "ಸದಸ್ಯರ ಪೂರ್ಣ ವಿವರ ಮತ್ತು ವಯಸ್ಸು ನೋಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ:"),
+                            text = t("Click on any member to view full details and update e-KYC:", "ಸದಸ್ಯರ ಪೂರ್ಣ ವಿವರ ಮತ್ತು ಇ-ಕೆವೈಸಿ ಅಪ್‌ಡೇಟ್‌ಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ:"),
                             fontSize = 11.sp,
                             color = Color(0xFF475569),
                             fontWeight = FontWeight.Medium,
@@ -1738,27 +1762,32 @@ fun StepBiometricScreen(
                 .fillMaxWidth()
                 .height(48.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = BrandNavy),
+            colors = ButtonDefaults.buttonColors(containerColor = if (photo != null) BrandNavy else Color(0xFF475569)),
             enabled = !isLoading
         ) {
             if (isLoading) {
                 CircularProgressIndicator(color = Color.White, modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(t("Submitting e-KYC...", "ಇ-ಕೆವೈಸಿ ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ..."), fontSize = 13.sp, color = Color.White)
+            } else if (photo == null) {
+                Icon(Icons.Default.AccountBox, contentDescription = null, tint = Color.White, modifier = Modifier.size(16.dp))
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(t("Capture Photo to Submit e-KYC", "ಸಲ್ಲಿಸಲು ಮೊದಲು ಫೋಟೋ ತೆಗೆಯಿರಿ"), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
             } else {
-                Text(t("Submit e-KYC ➔", "ಇ-ಕೆವೈಸಿ ದೃಢೀಕರಿಸಿ ➔"), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(t("Submit e-KYC for ${selectedMember?.nameEn ?: "Member"} ➔", "${selectedMember?.nameEn ?: "ಸದಸ್ಯರ"} ಇ-ಕೆವೈಸಿ ದೃಢೀಕರಿಸಿ ➔"), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
             }
         }
     }
 }
 
 // -------------------------------------------------------------
-// STEP 3: CERTIFICATE SCREEN WITH POP-IN ANIMATIONS
+// STEP 3: CERTIFICATE SCREEN WITH PHOTO & ROSTER RETURN
 // -------------------------------------------------------------
 @Composable
 fun StepCertificateScreen(
     isKn: Boolean,
     cert: KycCertificate,
+    onBackToRoster: () -> Unit,
     onStartNew: () -> Unit
 ) {
     fun t(en: String, kn: String): String = if (isKn) kn else en
@@ -1821,16 +1850,29 @@ fun StepCertificateScreen(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
+                // Biometric Photo Thumbnail if available
+                if (cert.photo != null) {
+                    Image(
+                        bitmap = cert.photo.asImageBitmap(),
+                        contentDescription = "Beneficiary Biometric Photo",
+                        modifier = Modifier
+                            .size(68.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .border(2.dp, BrandEmerald, RoundedCornerShape(12.dp))
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
                 // Green Verified Seal with Spring Pop-In Scale
                 Surface(
                     shape = CircleShape,
                     color = Color(0xFFD1FAE5),
                     modifier = Modifier
-                        .size(56.dp)
+                        .size(54.dp)
                         .scale(sealScale.value)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = BrandEmerald, modifier = Modifier.size(38.dp))
+                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = BrandEmerald, modifier = Modifier.size(36.dp))
                     }
                 }
 
@@ -1874,7 +1916,23 @@ fun StepCertificateScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Action Buttons
+        // Action Button 1: View Updated Family Roster (User sees VERIFIED immediately)
+        Button(
+            onClick = onBackToRoster,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = BrandNavy)
+        ) {
+            Icon(Icons.Default.List, contentDescription = null, tint = Color.White, modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(t("View Updated Family Roster ➔", "ಕುಟುಂಬದ ಪಟ್ಟಿ ಪರಿಶೀಲಿಸಿ ➔"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Action Button 2: Share Certificate
         Button(
             onClick = {
                 val sendIntent = Intent().apply {
@@ -1900,6 +1958,7 @@ fun StepCertificateScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
+        // Action Button 3: Start New Verification
         OutlinedButton(
             onClick = onStartNew,
             modifier = Modifier
@@ -1936,6 +1995,17 @@ fun FacilitiesGuideDialog(
 ) {
     fun t(en: String, kn: String): String = if (isKn) kn else en
     val context = LocalContext.current
+
+    val safeOpenUrl = { url: String ->
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            // safe catch
+        }
+    }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -2042,10 +2112,7 @@ fun FacilitiesGuideDialog(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Button(
-                                onClick = {
-                                    val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=Fair+Price+Shop+Karnataka"))
-                                    context.startActivity(mapIntent)
-                                },
+                                onClick = { safeOpenUrl("geo:0,0?q=Fair+Price+Shop+Karnataka") },
                                 colors = ButtonDefaults.buttonColors(containerColor = BrandNavy),
                                 shape = RoundedCornerShape(8.dp),
                                 modifier = Modifier.fillMaxWidth()
@@ -2112,6 +2179,17 @@ fun UpdateHubDialog(
     fun t(en: String, kn: String): String = if (isKn) kn else en
     val context = LocalContext.current
     var subTab by remember { mutableStateOf(initialTab) } // "aadhaar" or "ration"
+
+    val safeOpenUrl = { url: String ->
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            // safe catch
+        }
+    }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -2235,7 +2313,7 @@ fun UpdateHubDialog(
                                 desc = t("Update residential address directly online using valid address proof or Head of Family (HOF) consent.", "ಮಾನ್ಯ ವಿಳಾಸ ದಾಖಲೆ ಅಥವಾ ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಒಪ್ಪಿಗೆಯೊಂದಿಗೆ ಮನೆಯಲ್ಲೇ ಕುಳಿತು ಆಧಾರ್ ವಿಳಾಸ ಬದಲಾಯಿಸಿ."),
                                 btnLabel = t("Open Official myAadhaar Portal ↗", "ಅಧಿಕೃತ myAadhaar ಪೋರ್ಟಲ್ ತೆರೆಯಿರಿ ↗"),
                                 btnColor = Color(0xFF2563EB),
-                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://myaadhaar.uidai.gov.in/"))) }
+                                onAction = { safeOpenUrl("https://myaadhaar.uidai.gov.in/") }
                             )
 
                             Spacer(modifier = Modifier.height(10.dp))
@@ -2247,7 +2325,7 @@ fun UpdateHubDialog(
                                 desc = t("To prevent fraud, UIDAI requires in-person biometric authentication at authorized ASK or Post Office centres.", "ವಂಚನೆ ತಡೆಯಲು, ಆಧಾರ್‌ಗೆ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ, ಫೋಟೋ ಮತ್ತು ಬಯೋಮೆಟ್ರಿಕ್ ಲಿಂಕ್ ಮಾಡಲು ಹತ್ತಿರದ ಆಧಾರ್ ಸೇವಾ ಕೇಂದ್ರ (ASK) ಅಥವಾ ಅಂಚೆ ಕಚೇರಿಗೆ ಭೇಟಿ ನೀಡಿ."),
                                 btnLabel = t("Locate Nearest Aadhaar Kendra (ASK) ↗", "ಹತ್ತಿರದ ಆಧಾರ್ ಸೇವಾ ಕೇಂದ್ರ ಹುಡುಕಿ ↗"),
                                 btnColor = BrandNavy,
-                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://bws.uidai.gov.in/"))) }
+                                onAction = { safeOpenUrl("https://bws.uidai.gov.in/") }
                             )
 
                             Spacer(modifier = Modifier.height(10.dp))
@@ -2259,7 +2337,7 @@ fun UpdateHubDialog(
                                 desc = t("Verify whether your bank account is active on NPCI mapper to receive Anna Bhagya and Gruha Lakshmi aid.", "ಅನ್ನಭಾಗ್ಯ ₹170 ಮತ್ತು ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಹಣ ಸರಿಯಾಗಿ ಜಮೆಯಾಗಲು ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ NPCI ಮ್ಯಾಪಿಂಗ್ ಸಕ್ರಿಯವಾಗಿದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ."),
                                 btnLabel = t("Check Bank Seeding on UIDAI ↗", "ಬ್ಯಾಂಕ್ ಸೀಡಿಂಗ್ ಸ್ಥಿತಿ ಪರಿಶೀಲಿಸಿ ↗"),
                                 btnColor = Color(0xFF0F766E),
-                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://myaadhaar.uidai.gov.in/check-aadhaar-banking-status"))) }
+                                onAction = { safeOpenUrl("https://myaadhaar.uidai.gov.in/check-aadhaar-banking-status") }
                             )
                         } else {
                             // RATION CARD SUB-TAB
@@ -2315,7 +2393,7 @@ fun UpdateHubDialog(
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Row {
                                         Button(
-                                            onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.kar.nic.in/"))) },
+                                            onClick = { safeOpenUrl("https://ahara.kar.nic.in/") },
                                             modifier = Modifier.weight(1f),
                                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1D4ED8)),
                                             shape = RoundedCornerShape(8.dp),
@@ -2325,7 +2403,7 @@ fun UpdateHubDialog(
                                         }
                                         Spacer(modifier = Modifier.width(6.dp))
                                         OutlinedButton(
-                                            onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://gramaone.karnataka.gov.in/"))) },
+                                            onClick = { safeOpenUrl("https://gramaone.karnataka.gov.in/") },
                                             modifier = Modifier.weight(1f),
                                             shape = RoundedCornerShape(8.dp),
                                             contentPadding = PaddingValues(vertical = 4.dp)
@@ -2345,7 +2423,7 @@ fun UpdateHubDialog(
                                 desc = t("Required Proofs: Child's Birth Certificate, Child's Aadhaar (if above 5 yrs), Spouse's Aadhaar & Marriage Certificate, Head of Family consent.", "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ಮಗುವಿನ ಜನನ ಪ್ರಮಾಣಪತ್ರ, ಮಗುವಿನ ಆಧಾರ್, ಸೊಸೆಯ ಆಧಾರ್ & ವಿವಾಹ ನೋಂದಣಿ ಪ್ರಮಾಣಪತ್ರ, ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರ ಒಪ್ಪಿಗೆ."),
                                 btnLabel = t("Apply on Ahara e-Services ↗", "ಆಹಾರ ಇಲಾಖೆ ಇ-ಸೇವೆಗಳಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
                                 btnColor = Color(0xFF047857),
-                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.karnataka.gov.in/"))) }
+                                onAction = { safeOpenUrl("https://ahara.karnataka.gov.in/") }
                             )
 
                             Spacer(modifier = Modifier.height(10.dp))
@@ -2357,7 +2435,7 @@ fun UpdateHubDialog(
                                 desc = t("Required Proofs: Marriage certificate for daughter/sister moving to spouse's card, or Death certificate for deceased family members.", "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ವಿವಾಹವಾಗಿ ಬೇರೆಡೆ ತೆರಳಿದವರಿಗೆ ಮದುವೆ ಪ್ರಮಾಣಪತ್ರ, ಅಥವಾ ಮರಣ ಹೊಂದಿದ ಸದಸ್ಯರಿಗೆ ಮರಣ ಪ್ರಮಾಣಪತ್ರ."),
                                 btnLabel = t("Apply on Seva Sindhu ↗", "ಸೇವಾ ಸಿಂಧು ಪೋರ್ಟಲ್‌ನಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
                                 btnColor = BrandNavy,
-                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sevasindhu.karnataka.gov.in/"))) }
+                                onAction = { safeOpenUrl("https://sevasindhu.karnataka.gov.in/") }
                             )
 
                             Spacer(modifier = Modifier.height(10.dp))
@@ -2369,7 +2447,7 @@ fun UpdateHubDialog(
                                 desc = t("Required to receive ₹2,000/month Gruha Lakshmi aid. Must designate the eldest adult female.", "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಹಣ ಪಡೆಯಲು ಕುಟುಂಬದ ಹಿರಿಯ ಮಹಿಳೆಯನ್ನು ಯಜಮಾನಿ ಎಂದು ನಮೂದಿಸಬೇಕು. ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ."),
                                 btnLabel = t("Apply for HOF Change ↗", "ಯಜಮಾನಿ ಬದಲಾವಣೆಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ↗"),
                                 btnColor = Color(0xFFD97706),
-                                onAction = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://ahara.karnataka.gov.in/"))) }
+                                onAction = { safeOpenUrl("https://ahara.karnataka.gov.in/") }
                             )
                         }
                     }

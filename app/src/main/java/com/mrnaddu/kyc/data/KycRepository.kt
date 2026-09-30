@@ -88,6 +88,17 @@ object KycRepository {
 
             val refId = "KA-EKYC-${System.currentTimeMillis() % 100000000}-${(1000..9999).random()}"
 
+            // Persist the verified e-KYC status in the active session
+            val updatedMembers = card.members.map {
+                if (it.id == memberId) {
+                    it.copy(
+                        ekyc = "VERIFIED",
+                        dbtEligibility = if (card.cardCategory == "APL") "APL - Not eligible for BPL cash DBT" else "₹170/mo Anna Bhagya DBT (Active & Verified)"
+                    )
+                } else it
+            }
+            cardSessions[rcNumber] = card.copy(members = updatedMembers)
+
             val cert = KycCertificate(
                 certificateId = refId,
                 rcNumber = card.rcNumber,
