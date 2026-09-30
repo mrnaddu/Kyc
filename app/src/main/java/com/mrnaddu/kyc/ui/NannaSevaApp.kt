@@ -764,7 +764,7 @@ fun StepLookupScreen(
             modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
         )
 
-        // Ration Card Input Card
+        // Ration Card Input Card (Example Removed)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -795,7 +795,7 @@ fun StepLookupScreen(
                 OutlinedTextField(
                     value = rcNumber,
                     onValueChange = onRcChange,
-                    placeholder = { Text(t("Enter card number (e.g. 260300261661)", "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ (ಉದಾ: 260300261661)"), fontSize = 12.sp) },
+                    placeholder = { Text(t("Enter ration card number", "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ"), fontSize = 12.sp) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, capitalization = KeyboardCapitalization.Characters),
                     leadingIcon = { Icon(Icons.Default.AccountBox, contentDescription = null, tint = BrandNavy) },
@@ -807,7 +807,7 @@ fun StepLookupScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Security Code (Captcha) Card
+        // Security Code (Captcha) Card (Text removed, clean refresh icon only)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -832,10 +832,10 @@ fun StepLookupScreen(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Stylized Compose Canvas Captcha with animated refresh
+                    // Stylized Compose Canvas Captcha with animated refresh icon ONLY
                     Box(
                         modifier = Modifier
-                            .weight(1.1f)
+                            .weight(1.15f)
                             .height(48.dp)
                             .clip(RoundedCornerShape(12.dp))
                             .background(Color(0xFFF1F5F9))
@@ -870,37 +870,30 @@ fun StepLookupScreen(
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 fontFamily = FontFamily.Monospace,
-                                letterSpacing = 6.sp,
+                                letterSpacing = 5.sp,
                                 color = Color(0xFF1E293B)
                             )
                         }
-                        // tap to refresh badge with animated rotation
-                        Surface(
-                            shape = RoundedCornerShape(6.dp),
-                            color = Color(0xFF0F172A).copy(alpha = 0.85f),
+
+                        // Icon ONLY refresh button (no text)
+                        IconButton(
+                            onClick = {
+                                captchaRotation += 360f
+                                onRefreshCaptcha()
+                            },
                             modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(3.dp)
+                                .align(Alignment.CenterEnd)
+                                .padding(end = 4.dp)
+                                .size(28.dp)
                         ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    Icons.Default.Refresh,
-                                    contentDescription = "Refresh",
-                                    tint = Color.White,
-                                    modifier = Modifier
-                                        .size(10.dp)
-                                        .rotate(animatedRotation)
-                                )
-                                Spacer(modifier = Modifier.width(2.dp))
-                                Text(
-                                    text = t("tap", "ಬದಲಿಸಿ"),
-                                    fontSize = 8.sp,
-                                    color = Color.White
-                                )
-                            }
+                            Icon(
+                                Icons.Default.Refresh,
+                                contentDescription = "Refresh Captcha",
+                                tint = Color(0xFF475569),
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .rotate(animatedRotation)
+                            )
                         }
                     }
 
@@ -910,28 +903,21 @@ fun StepLookupScreen(
                     OutlinedTextField(
                         value = captcha,
                         onValueChange = onCaptchaChange,
-                        placeholder = { Text(t("CODE", "ಕೋಡ್"), fontSize = 12.sp, color = Color.LightGray) },
+                        placeholder = { Text("•••••", fontSize = 14.sp, color = Color.LightGray) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, capitalization = KeyboardCapitalization.Characters),
                         modifier = Modifier
                             .weight(1f)
-                            .height(52.dp),
+                            .height(50.dp),
                         shape = RoundedCornerShape(12.dp),
                         textStyle = LocalTextStyle.current.copy(
                             textAlign = TextAlign.Center,
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 15.sp
+                            fontSize = 16.sp
                         )
                     )
                 }
-
-                Text(
-                    text = t("Type 5 characters shown on left", "ಎಡಭಾಗದಲ್ಲಿರುವ 5 ಅಕ್ಷರಗಳನ್ನು ನಮೂದಿಸಿ"),
-                    fontSize = 10.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
             }
         }
 
@@ -1086,7 +1072,7 @@ fun StepLookupScreen(
 }
 
 // -------------------------------------------------------------
-// STEP 1: ROSTER SCREEN
+// STEP 1: ROSTER SCREEN (APL/BPL ACCURATE DETECTION & FULL DETAILS)
 // -------------------------------------------------------------
 @Composable
 fun StepRosterScreen(
@@ -1099,9 +1085,10 @@ fun StepRosterScreen(
 ) {
     fun t(en: String, kn: String): String = if (isKn) kn else en
     var selectedTab by remember { mutableIntStateOf(0) } // 0: Members, 1: Shop, 2: Schemes
+    val isApl = card.cardCategory == "APL" || card.cardType.contains("APL") || card.cardType.contains("NPHH")
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        // Smart PVC Ration Card Display
+        // Smart PVC Ration Card Display with Accurate APL / BPL Identification
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -1112,7 +1099,11 @@ fun StepRosterScreen(
                     .fillMaxWidth()
                     .background(
                         Brush.linearGradient(
-                            listOf(Color(0xFF065F46), Color(0xFF047857), Color(0xFF0F766E))
+                            if (isApl) {
+                                listOf(Color(0xFF1E3A8A), Color(0xFF2563EB), Color(0xFF1D4ED8))
+                            } else {
+                                listOf(Color(0xFF065F46), Color(0xFF047857), Color(0xFF0F766E))
+                            }
                         )
                     )
                     .padding(16.dp)
@@ -1129,22 +1120,23 @@ fun StepRosterScreen(
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold
                         )
+                        // APL or BPL Pill Badge
                         Surface(
                             shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFF10B981).copy(alpha = 0.3f),
-                            border = BorderStroke(1.dp, Color(0xFF6EE7B7))
+                            color = if (isApl) Color(0xFFDBEAFE).copy(alpha = 0.25f) else Color(0xFF10B981).copy(alpha = 0.3f),
+                            border = BorderStroke(1.dp, if (isApl) Color(0xFF93C5FD) else Color(0xFF6EE7B7))
                         ) {
                             Text(
-                                text = t("ACTIVE", "ಸಕ್ರಿಯ"),
+                                text = if (isApl) "APL (NPHH)" else if (card.cardType.contains("AAY")) "BPL (AAY)" else "BPL (PHH)",
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = card.rcNumber,
                         color = Color.White,
@@ -1154,18 +1146,25 @@ fun StepRosterScreen(
                         letterSpacing = 2.sp
                     )
 
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = if (isApl) t("White Ration Card • Non-Priority Household (APL)", "ಬಿಳಿ ಪಡಿತರ ಚೀಟಿ • ಆದ್ಯತೇತರ ಕುಟುಂಬ (APL)") else t("Priority Ration Card • Anna Bhagya Eligible (BPL)", "ಆದ್ಯತಾ ಪಡಿತರ ಚೀಟಿ • ಅನ್ನಭಾಗ್ಯ ಸೌಲಭ್ಯ (BPL)"),
+                        fontSize = 10.sp,
+                        color = if (isApl) Color(0xFFDBEAFE) else Color(0xFFA7F3D0)
+                    )
+
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column {
-                            Text(t("Head of Family", "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರು"), fontSize = 9.sp, color = Color(0xFFA7F3D0))
+                            Text(t("Head of Family", "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರು"), fontSize = 9.sp, color = if (isApl) Color(0xFFDBEAFE) else Color(0xFFA7F3D0))
                             Text(if (isKn) card.headOfFamily.nameKn else card.headOfFamily.nameEn, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.White)
                         }
                         Column(horizontalAlignment = Alignment.End) {
-                            Text(t("Card Type", "ಕಾರ್ಡ್ ವಿಧ"), fontSize = 9.sp, color = Color(0xFFA7F3D0))
-                            Text(card.cardType, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            Text(t("Category", "ಕಾರ್ಡ್ ವರ್ಗ"), fontSize = 9.sp, color = if (isApl) Color(0xFFDBEAFE) else Color(0xFFA7F3D0))
+                            Text(card.cardType, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.White)
                         }
                     }
                 }
@@ -1213,16 +1212,17 @@ fun StepRosterScreen(
                     Column {
                         // Family Members List
                         Text(
-                            text = t("Select member for biometric photo verification:", "ಫೋಟೋ ಪರಿಶೀಲನೆಗೆ ಸದಸ್ಯರನ್ನು ಆಯ್ಕೆಮಾಡಿ:"),
+                            text = t("Click on any member to view full details and age:", "ಸದಸ್ಯರ ಪೂರ್ಣ ವಿವರ ಮತ್ತು ವಯಸ್ಸು ನೋಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ:"),
                             fontSize = 11.sp,
-                            color = Color.Gray,
+                            color = Color(0xFF475569),
+                            fontWeight = FontWeight.Medium,
                             modifier = Modifier.padding(bottom = 6.dp)
                         )
 
                         card.members.forEach { member ->
                             val isSelected = selectedMember?.id == member.id
-                            val targetBg = if (isSelected) Color(0xFFEFF6FF) else Color.White
-                            val targetBorder = if (isSelected) Color(0xFF3B82F6) else CardBorder
+                            val targetBg = if (isSelected) Color(0xFFF0F7FF) else Color.White
+                            val targetBorder = if (isSelected) Color(0xFF2563EB) else CardBorder
                             val bgColor by animateColorAsState(targetBg, label = "memberBg")
                             val borderColor by animateColorAsState(targetBorder, label = "memberBorder")
 
@@ -1235,54 +1235,172 @@ fun StepRosterScreen(
                                 colors = CardDefaults.cardColors(containerColor = bgColor),
                                 border = BorderStroke(if (isSelected) 2.dp else 1.dp, borderColor)
                             ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(12.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    RadioButton(
-                                        selected = isSelected,
-                                        onClick = { onSelectMember(member) },
-                                        colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF2563EB))
-                                    )
-                                    Spacer(modifier = Modifier.width(6.dp))
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            Text(
-                                                text = if (isKn) member.nameKn else member.nameEn,
-                                                fontSize = 13.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color = BrandNavy
-                                            )
-                                            Surface(
-                                                shape = RoundedCornerShape(6.dp),
-                                                color = if (member.ekyc == "VERIFIED") Color(0xFFD1FAE5) else Color(0xFFFEF3C7)
+                                Column {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(12.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        RadioButton(
+                                            selected = isSelected,
+                                            onClick = { onSelectMember(member) },
+                                            colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF2563EB))
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
                                             ) {
                                                 Text(
-                                                    text = if (member.ekyc == "VERIFIED") t("VERIFIED", "ಪೂರ್ಣಗೊಂಡಿದೆ") else t("PENDING", "ಬಾಕಿ ಇದೆ"),
-                                                    fontSize = 9.sp,
+                                                    text = if (isKn) member.nameKn else member.nameEn,
+                                                    fontSize = 13.sp,
                                                     fontWeight = FontWeight.Bold,
-                                                    color = if (member.ekyc == "VERIFIED") Color(0xFF065F46) else Color(0xFF92400E),
-                                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                                    color = BrandNavy
+                                                )
+                                                Surface(
+                                                    shape = RoundedCornerShape(6.dp),
+                                                    color = if (member.ekyc == "VERIFIED") Color(0xFFD1FAE5) else Color(0xFFFEF3C7)
+                                                ) {
+                                                    Text(
+                                                        text = if (member.ekyc == "VERIFIED") t("VERIFIED", "ಪೂರ್ಣಗೊಂಡಿದೆ") else t("PENDING", "ಬಾಕಿ ಇದೆ"),
+                                                        fontSize = 9.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = if (member.ekyc == "VERIFIED") Color(0xFF065F46) else Color(0xFF92400E),
+                                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                                    )
+                                                }
+                                            }
+
+                                            // Prominent Age & Relationship display
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(top = 2.dp),
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Text(
+                                                    text = "${member.relation} • ${member.gender}",
+                                                    fontSize = 10.sp,
+                                                    color = Color.Gray
+                                                )
+                                                Surface(
+                                                    shape = RoundedCornerShape(4.dp),
+                                                    color = Color(0xFFE0F2FE)
+                                                ) {
+                                                    Text(
+                                                        text = t("Age: ${member.age} yrs", "ವಯಸ್ಸು: ${member.age} ವರ್ಷ"),
+                                                        fontSize = 9.5.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = Color(0xFF0369A1),
+                                                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp)
+                                                    )
+                                                }
+                                            }
+
+                                            Text(
+                                                text = "Aadhaar: XXXX-XXXX-${member.aadhaarLast4}",
+                                                fontSize = 10.sp,
+                                                fontFamily = FontFamily.Monospace,
+                                                color = Color(0xFF475569),
+                                                modifier = Modifier.padding(top = 2.dp)
+                                            )
+                                        }
+                                    }
+
+                                    // FULL DETAILS EXPANDED SECTION ON CLICK
+                                    AnimatedVisibility(
+                                        visible = isSelected,
+                                        enter = expandVertically() + fadeIn(),
+                                        exit = shrinkVertically() + fadeOut()
+                                    ) {
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
+                                        ) {
+                                            HorizontalDivider(color = Color(0xFFE2E8F0), modifier = Modifier.padding(bottom = 8.dp))
+
+                                            Surface(
+                                                shape = RoundedCornerShape(10.dp),
+                                                color = Color.White,
+                                                border = BorderStroke(1.dp, Color(0xFFBFDBFE)),
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Column(modifier = Modifier.padding(12.dp)) {
+                                                    Row(
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+                                                        Text(
+                                                            text = t("MEMBER FULL PROFILE & ENTITLEMENTS", "ಸದಸ್ಯರ ಪೂರ್ಣ ವಿವರಗಳು & ಸೌಲಭ್ಯ"),
+                                                            fontSize = 10.sp,
+                                                            fontWeight = FontWeight.ExtraBold,
+                                                            color = Color(0xFF1E40AF),
+                                                            letterSpacing = 0.5.sp
+                                                        )
+                                                        Surface(
+                                                            shape = RoundedCornerShape(4.dp),
+                                                            color = Color(0xFFDCFCE7)
+                                                        ) {
+                                                            Text(
+                                                                text = "ID: ${member.id}",
+                                                                fontSize = 9.sp,
+                                                                fontWeight = FontWeight.Bold,
+                                                                color = Color(0xFF166534),
+                                                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                                            )
+                                                        }
+                                                    }
+
+                                                    Spacer(modifier = Modifier.height(8.dp))
+
+                                                    MemberDetailRow(t("Full Legal Name", "ಪೂರ್ಣ ಹೆಸರು"), "${if (isKn) member.nameKn else member.nameEn} (${member.relation})")
+                                                    MemberDetailRow(t("Age & Date of Birth", "ವಯಸ್ಸು & ಜನ್ಮ ದಿನಾಂಕ"), "${member.age} yrs (${member.dob.ifEmpty { "1976" }}) • ${member.gender}")
+                                                    MemberDetailRow(t("Aadhaar UIDAI Status", "ಆಧಾರ್ ಸೀಡಿಂಗ್ ಸ್ಥಿತಿ"), "XXXX-XXXX-${member.aadhaarLast4} (${if (member.aadhaarSeeded) "✅ NPCI Active" else "Unseeded"})")
+                                                    MemberDetailRow(t("Registered Mobile", "ನೋಂದಾಯಿತ ಮೊಬೈಲ್"), member.mobileMasked.ifEmpty { "+91-XXXXXX" + member.aadhaarLast4 })
+                                                    MemberDetailRow(
+                                                        t("e-KYC Biometric Status", "ಇ-ಕೆವೈಸಿ ಬಯೋಮೆಟ್ರಿಕ್ ಸ್ಥಿತಿ"),
+                                                        if (member.ekyc == "VERIFIED") t("VERIFIED (ePDS Authenticated)", "ಪೂರ್ಣಗೊಂಡಿದೆ (ಆಹಾರ ಇಲಾಖೆ ನೋಂದಣಿ)") else t("PENDING (Photo Required)", "ಬಾಕಿ ಇದೆ (ಮುಖದ ಫೋಟೋ ಅಗತ್ಯ)")
+                                                    )
+                                                    MemberDetailRow(
+                                                        t("Monthly Grain Quota", "ಮಾಸಿಕ ಪಡಿತರ ಕೋಟಾ"),
+                                                        member.monthlyEntitlement.ifEmpty { if (isApl) "APL Subsidized Quota" else "10 kg Free Rice (NFSA + State)" }
+                                                    )
+                                                    MemberDetailRow(
+                                                        t("Direct Cash (DBT)", "ನಗದು ಸೌಲಭ್ಯ (DBT)"),
+                                                        member.dbtEligibility.ifEmpty { if (isApl) "APL - Not eligible for BPL DBT" else "₹170/mo DBT Eligible" }
+                                                    )
+                                                }
+                                            }
+
+                                            Spacer(modifier = Modifier.height(10.dp))
+
+                                            // Member-Specific Action Button
+                                            Button(
+                                                onClick = onProceedToPhoto,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .height(42.dp),
+                                                shape = RoundedCornerShape(10.dp),
+                                                colors = ButtonDefaults.buttonColors(containerColor = if (member.ekyc == "VERIFIED") Color(0xFF0F766E) else Color(0xFF1D4ED8))
+                                            ) {
+                                                Icon(Icons.Default.AccountBox, contentDescription = null, modifier = Modifier.size(16.dp))
+                                                Spacer(modifier = Modifier.width(6.dp))
+                                                Text(
+                                                    text = if (member.ekyc == "VERIFIED") {
+                                                        t("Re-verify / Retake Photo for ${member.nameEn} ➔", "${if (isKn) member.nameKn else member.nameEn} ರವರ ಫೋಟೋ ಮರುಪರಿಶೀಲಿಸಿ ➔")
+                                                    } else {
+                                                        t("Proceed to Biometric Photo for ${member.nameEn} ➔", "${if (isKn) member.nameKn else member.nameEn} ರವರ ಮುಖದ ಫೋಟೋ ತೆಗೆದುಕೊಳ್ಳಿ ➔")
+                                                    },
+                                                    fontSize = 12.sp,
+                                                    fontWeight = FontWeight.Bold
                                                 )
                                             }
                                         }
-                                        Text(
-                                            text = "${member.relation} • ${member.gender} • ${member.age} yrs",
-                                            fontSize = 10.sp,
-                                            color = Color.Gray
-                                        )
-                                        Text(
-                                            text = "Aadhaar: XXXX-XXXX-${member.aadhaarLast4}",
-                                            fontSize = 10.sp,
-                                            fontFamily = FontFamily.Monospace,
-                                            color = Color(0xFF475569)
-                                        )
                                     }
                                 }
                             }
@@ -1364,7 +1482,7 @@ fun StepRosterScreen(
                 }
 
                 2 -> {
-                    // Welfare Benefits
+                    // Welfare Benefits (BPL vs APL Aware)
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(14.dp),
@@ -1372,30 +1490,82 @@ fun StepRosterScreen(
                         border = BorderStroke(1.dp, CardBorder)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text(t("Government Welfare Entitlements", "ಸರ್ಕಾರಿ ಪಡಿತರ ಸೌಲಭ್ಯಗಳು"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = BrandNavy)
+                            Text(
+                                text = if (isApl) t("APL Welfare Entitlements", "ಎಪಿಎಲ್ ಪಡಿತರ ಸೌಲಭ್ಯಗಳು") else t("BPL Government Welfare Entitlements", "ಸರ್ಕಾರಿ ಬಿಪಿಎಲ್ ಪಡಿತರ ಸೌಲಭ್ಯಗಳು"),
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = BrandNavy
+                            )
                             Spacer(modifier = Modifier.height(10.dp))
-                            BenefitItem(
-                                icon = Icons.Default.CheckCircle,
-                                title = t("Anna Bhagya 10kg Free Rice", "ಅನ್ನಭಾಗ್ಯ 10 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ"),
-                                desc = t("5kg Central NFSA + 5kg Karnataka State quota per person free.", "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ ಒಟ್ಟು 10 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ.")
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            BenefitItem(
-                                icon = Icons.Default.AccountBox,
-                                title = t("Anna Bhagya Cash Transfer (DBT)", "ಅನ್ನಭಾಗ್ಯ ನಗದು ವರ್ಗಾವಣೆ (DBT)"),
-                                desc = t("₹170 per person credited directly to seeded Aadhaar bank account.", "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ₹170 ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ನೇರ ನಗದು ವರ್ಗಾವಣೆ.")
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            BenefitItem(
-                                icon = Icons.Default.Person,
-                                title = t("Gruha Lakshmi ₹2,000 / month", "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಮಾಸಿಕ ಧನಸಹಾಯ"),
-                                desc = t("Direct financial assistance to the female Head of Family.", "ಕುಟುಂಬದ ಮಹಿಳಾ ಯಜಮಾನಿಗೆ ತಿಂಗಳಿಗೆ ₹2,000 ನೇರ ಜಮೆ.")
-                            )
+
+                            if (isApl) {
+                                BenefitItem(
+                                    icon = Icons.Default.CheckCircle,
+                                    title = t("Subsidized State Commodities", "ಸಬ್ಸಿಡಿ ದರದ ರಾಜ್ಯ ಪಡಿತರ ಸರಕು"),
+                                    desc = t("Eligible for subsidized foodgrains and festival allocations at Fair Price Shops.", "ನ್ಯಾಯಬೆಲೆ ಅಂಗಡಿಗಳಲ್ಲಿ ನಿಗದಿತ ಸಬ್ಸಿಡಿ ದರದ ಪಡಿತರ ಪದಾರ್ಥಗಳ ಸೌಲಭ್ಯ.")
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                BenefitItem(
+                                    icon = Icons.Default.AccountBox,
+                                    title = t("Fair Price Shop Network Access", "ನ್ಯಾಯಬೆಲೆ ಅಂಗಡಿ ನೋಂದಣಿ"),
+                                    desc = t("Official FPS registration across Karnataka state jurisdiction.", "ಕರ್ನಾಟಕ ರಾಜ್ಯದಾದ್ಯಂತ ನ್ಯಾಯಬೆಲೆ ಅಂಗಡಿಯ ಅಧಿಕೃತ ನೋಂದಣಿ.")
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                BenefitItem(
+                                    icon = Icons.Default.Lock,
+                                    title = t("Official Government Identity Proof", "ಸರ್ಕಾರಿ ವಿಳಾಸ ಮತ್ತು ಗುರುತಿನ ದಾಖಲೆ"),
+                                    desc = t("Recognized address and family roster certificate for all state civil services.", "ಎಲ್ಲಾ ಸರ್ಕಾರಿ ಸೇವೆಗಳಿಗೆ ಮಾನ್ಯತೆ ಪಡೆದ ಕುಟುಂಬ ಸದಸ್ಯರ ವಿಳಾಸ ಮತ್ತು ಗುರುತಿನ ಪುರಾವೆ.")
+                                )
+                            } else {
+                                BenefitItem(
+                                    icon = Icons.Default.CheckCircle,
+                                    title = t("Anna Bhagya 10kg Free Rice", "ಅನ್ನಭಾಗ್ಯ 10 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ"),
+                                    desc = t("5kg Central NFSA + 5kg Karnataka State quota per person free.", "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ತಿಂಗಳಿಗೆ ಒಟ್ಟು 10 ಕೆಜಿ ಉಚಿತ ಅಕ್ಕಿ.")
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                BenefitItem(
+                                    icon = Icons.Default.AccountBox,
+                                    title = t("Anna Bhagya Cash Transfer (DBT)", "ಅನ್ನಭಾಗ್ಯ ನಗದು ವರ್ಗಾವಣೆ (DBT)"),
+                                    desc = t("₹170 per person credited directly to seeded Aadhaar bank account.", "ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ₹170 ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ನೇರ ನಗದು ವರ್ಗಾವಣೆ.")
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                BenefitItem(
+                                    icon = Icons.Default.Person,
+                                    title = t("Gruha Lakshmi ₹2,000 / month", "ಗೃಹಲಕ್ಷ್ಮಿ ₹2,000 ಮಾಸಿಕ ಧನಸಹಾಯ"),
+                                    desc = t("Direct financial assistance to the female Head of Family.", "ಕುಟುಂಬದ ಮಹಿಳಾ ಯಜಮಾನಿಗೆ ತಿಂಗಳಿಗೆ ₹2,000 ನೇರ ಜಮೆ.")
+                                )
+                            }
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun MemberDetailRow(label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.5.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top
+    ) {
+        Text(
+            text = label,
+            fontSize = 9.5.sp,
+            color = Color(0xFF64748B),
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = value,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = BrandNavy,
+            textAlign = TextAlign.End,
+            modifier = Modifier.weight(1.3f)
+        )
     }
 }
 

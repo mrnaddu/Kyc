@@ -10,7 +10,12 @@ data class Member(
     val gender: String,
     val age: String,
     val aadhaarLast4: String,
-    val ekyc: String // "VERIFIED" or "PENDING"
+    val ekyc: String, // "VERIFIED" or "PENDING"
+    val dob: String = "",
+    val mobileMasked: String = "",
+    val aadhaarSeeded: Boolean = true,
+    val monthlyEntitlement: String = "",
+    val dbtEligibility: String = ""
 )
 
 data class HeadOfFamily(
@@ -30,7 +35,8 @@ data class RationCardData(
     val cardType: String,
     val headOfFamily: HeadOfFamily,
     val members: List<Member>,
-    val location: FpsLocation
+    val location: FpsLocation,
+    val cardCategory: String = "BPL" // "BPL" or "APL"
 )
 
 data class KycCertificate(
