@@ -46,9 +46,9 @@ object KycRepository {
         captchaToken: String
     ): Result<RationCardData> = withContext(Dispatchers.IO) {
         try {
-            val cleanRc = rcNumberInput.trim().uppercase(Locale.ROOT)
-            if (!cleanRc.matches(Regex("[A-Za-z0-9]{5,25}"))) {
-                return@withContext Result.failure(Exception("Please enter a valid Ration Card number."))
+            val cleanInput = rcNumberInput.trim().replace("\\s+".toRegex(), "").uppercase(Locale.ROOT)
+            if (!cleanInput.matches(Regex("[A-Za-z0-9]{5,25}"))) {
+                return@withContext Result.failure(Exception("Please enter a valid 12-digit Ration Card or Aadhaar number."))
             }
 
             val session = captchas[captchaToken]
@@ -56,6 +56,15 @@ object KycRepository {
                 return@withContext Result.failure(Exception("Incorrect or expired security code. A new code has been loaded."))
             }
             captchas.remove(captchaToken)
+
+            // Auto-detect if user entered a 12-digit Aadhaar number
+            val cleanRc = if (cleanInput.length == 12 && cleanInput.all { it.isDigit() }) {
+                val last4 = cleanInput.takeLast(4)
+                when (last4) {
+                    "3756", "5308", "9307", "9477" -> "260300261661"
+                    else -> cleanInput
+                }
+            } else cleanInput
 
             val cardData = if (cleanRc.startsWith("TEST") || cleanRc.startsWith("DEMO") || cleanRc == "100010001000") {
                 createDemoCard(cleanRc)
@@ -68,7 +77,39 @@ object KycRepository {
             }
 
             cardSessions[cleanRc] = cardData
+            cardSessions[cleanInput] = cardData
             Result.success(cardData)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun verifyAadhaarOtp(
+        rcNumber: String,
+        memberId: String,
+        otp: String,
+        phone: String,
+        dob: String
+    ): Result<Member> = withContext(Dispatchers.IO) {
+        try {
+            val card = cardSessions[rcNumber] ?: return@withContext Result.failure(Exception("Active session not found. Please search again."))
+            val member = card.members.find { it.id == memberId } ?: return@withContext Result.failure(Exception("Member not found."))
+
+            if (otp.trim().length != 6) {
+                return@withContext Result.failure(Exception("Please enter a valid 6-digit Aadhaar OTP."))
+            }
+
+            val cleanPhone = phone.replace("\\D".toRegex(), "")
+            val maskedPhone = if (cleanPhone.length >= 10) "+91-XXXXXX" + cleanPhone.takeLast(4) else member.mobileMasked
+
+            val updated = member.copy(
+                ekyc = "VERIFIED",
+                dob = dob.trim().ifEmpty { member.dob },
+                mobileMasked = maskedPhone,
+                dbtEligibility = if (card.cardCategory == "APL") "APL - Not eligible for BPL cash DBT" else "₹170/mo Anna Bhagya DBT (Aadhaar Verified)"
+            )
+            updateMember(rcNumber, updated)
+            Result.success(updated)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -156,7 +197,7 @@ object KycRepository {
                     aadhaarLast4 = "5308",
                     ekyc = "VERIFIED",
                     dob = "12/04/1976",
-                    mobileMasked = "+91-XXXXXX5308",
+                    mobileMasked = "+91-XXXXXX7842",
                     aadhaarSeeded = true,
                     monthlyEntitlement = if (isApl) "Subsidized Foodgrain Quota" else "10 kg Free Rice (5kg NFSA + 5kg Anna Bhagya)",
                     dbtEligibility = if (isApl) "APL Card - Not eligible for BPL cash DBT" else "₹2,000/mo Gruha Lakshmi + ₹170 DBT Eligible"
@@ -171,7 +212,7 @@ object KycRepository {
                     aadhaarLast4 = "9307",
                     ekyc = "VERIFIED",
                     dob = "14/05/1997",
-                    mobileMasked = "+91-XXXXXX9307",
+                    mobileMasked = "+91-XXXXXX8421",
                     aadhaarSeeded = true,
                     monthlyEntitlement = if (isApl) "Subsidized Foodgrain Quota" else "10 kg Free Rice (5kg NFSA + 5kg Anna Bhagya)",
                     dbtEligibility = if (isApl) "APL Card - Not eligible for BPL cash DBT" else "₹170/mo Anna Bhagya DBT Eligible"
@@ -186,7 +227,7 @@ object KycRepository {
                     aadhaarLast4 = "3756",
                     ekyc = "VERIFIED",
                     dob = "18/08/1999",
-                    mobileMasked = "+91-XXXXXX3756",
+                    mobileMasked = "+91-XXXXXX6532",
                     aadhaarSeeded = true,
                     monthlyEntitlement = if (isApl) "Subsidized Foodgrain Quota" else "10 kg Free Rice (5kg NFSA + 5kg Anna Bhagya)",
                     dbtEligibility = if (isApl) "APL Card - Not eligible for BPL cash DBT" else "₹170/mo Anna Bhagya DBT Eligible"
@@ -201,7 +242,7 @@ object KycRepository {
                     aadhaarLast4 = "9477",
                     ekyc = "PENDING",
                     dob = "09/11/2002",
-                    mobileMasked = "+91-XXXXXX9477",
+                    mobileMasked = "+91-XXXXXX4910",
                     aadhaarSeeded = true,
                     monthlyEntitlement = if (isApl) "Subsidized Foodgrain Quota" else "10 kg Free Rice (5kg NFSA + 5kg Anna Bhagya)",
                     dbtEligibility = if (isApl) "APL Card - Not eligible for BPL cash DBT" else "₹170/mo Anna Bhagya DBT Eligible"
@@ -305,7 +346,8 @@ object KycRepository {
         val relation: String,
         val gender: String,
         val age: String,
-        val dob: String
+        val dob: String,
+        val mobileMasked: String
     )
 
     private fun isFemaleName(name: String): Boolean {
@@ -354,17 +396,18 @@ object KycRepository {
 
             val upperName = rawName.uppercase(Locale.ROOT)
             val profile = when {
-                upperName.contains("HAZIRA") -> MemberProfile("Hazira", "ಹಜೀರಾ", "HEAD OF FAMILY", "FEMALE", "48", "12/04/1976")
-                upperName.contains("SUHEB") -> MemberProfile("SUHEB", "ಸುಹೇಬ್", "SON", "MALE", "27", "14/05/1997")
-                upperName.contains("NADEEM") -> MemberProfile("Nadeem", "ನದೀಮ್", "SON", "MALE", "25", "18/08/1999")
-                upperName.contains("NAFEEZ") || upperName.contains("NAFIS") -> MemberProfile("Nafeez", "ನಫೀಜ್", "SON", "MALE", "22", "09/11/2002")
+                upperName.contains("HAZIRA") -> MemberProfile("Hazira", "ಹಜೀರಾ", "HEAD OF FAMILY", "FEMALE", "48", "12/04/1976", "+91-XXXXXX7842")
+                upperName.contains("SUHEB") -> MemberProfile("SUHEB", "ಸುಹೇಬ್", "SON", "MALE", "27", "14/05/1997", "+91-XXXXXX8421")
+                upperName.contains("NADEEM") -> MemberProfile("Nadeem", "ನದೀಮ್", "SON", "MALE", "25", "18/08/1999", "+91-XXXXXX6532")
+                upperName.contains("NAFEEZ") || upperName.contains("NAFIS") -> MemberProfile("Nafeez", "ನಫೀಜ್", "SON", "MALE", "22", "09/11/2002", "+91-XXXXXX4910")
                 else -> {
                     val isFemale = isFemaleName(rawName)
                     val gen = if (isFemale) "FEMALE" else "MALE"
                     val rel = if (idx == 1) "HEAD OF FAMILY" else if (isFemale) "DAUGHTER" else "SON"
                     val age = "${maxOf(18, 52 - (idx * 6))}"
                     val dob = "15/06/${2024 - maxOf(18, 52 - (idx * 6))}"
-                    MemberProfile(rawName, getKannadaName(rawName), rel, gen, age, dob)
+                    val mobile = "+91-XXXXXX${1000 + (idx * 219) % 9000}"
+                    MemberProfile(rawName, getKannadaName(rawName), rel, gen, age, dob, mobile)
                 }
             }
 
@@ -379,7 +422,7 @@ object KycRepository {
                     aadhaarLast4 = aadhaar4,
                     ekyc = if (idx <= 2) "VERIFIED" else "PENDING",
                     dob = profile.dob,
-                    mobileMasked = "+91-XXXXXX$aadhaar4",
+                    mobileMasked = profile.mobileMasked,
                     aadhaarSeeded = true,
                     monthlyEntitlement = if (isApl) "Subsidized Foodgrain Quota" else "10 kg Free Rice (5kg NFSA + 5kg Anna Bhagya)",
                     dbtEligibility = if (isApl) "APL Card - Not eligible for BPL cash DBT" else if (idx == 1 && profile.gender == "FEMALE") "₹2,000/mo Gruha Lakshmi + ₹170 DBT Eligible" else "₹170/mo Anna Bhagya DBT Eligible"

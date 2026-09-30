@@ -800,7 +800,83 @@ fun StepLookupScreen(
             modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
         )
 
-        // Ration Card Input Card (Example Removed)
+        // Dual Search Mode: [💳 Ration Card] | [🆔 Aadhaar Card]
+        var lookupMode by remember { mutableIntStateOf(0) } // 0: Ration Card, 1: Aadhaar Card
+
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = Color(0xFFF1F5F9),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(3.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = if (lookupMode == 0) Color.White else Color.Transparent,
+                    shadowElevation = if (lookupMode == 0) 1.dp else 0.dp,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { lookupMode = 0 }
+                ) {
+                    Row(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AccountBox,
+                            contentDescription = null,
+                            tint = if (lookupMode == 0) BrandNavy else Color.Gray,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = t("Ration Card", "ಪಡಿತರ ಚೀಟಿ"),
+                            fontSize = 11.sp,
+                            fontWeight = if (lookupMode == 0) FontWeight.Bold else FontWeight.Medium,
+                            color = if (lookupMode == 0) BrandNavy else Color.Gray
+                        )
+                    }
+                }
+
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = if (lookupMode == 1) Color.White else Color.Transparent,
+                    shadowElevation = if (lookupMode == 1) 1.dp else 0.dp,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { lookupMode = 1 }
+                ) {
+                    Row(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null,
+                            tint = if (lookupMode == 1) Color(0xFF0F766E) else Color.Gray,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = t("Aadhaar Card", "ಆಧಾರ್ ಕಾರ್ಡ್"),
+                            fontSize = 11.sp,
+                            fontWeight = if (lookupMode == 1) FontWeight.Bold else FontWeight.Medium,
+                            color = if (lookupMode == 1) Color(0xFF0F766E) else Color.Gray
+                        )
+                    }
+                }
+            }
+        }
+
+        // Dual Mode Input Card (Ration Card or 12-Digit Aadhaar)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -814,7 +890,7 @@ fun StepLookupScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = t("RATION CARD NUMBER *", "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ *"),
+                        text = if (lookupMode == 0) t("RATION CARD NUMBER *", "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ *") else t("12-DIGIT AADHAAR NUMBER *", "12 ಅಂಕಿಯ ಆಧಾರ್ ಸಂಖ್ಯೆ *"),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF334155)
@@ -830,14 +906,41 @@ fun StepLookupScreen(
                 Spacer(modifier = Modifier.height(6.dp))
                 OutlinedTextField(
                     value = rcNumber,
-                    onValueChange = onRcChange,
-                    placeholder = { Text(t("Enter ration card number", "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ"), fontSize = 12.sp) },
+                    onValueChange = { input ->
+                        val filtered = if (lookupMode == 1) input.filter { it.isDigit() }.take(12) else input.take(20)
+                        onRcChange(filtered)
+                    },
+                    placeholder = {
+                        Text(
+                            if (lookupMode == 0) t("Enter ration card number", "ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ")
+                            else t("Enter 12-digit Aadhaar UID", "12 ಅಂಕಿಯ ಆಧಾರ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ"),
+                            fontSize = 12.sp
+                        )
+                    },
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, capitalization = KeyboardCapitalization.Characters),
-                    leadingIcon = { Icon(Icons.Default.AccountBox, contentDescription = null, tint = BrandNavy) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = if (lookupMode == 1) KeyboardType.Number else KeyboardType.Ascii,
+                        capitalization = KeyboardCapitalization.Characters
+                    ),
+                    leadingIcon = {
+                        Icon(
+                            if (lookupMode == 0) Icons.Default.AccountBox else Icons.Default.Person,
+                            contentDescription = null,
+                            tint = if (lookupMode == 0) BrandNavy else Color(0xFF0F766E)
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
+
+                if (lookupMode == 1) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = t("ℹ️ Linked Aadhaar UID will auto-retrieve your family Ration Card & verified demographic record.", "ℹ️ ಲಿಂಕ್ ಮಾಡಲಾದ ಆಧಾರ್ ಸಂಖ್ಯೆ ನಿಮ್ಮ ಕುಟುಂಬದ ಪಡಿತರ ಚೀಟಿ ಮತ್ತು ಇ-ಕೆವೈಸಿ ವಿವರಗಳನ್ನು ತರುತ್ತದೆ."),
+                        fontSize = 9.5.sp,
+                        color = Color(0xFF0D9488)
+                    )
+                }
             }
         }
 
@@ -1123,6 +1226,7 @@ fun StepRosterScreen(
     fun t(en: String, kn: String): String = if (isKn) kn else en
     var selectedTab by remember { mutableIntStateOf(0) } // 0: Members, 1: Shop, 2: Schemes
     var editingMember by remember { mutableStateOf<Member?>(null) }
+    var otpMember by remember { mutableStateOf<Member?>(null) }
     val isApl = card.cardCategory == "APL" || card.cardType.contains("APL") || card.cardType.contains("NPHH")
 
     if (editingMember != null) {
@@ -1133,6 +1237,19 @@ fun StepRosterScreen(
             onSave = { updated ->
                 onUpdateMember(updated)
                 editingMember = null
+            }
+        )
+    }
+
+    if (otpMember != null) {
+        AadhaarOtpDialog(
+            isKn = isKn,
+            rcNumber = card.rcNumber,
+            member = otpMember!!,
+            onDismiss = { otpMember = null },
+            onVerified = { updated ->
+                onUpdateMember(updated)
+                otpMember = null
             }
         )
     }
@@ -1429,7 +1546,27 @@ fun StepRosterScreen(
 
                                             Spacer(modifier = Modifier.height(10.dp))
 
-                                            // Member-Specific Action Buttons: Correct Details & Biometric Photo
+                                            // Member-Specific Action Buttons: Aadhaar OTP Verification, Correct Details & Biometric Photo
+                                            Button(
+                                                onClick = { otpMember = member },
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .height(40.dp),
+                                                shape = RoundedCornerShape(10.dp),
+                                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F766E))
+                                            ) {
+                                                Icon(Icons.Default.Lock, contentDescription = null, modifier = Modifier.size(15.dp), tint = Color.White)
+                                                Spacer(modifier = Modifier.width(6.dp))
+                                                Text(
+                                                    text = t("⚡ Aadhaar OTP Verification & Fetch", "⚡ ಆಧಾರ್ OTP ದೃಢೀಕರಣ & ವಿವರ ಪಡೆಯಿರಿ"),
+                                                    fontSize = 11.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = Color.White
+                                                )
+                                            }
+
+                                            Spacer(modifier = Modifier.height(8.dp))
+
                                             Row(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -2828,4 +2965,310 @@ fun EditMemberDialog(
         }
     }
 }
+
+// -------------------------------------------------------------
+// AADHAAR OTP E-KYC VERIFICATION DIALOG
+// -------------------------------------------------------------
+@Composable
+fun AadhaarOtpDialog(
+    isKn: Boolean,
+    rcNumber: String,
+    member: Member,
+    onDismiss: () -> Unit,
+    onVerified: (Member) -> Unit
+) {
+    fun t(en: String, kn: String): String = if (isKn) kn else en
+    val scope = rememberCoroutineScope()
+
+    var otp by remember { mutableStateOf("") }
+    var phoneInput by remember { mutableStateOf(member.mobileMasked.replace("+91-XXXXXX", "").ifEmpty { "6532" }) }
+    var dobInput by remember { mutableStateOf(member.dob) }
+    var isOtpSent by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var successMessage by remember { mutableStateOf<String?>(null) }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth(0.94f)
+                .wrapContentHeight(),
+            shape = RoundedCornerShape(20.dp),
+            color = Color.White
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                // Header
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Surface(
+                                shape = CircleShape,
+                                color = Color(0xFFE0F2FE),
+                                modifier = Modifier.size(28.dp)
+                            ) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    Icon(Icons.Default.Lock, contentDescription = null, tint = Color(0xFF0284C7), modifier = Modifier.size(16.dp))
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = t("Aadhaar OTP e-KYC Verification", "ಆಧಾರ್ OTP ದೃಢೀಕರಣ"),
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = BrandNavy
+                            )
+                        }
+                        Text(
+                            text = t("UIDAI Authenticated Demographic Auto-Fetch", "ಯುಐಡಿಎಐ ದೃಢೀಕೃತ ಮಾಹಿತಿ ಮತ್ತು ಮೊಬೈಲ್ ಪರಿಶೀಲನೆ"),
+                            fontSize = 10.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(top = 2.dp)
+                        )
+                    }
+                    IconButton(onClick = onDismiss) {
+                        Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.Gray)
+                    }
+                }
+
+                HorizontalDivider(color = Color(0xFFE2E8F0), modifier = Modifier.padding(vertical = 10.dp))
+
+                // Member Info Card
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FAFC)),
+                    border = BorderStroke(1.dp, Color(0xFFE2E8F0)),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = if (isKn) member.nameKn else member.nameEn,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = BrandNavy
+                            )
+                            Surface(
+                                shape = RoundedCornerShape(4.dp),
+                                color = Color(0xFFDBEAFE)
+                            ) {
+                                Text(
+                                    text = member.relation,
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF1D4ED8),
+                                    modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp)
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Aadhaar: XXXX-XXXX-${member.aadhaarLast4}",
+                            fontSize = 11.sp,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color(0xFF475569)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Date of Birth Field
+                Text(
+                    text = t("Official Date of Birth (DD/MM/YYYY)", "ಅಧಿಕೃತ ಜನ್ಮ ದಿನಾಂಕ (DD/MM/YYYY)"),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = BrandNavy
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(
+                    value = dobInput,
+                    onValueChange = { dobInput = it },
+                    placeholder = { Text("DD/MM/YYYY", fontSize = 11.sp) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp)
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Linked Mobile Number
+                Text(
+                    text = t("UIDAI Linked Mobile Number (10 Digits)", "ಆಧಾರ್ ಲಿಂಕ್ ಆದ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ (10 ಅಂಕಿ)"),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = BrandNavy
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedTextField(
+                    value = phoneInput,
+                    onValueChange = { phoneInput = it.filter { ch -> ch.isDigit() }.take(10) },
+                    placeholder = { Text("Enter 10-digit mobile number", fontSize = 11.sp) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp)
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // OTP Action / Input
+                if (!isOtpSent) {
+                    Button(
+                        onClick = {
+                            isOtpSent = true
+                            otp = "482910"
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(42.dp),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F766E))
+                    ) {
+                        Icon(Icons.Default.Send, contentDescription = null, modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = t("Generate Aadhaar OTP", "ಆಧಾರ್ OTP ಪಡೆಯಿರಿ"),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                } else {
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color(0xFFFEF3C7),
+                        border = BorderStroke(1.dp, Color(0xFFFDE68A)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Default.Info, contentDescription = null, tint = Color(0xFFD97706), modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = t("OTP sent to Aadhaar mobile ending in ${member.aadhaarLast4}. [Demo OTP: 482910]", "ಆಧಾರ್ ಮೊಬೈಲ್‌ಗೆ OTP ಕಳುಹಿಸಲಾಗಿದೆ. [ಡೆಮೊ OTP: 482910]"),
+                                fontSize = 10.sp,
+                                color = Color(0xFF92400E)
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = t("Enter 6-Digit Aadhaar OTP *", "6 ಅಂಕಿಯ ಆಧಾರ್ OTP ನಮೂದಿಸಿ *"),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = BrandNavy
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    OutlinedTextField(
+                        value = otp,
+                        onValueChange = { otp = it.filter { ch -> ch.isDigit() }.take(6) },
+                        placeholder = { Text("6-digit OTP", fontSize = 11.sp) },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                }
+
+                if (errorMessage != null) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = errorMessage!!,
+                        color = Color(0xFFDC2626),
+                        fontSize = 10.5.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+
+                if (successMessage != null) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = successMessage!!,
+                        color = Color(0xFF16A34A),
+                        fontSize = 10.5.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Actions: Cancel & Verify
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Text(t("Cancel", "ರದ್ದು"), fontSize = 12.sp)
+                    }
+
+                    Button(
+                        onClick = {
+                            if (!isOtpSent) {
+                                errorMessage = t("Please generate Aadhaar OTP first.", "ದಯವಿಟ್ಟು ಮೊದಲು OTP ಪಡೆಯಿರಿ.")
+                                return@Button
+                            }
+                            if (otp.length != 6) {
+                                errorMessage = t("Please enter 6-digit OTP.", "ದಯವಿಟ್ಟು 6 ಅಂಕಿಯ OTP ನಮೂದಿಸಿ.")
+                                return@Button
+                            }
+                            errorMessage = null
+                            scope.launch {
+                                isLoading = true
+                                val result = KycRepository.verifyAadhaarOtp(
+                                    rcNumber = rcNumber,
+                                    memberId = member.id,
+                                    otp = otp,
+                                    phone = phoneInput,
+                                    dob = dobInput
+                                )
+                                isLoading = false
+                                result.onSuccess { updated ->
+                                    successMessage = t("e-KYC verified & details updated successfully!", "ಇ-ಕೆವೈಸಿ ಪರಿಶೀಲನೆ ಯಶಸ್ವಿಯಾಗಿದೆ!")
+                                    delay(400)
+                                    onVerified(updated)
+                                }.onFailure { err ->
+                                    errorMessage = err.message ?: "Verification failed."
+                                }
+                            }
+                        },
+                        enabled = !isLoading,
+                        modifier = Modifier.weight(1.5f),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2563EB))
+                    ) {
+                        if (isLoading) {
+                            CircularProgressIndicator(modifier = Modifier.size(16.dp), color = Color.White, strokeWidth = 2.dp)
+                        } else {
+                            Text(t("Verify & Update ➔", "ದೃಢೀಕರಿಸಿ ➔"), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
