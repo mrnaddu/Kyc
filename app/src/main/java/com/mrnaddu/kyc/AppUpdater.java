@@ -17,7 +17,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -43,8 +42,12 @@ final class AppUpdater {
     private static final String NOTIFICATION_CHANNEL_ID = "app_updates_channel";
     private static final int NOTIFICATION_ID = 2001;
 
+    public interface UpdateCallback {
+        void onUpdateAvailable(String version, String downloadUrl);
+    }
+
     private final Activity activity;
-    private WebView webView;
+    private UpdateCallback updateCallback;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final DownloadManager downloadManager;
     private long activeDownloadId = -1;
@@ -67,9 +70,9 @@ final class AppUpdater {
         this(activity, null);
     }
 
-    AppUpdater(Activity activity, WebView webView) {
+    AppUpdater(Activity activity, UpdateCallback callback) {
         this.activity = activity;
-        this.webView = webView;
+        this.updateCallback = callback;
         this.downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
         createNotificationChannel();
         IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
@@ -80,8 +83,8 @@ final class AppUpdater {
         }
     }
 
-    void setWebView(WebView webView) {
-        this.webView = webView;
+    void setUpdateCallback(UpdateCallback callback) {
+        this.updateCallback = callback;
     }
 
     void checkForUpdates() {
@@ -179,11 +182,8 @@ final class AppUpdater {
     }
 
     private void notifyWebBanner(String version) {
-        if (webView != null) {
-            webView.evaluateJavascript(
-                "if (typeof showUpdateNotification === 'function') showUpdateNotification('" + version + "');",
-                null
-            );
+        if (updateCallback != null) {
+            updateCallback.onUpdateAvailable(version, "");
         }
     }
 

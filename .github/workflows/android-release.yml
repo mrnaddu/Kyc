@@ -58,11 +58,15 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          name: Karnataka e-KYC ${{ github.ref_name }}
+          name: Nanna Seva ${{ github.ref_name }} (Pure Native Android)
           body: |
-            Standalone Android build for the Karnataka Ration Card e-KYC application.
-
-            This version bundles the application interface and verification engine inside the APK. It does not require a computer or Node.js backend. Internet access is still required for live Karnataka Ahara portal lookups and external UI resources.
-
-            This is a development build for testing and is not an official government application.
+            100% Pure Native Android APK (built with Jetpack Compose & Material 3, zero WebViews).
+            
+            Features:
+            - Pure Native Android Material 3 UI & Architecture (No WebViews)
+            - Nanna Seva (ನನ್ನ ಸೇವೆ) bilingual Kannada & English support
+            - Ration Card e-KYC verification with live Ahara ePDS integration
+            - Within-Karnataka Ration Card & Fair Price Shop Transfer Guide (Sakala)
+            - Official UIDAI Aadhaar Update Hub & NPCI bank seeding check
+            - Native Captcha Generator & Biometric camera capture
           files: Karnataka-eKYC-*.apk

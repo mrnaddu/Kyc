@@ -12,12 +12,8 @@ android {
         applicationId "com.mrnaddu.kyc"
         minSdk 24
         targetSdk 35
-        versionCode 21
-        versionName "1.4.5"
-    }
-
-    sourceSets {
-        main.assets.srcDirs = ["../public"]
+        versionCode 22
+        versionName "2.0.0"
     }
 
     buildFeatures {
@@ -53,5 +49,4 @@ dependencies {
     implementation "androidx.compose.material3:material3"
     implementation "androidx.compose.material:material-icons-core"
     implementation "androidx.core:core:1.13.1"
-    implementation "androidx.webkit:webkit:1.12.1"
 }
